@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv='cache-control' content='no-cache'>
+	<meta http-equiv='expires' content='0'>
+	<meta http-equiv='pragma' content='no-cache'>
+	<title>Page Title</title>
+</head>
+
+<body onload="init()">
+	<span id="score"></span>
+	<span id="tav"></span>
+	<div id="screen">
+		<div id="ember" class="emberRight"></div>
+		<div id="targy" class="targyBronze">$</div>
+		<div id="ember2" class="emberLeft"></div>
+	</div>
+</body>
+<script language="JavaScript">
+
+	const ember = document.getElementById('ember');
+	const ember2 = document.getElementById('ember2');
+	const targy = document.getElementById('targy');
+	const screen = document.getElementById('screen');
+	const ponttabla = document.getElementById('score');
+	const falak = [];
+	let utkozottFal;
+	let speed = 1;
+	let score = {
+		ember: 0,
+		ember2: 0
+	};
+	const falszam = 3;
+	const minFalmagassag = 20;
+	const minFalhosssz = 20;
+	const lepesek = 20;
+
+
+	function init() {
+		ponttabla.innerHTML = `A Játékos: ${score['ember']} B Játékos: ${score['ember2']}`
+		window.clearTimeout();
+		randomFalak();
+		//setPositions();
+		randomElementPosition(targy);
+		jatekosInditas();
+		move();
+	}
+
+	function jatekosInditas() {
+		ember.style.top = screen.getBoundingClientRect().top + 'px';
+		ember.style.left = screen.getBoundingClientRect().left + 'px';
+
+		ember2.style.top = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height - ember2.getBoundingClientRect().height + 'px';
+		ember2.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width - ember2.getBoundingClientRect().width + 'px';
+	}
+
+	function randomFalak() {
+		const screen = document.getElementById('screen');
+
+		let div = document.createElement('div');
+		div.id = 'fal' + 0;
+		div.className = 'fal';
+		div.style.height = '400px';
+		div.style.width = '20px';
+		div.style.top = screen.getBoundingClientRect().top + 30 + 'px';
+		div.style.left = screen.getBoundingClientRect().left + 800 + 'px';
+		falak.push(div);
+		screen.appendChild(div);
+
+		div = document.createElement('div');
+		div.id = 'fal' + 1;
+		div.className = 'fal';
+		div.style.height = '20px';
+		div.style.width = '500px';
+		div.style.top = screen.getBoundingClientRect().top + 230 + 'px';
+		div.style.left = screen.getBoundingClientRect().left + 30 + 'px';
+		falak.push(div);
+		screen.appendChild(div);
+	}
+
+	function crashFal(element) {
+		for (let fal of falak) {
+			if (crash(element, createJSON(fal))) {
+				utkozottFal = createJSON(fal);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	function crash(ember, targy) {
+		if (((ember.top + ember.height) <= targy.top) ||
+			((ember.top) >= targy.top + targy.height) ||
+			((ember.left) >= targy.left + targy.width) ||
+			((ember.left + ember.width) <= targy.left)) {
+			return false;
+		}
+		return true;
+	}
+
+	function setPositions() {
+		for (let fal of falak) {
+			fal.style.left = screen.getBoundingClientRect().left + (screen.getBoundingClientRect().width / 2) - fal.getBoundingClientRect().width / 2 + 'px';
+			fal.style.top = screen.getBoundingClientRect().top + (screen.getBoundingClientRect().height / 2) - fal.getBoundingClientRect().height / 2 + 'px';
+		}
+	}
+
+	function calculateStep(ember) {
+		const emberJSON = createJSON(ember);
+		const targyJSON = createJSON(targy);
+		if (emberJSON.left < targyJSON.left) {
+			emberJSON.left = emberJSON.left + lepesek;
+		}
+		if (emberJSON.top < targyJSON.top) {
+			emberJSON.top = emberJSON.top + lepesek;
+		}
+		if (emberJSON.top > targyJSON.top) {
+			emberJSON.top = emberJSON.top - lepesek;
+		}
+		if (emberJSON.left > targyJSON.left) {
+			emberJSON.left = emberJSON.left - lepesek;
+		}
+
+		if (crashFal(emberJSON)) {
+			if (utkozottFal.height > utkozottFal.width) {
+				const top = Math.abs(utkozottFal.top - targyJSON.top);
+				const bottom = Math.abs(utkozottFal.top + utkozottFal.height - targyJSON.top - targyJSON.height);
+				if (Math.min(top, bottom) == top) {
+					emberJSON.top = emberJSON.top - lepesek - 1;
+				} else {
+					emberJSON.top = emberJSON.top + lepesek + 1;
+				}
+				emberJSON.left = ember.getBoundingClientRect().left;
+			} else {
+				const left = Math.abs(utkozottFal.left - targyJSON.left);
+				const right = Math.abs(utkozottFal.left + utkozottFal.width - targyJSON.left - targyJSON.width);
+				if (Math.min(left, right) == left) {
+					emberJSON.left = emberJSON.left - lepesek - 1;
+				} else {
+					emberJSON.left = emberJSON.left + lepesek + 1;
+				}
+				emberJSON.top = ember.getBoundingClientRect().top;
+			}
+		}
+
+		setEmberByEmberCopy(ember,emberJSON);
+		if (crash(emberJSON, targyJSON)) {
+			const sumOfscore = score["ember"] + score["ember2"];
+			if (sumOfscore > 50 && sumOfscore < 100) {
+				targy.className = 'targySilver';
+			} else if (sumOfscore >= 100) {
+				targy.className = 'targyGold';
+			}
+			randomElementPosition(targy), 1000;
+			score[ember.id] += 1;
+			ponttabla.innerHTML = `A Játékos: ${score['ember']} B Játékos: ${score['ember2']}`
+		}
+	}
+
+
+	function move() {
+		const ember2JSON = calculateStep(ember2);
+		const emberJSON = calculateStep(ember);
+		
+
+		setTimeout(move, speed);
+	}
+
+	function createJSON(element) {
+		return {
+			left: element.getBoundingClientRect().left,
+			top: element.getBoundingClientRect().top,
+			width: element.getBoundingClientRect().width,
+			height: element.getBoundingClientRect().height,
+			className: '',
+		};
+	}
+
+	function randomElementPosition(element) {
+		let bal = screen.getBoundingClientRect().left;
+		let jobb = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width - element.getBoundingClientRect().width;
+		let fent = screen.getBoundingClientRect().top;
+		let lent = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height - element.getBoundingClientRect().height;
+		let elementJSON = createJSON(element);
+
+		elementJSON.left = Math.floor(Math.random() * (jobb - bal)) + bal;
+		elementJSON.top = Math.floor(Math.random() * (lent - fent)) + fent;
+		if (crashFal(elementJSON)) {
+			randomElementPosition(targy);
+		} else {
+			targy.style.left = elementJSON.left + 'px';
+			targy.style.top = elementJSON.top + 'px';
+		}
+	}
+	const steps = [];
+	let nrOfSteps = 0;
+
+	function setEmberByEmberCopy(ember,emberJSON) {
+		ember.className = calculateClassName(emberJSON);
+		const emberCopy = createJSON(ember);
+		if (emberJSON.left - emberCopy.left < 0) {
+			emberCopy.left -= lepesek;
+		} else if (emberJSON.left - emberCopy.left > 0) {
+			emberCopy.left += lepesek;
+		}
+
+		if (emberJSON.top - emberCopy.top < 0) {
+			emberCopy.top -= lepesek;
+		} else if (emberJSON.top - emberCopy.top > 0) {
+			emberCopy.top += lepesek;
+		}
+		ember.style.left = emberCopy.left + 'px';
+		ember.style.top = emberCopy.top + 'px';
+
+		const div = document.createElement('div');
+		div.className = 'utvonal';
+		div.style.top = emberCopy.top + 'px';
+		div.style.left = emberCopy.left + 'px';
+		screen.appendChild(div);
+
+		if (nrOfSteps > 25) {
+			const elements = document.getElementsByClassName('utvonal');
+			for (let element of elements) {
+				element.remove();
+			}
+			nrOfSteps = 0;
+		} else {
+			nrOfSteps++;
+		}
+
+	}
+
+	function calculateClassName(emberJSON) {
+		const ember = createJSON(this.ember);
+		if (ember.top == emberJSON.top && ember.left > emberJSON.left) {
+			return 'emberLeft';
+		}
+		if (ember.top == emberJSON.top && ember.left < emberJSON.left) {
+			return 'emberRight';
+		}
+		if (ember.top > emberJSON.top && ember.left == emberJSON.left) {
+			return 'emberTop';
+		}
+		if (ember.top < emberJSON.top && ember.left == emberJSON.left) {
+			return 'emberBottom';
+		}
+		if (ember.top > emberJSON.top && ember.left > emberJSON.left) {
+			return 'emberTopLeft';
+		}
+		if (ember.top < emberJSON.top && ember.left > emberJSON.left) {
+			return 'emberBottomLeft';
+		}
+		if (ember.top > emberJSON.top && ember.left < emberJSON.left) {
+			return 'emberTopRight';
+		}
+		if (ember.top < emberJSON.top && ember.left < emberJSON.left) {
+			return 'emberBottomRight';
+		}
+	}
+
+</script>
+<style>
+	html {
+		width: 100%;
+		height: 100%;
+	}
+
+	body {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+	}
+
+	#screen {
+		width: 1400px;
+		height: 800px;
+		border: 5px solid black;
+	}
+
+	#ember {
+		position: absolute;
+		width: 20px;
+		height: 20px;
+		z-index: 10000;
+	}
+
+	#ember2 {
+		position: absolute;
+		width: 20px;
+		height: 20px;
+		z-index: 10000;
+		background: chartreuse !important;
+	}
+
+	.targyBronze {
+		position: absolute;
+		align-items: center;
+		text-align: center;
+		justify-content: center;
+		width: 20px;
+		height: 20px;
+		border-radius: 10px;
+		background-color: brown;
+	}
+
+	.targySilver {
+		position: absolute;
+		align-items: center;
+		text-align: center;
+		justify-content: center;
+		width: 20px;
+		height: 20px;
+		border-radius: 10px;
+		background-color: silver;
+	}
+
+	.targyGold {
+		position: absolute;
+		align-items: center;
+		text-align: center;
+		justify-content: center;
+		width: 20px;
+		height: 20px;
+		border-radius: 10px;
+		background-color: gold;
+	}
+
+	.utvonal {
+		position: absolute;
+		width: 20px;
+		height: 20px;
+		background-color: silver;
+	}
+
+	.fal {
+		position: absolute;
+		background-color: orangered;
+	}
+
+	.emberRight {
+		background: linear-gradient(270deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 100%);
+	}
+
+	.emberLeft {
+		background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 100%);
+	}
+
+	.emberTop {
+		background: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 100%);
+	}
+
+	.emberBottom {
+		background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 100%);
+	}
+
+	.emberTopRight {
+		background: linear-gradient(225deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 100%);
+	}
+
+	.emberTopLeft {
+		background: linear-gradient(135deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 100%);
+	}
+
+	.emberBottomRight {
+		background: linear-gradient(315deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 100%);
+	}
+
+	.emberBottomLeft {
+		background: linear-gradient(45deg, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 100%);
+	}
+</style>
+
+</html>
