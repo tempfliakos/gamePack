@@ -9,7 +9,9 @@
 </head>
 
 <body onload="init()">
+	<input id="emberColor" type="color" onchange="colorPickEmber()">
 	<button id="startButton">START</button>
+	<input id="ember2Color" type="color" onchange="colorPickEmber()">
 	<span id="score"></span>
 	<span id="tav"></span>
 	<span id="sebesseg"></span>
@@ -19,10 +21,10 @@
 		<div id="fentfal" class="screenFalFentLent"></div>
 		<div id="lentfal" class="screenFalFentLent"></div>
 		<div id="ember" class="emberRight"></div>
+		<div id="ember2" class="emberLeft"></div>
 		<div id="targy" class="targyBronze">
 			<p>$</p>
 		</div>
-		<div id="ember2" class="emberLeft"></div>
 	</div>
 </body>
 <script language="JavaScript">
@@ -33,33 +35,53 @@
 	const screen = document.getElementById('screen');
 	const ponttabla = document.getElementById('score');
 	const sebesseg = document.getElementById('sebesseg');
+	const btnStart = document.getElementById('startButton');
 	const falak = [];
 	let utkozottFal;
 	let speed = 1;
 	const minLepesek = 1;
 	const maxLepesek = 5;
-	let score = {
-		ember: 0,
-		ember2: 0
-	};
-	let lepesek = {
-		ember: minLepesek,
-		ember2: minLepesek
-	};
+	let score;
+	let lepesek;
 	const falszam = 3;
 	const minFalmagassag = 20;
 	const minFalhosssz = 20;
 
 	function init() {
+		ponttabla.innerHTML = `A Játékos: 0 B Játékos: 0`;
+		sebesseg.innerHTML = `A Játékos sebessége: 0 B Játékos sebessége: 0`;
+		btnStart.addEventListener('click', startGame);
+		randomFalak();
+		jatekosInditas();
+		randomElementPosition(targy);
+		//setPositions();
+	}
+
+	function startGame() {
+		window.clearTimeout();
+		score = {
+			ember: 0,
+			ember2: 0
+		}
+		lepesek = {
+			ember: minLepesek,
+			ember2: minLepesek
+		}
 		ponttabla.innerHTML = `A Játékos: ${score['ember']} B Játékos: ${score['ember2']}`;
 		sebesseg.innerHTML = `A Játékos sebessége: ${lepesek['ember']} B Játékos sebessége: ${lepesek['ember2']}`;
-		window.clearTimeout();
-		randomFalak();
-		//setPositions();
 		randomElementPosition(targy);
-		screenFalak();
 		jatekosInditas();
 		move();
+	}
+
+	function colorPickEmber() {
+		if(event.target.id == "emberColor") {
+			ember.style.backgroundColor = window.getComputedStyle(ember, null).getPropertyValue('background-color');
+			ember.style.backgroundColor = event.target.value;
+		} else {
+			ember2.style.backgroundColor = window.getComputedStyle(ember2, null).getPropertyValue('background-color');
+			ember2.style.backgroundColor = event.target.value;
+		}
 	}
 
 	function screenFalak() {
@@ -68,29 +90,34 @@
 		let fent = document.getElementById('fentfal');
 		let lent = document.getElementById('lentfal');
 
-		bal.style.height = screen.getBoundingClientRect().height + 'px';
-		bal.style.top = screen.getBoundingClientRect().top + 'px';
+		bal.style.height = screen.getBoundingClientRect().height + 10 + 'px';
+		bal.style.top = screen.getBoundingClientRect().top - 5 + 'px';
 		bal.style.left = screen.getBoundingClientRect().left + 'px'
 
-		jobb.style.height = screen.getBoundingClientRect().height + 'px';
-		jobb.style.top = screen.getBoundingClientRect().top + 'px';
+		jobb.style.height = screen.getBoundingClientRect().height + 10 + 'px';
+		jobb.style.top = screen.getBoundingClientRect().top - 5 + 'px';
 		jobb.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width + 'px';
 
-		fent.style.width = screen.getBoundingClientRect().width + 'px';
+		fent.style.width = screen.getBoundingClientRect().width + 10 + 'px';
 		fent.style.top = screen.getBoundingClientRect().top + 'px';
-		fent.style.left = screen.getBoundingClientRect().left + 'px';
+		fent.style.left = screen.getBoundingClientRect().left - 5 + 'px';
 
-		lent.style.width = screen.getBoundingClientRect().width + 'px';
+		lent.style.width = screen.getBoundingClientRect().width + 10 + 'px';
 		lent.style.top = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height + 'px';
-		lent.style.left = screen.getBoundingClientRect().left + 'px';
+		lent.style.left = screen.getBoundingClientRect().left - 5 + 'px';
+
+		falak.push(bal);
+		falak.push(jobb);
+		falak.push(fent);
+		falak.push(lent);
 	}
 
 	function jatekosInditas() {
-		ember.style.top = screen.getBoundingClientRect().top + 'px';
-		ember.style.left = screen.getBoundingClientRect().left + 'px';
+		ember.style.top = screen.getBoundingClientRect().top + 15 + 'px';
+		ember.style.left = screen.getBoundingClientRect().left + 15 + 'px';
 
-		ember2.style.top = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height - ember2.getBoundingClientRect().height + 'px';
-		ember2.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width - ember2.getBoundingClientRect().width + 'px';
+		ember2.style.top = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height - ember2.getBoundingClientRect().height - 15 + 'px';
+		ember2.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width - ember2.getBoundingClientRect().width - 15 + 'px';
 	}
 
 	function randomFalak() {
@@ -151,6 +178,7 @@
 		falak.push(div);
 		screen.appendChild(div);
 
+		screenFalak();
 
 	}
 
@@ -390,14 +418,12 @@
 	}
 
 	.screenFalOldalt {
-		width: 1px;
-		background-color: red;
+		width: 10px;
 		position: absolute;
 	}
 
 	.screenFalFentLent {
-		height: 1px;
-		background-color: red;
+		height: 10px;
 		position: absolute;
 	}
 
@@ -407,7 +433,6 @@
 		width: 20px;
 		height: 20px;
 		z-index: 10000;
-		background: blue !important;
 		box-shadow: 0px 0px 20px -6px black;
 	}
 
@@ -417,7 +442,6 @@
 		width: 20px;
 		height: 20px;
 		z-index: 10000;
-		background: chartreuse !important;
 		box-shadow: 0px 0px 20px -6px black;
 	}
 
