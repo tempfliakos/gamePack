@@ -11,6 +11,7 @@
 <body onload="init()">
 	<span id="score"></span>
 	<span id="tav"></span>
+	<span id="sebesseg"></span>
 	<div id="screen">
 		<div id="ember" class="emberRight"></div>
 		<div id="targy" class="targyBronze">$</div>
@@ -24,21 +25,27 @@
 	const targy = document.getElementById('targy');
 	const screen = document.getElementById('screen');
 	const ponttabla = document.getElementById('score');
+	const sebesseg = document.getElementById('sebesseg');
 	const falak = [];
 	let utkozottFal;
 	let speed = 1;
+	const minLepesek = 1;
+	const maxLepesek = 10;
 	let score = {
 		ember: 0,
 		ember2: 0
 	};
+	let lepesek = {
+		ember: minLepesek,
+		ember2: minLepesek
+	};
 	const falszam = 3;
 	const minFalmagassag = 20;
 	const minFalhosssz = 20;
-	const lepesek = 20;
-
 
 	function init() {
-		ponttabla.innerHTML = `A Játékos: ${score['ember']} B Játékos: ${score['ember2']}`
+		ponttabla.innerHTML = `A Játékos: ${score['ember']} B Játékos: ${score['ember2']}`;
+		sebesseg.innerHTML = `A Játékos sebessége: ${lepesek['ember']} B Játékos sebessége: ${lepesek['ember2']}`;
 		window.clearTimeout();
 		randomFalak();
 		//setPositions();
@@ -110,16 +117,16 @@
 		const emberJSON = createJSON(ember);
 		const targyJSON = createJSON(targy);
 		if (emberJSON.left < targyJSON.left) {
-			emberJSON.left = emberJSON.left + lepesek;
+			emberJSON.left = emberJSON.left + lepesek[ember.id];
 		}
 		if (emberJSON.top < targyJSON.top) {
-			emberJSON.top = emberJSON.top + lepesek;
+			emberJSON.top = emberJSON.top + lepesek[ember.id];
 		}
 		if (emberJSON.top > targyJSON.top) {
-			emberJSON.top = emberJSON.top - lepesek;
+			emberJSON.top = emberJSON.top - lepesek[ember.id];
 		}
 		if (emberJSON.left > targyJSON.left) {
-			emberJSON.left = emberJSON.left - lepesek;
+			emberJSON.left = emberJSON.left - lepesek[ember.id];
 		}
 
 		if (crashFal(emberJSON)) {
@@ -127,24 +134,24 @@
 				const top = Math.abs(utkozottFal.top - targyJSON.top);
 				const bottom = Math.abs(utkozottFal.top + utkozottFal.height - targyJSON.top - targyJSON.height);
 				if (Math.min(top, bottom) == top) {
-					emberJSON.top = emberJSON.top - lepesek - 1;
+					emberJSON.top = emberJSON.top - lepesek[ember.id] - 1;
 				} else {
-					emberJSON.top = emberJSON.top + lepesek + 1;
+					emberJSON.top = emberJSON.top + lepesek[ember.id] + 1;
 				}
 				emberJSON.left = ember.getBoundingClientRect().left;
 			} else {
 				const left = Math.abs(utkozottFal.left - targyJSON.left);
 				const right = Math.abs(utkozottFal.left + utkozottFal.width - targyJSON.left - targyJSON.width);
 				if (Math.min(left, right) == left) {
-					emberJSON.left = emberJSON.left - lepesek - 1;
+					emberJSON.left = emberJSON.left - lepesek[ember.id] - 1;
 				} else {
-					emberJSON.left = emberJSON.left + lepesek + 1;
+					emberJSON.left = emberJSON.left + lepesek[ember.id] + 1;
 				}
 				emberJSON.top = ember.getBoundingClientRect().top;
 			}
 		}
 
-		setEmberByEmberCopy(ember,emberJSON);
+		setEmberByEmberCopy(ember, emberJSON);
 		if (crash(emberJSON, targyJSON)) {
 			const sumOfscore = score["ember"] + score["ember2"];
 			if (sumOfscore > 50 && sumOfscore < 100) {
@@ -154,16 +161,17 @@
 			}
 			randomElementPosition(targy), 1000;
 			score[ember.id] += 1;
+			lepesek['ember'] = getRandom(minLepesek, maxLepesek);
+			lepesek['ember2'] = getRandom(minLepesek, maxLepesek);
+			sebesseg.innerHTML = `A Játékos sebessége: ${lepesek['ember']} B Játékos sebessége: ${lepesek['ember2']}`;
 			ponttabla.innerHTML = `A Játékos: ${score['ember']} B Játékos: ${score['ember2']}`
 		}
 	}
 
 
 	function move() {
-		const ember2JSON = calculateStep(ember2);
 		const emberJSON = calculateStep(ember);
-		
-
+		const ember2JSON = calculateStep(ember2);
 		setTimeout(move, speed);
 	}
 
@@ -184,8 +192,8 @@
 		let lent = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height - element.getBoundingClientRect().height;
 		let elementJSON = createJSON(element);
 
-		elementJSON.left = Math.floor(Math.random() * (jobb - bal)) + bal;
-		elementJSON.top = Math.floor(Math.random() * (lent - fent)) + fent;
+		elementJSON.left = getRandom(bal, jobb - bal);
+		elementJSON.top = getRandom(fent, lent - fent);
 		if (crashFal(elementJSON)) {
 			randomElementPosition(targy);
 		} else {
@@ -196,31 +204,34 @@
 	const steps = [];
 	let nrOfSteps = 0;
 
-	function setEmberByEmberCopy(ember,emberJSON) {
-		ember.className = calculateClassName(emberJSON);
+	function setEmberByEmberCopy(ember, emberJSON) {
+		//ember.className = calculateClassName(emberJSON);
 		const emberCopy = createJSON(ember);
 		if (emberJSON.left - emberCopy.left < 0) {
-			emberCopy.left -= lepesek;
+			emberCopy.left -= lepesek[ember.id];
 		} else if (emberJSON.left - emberCopy.left > 0) {
-			emberCopy.left += lepesek;
+			emberCopy.left += lepesek[ember.id];
 		}
 
 		if (emberJSON.top - emberCopy.top < 0) {
-			emberCopy.top -= lepesek;
+			emberCopy.top -= lepesek[ember.id];
 		} else if (emberJSON.top - emberCopy.top > 0) {
-			emberCopy.top += lepesek;
+			emberCopy.top += lepesek[ember.id];
 		}
 		ember.style.left = emberCopy.left + 'px';
 		ember.style.top = emberCopy.top + 'px';
 
 		const div = document.createElement('div');
+		div.id = nrOfSteps;
 		div.className = 'utvonal';
+		div.style.backgroundColor = window.getComputedStyle(ember, null).getPropertyValue('background-color');
+		div.style.opacity = 0.2;
 		div.style.top = emberCopy.top + 'px';
 		div.style.left = emberCopy.left + 'px';
 		screen.appendChild(div);
 
 		if (nrOfSteps > 25) {
-			const elements = document.getElementsByClassName('utvonal');
+			let elements = document.getElementsByClassName('utvonal');
 			for (let element of elements) {
 				element.remove();
 			}
@@ -259,6 +270,10 @@
 		}
 	}
 
+	function getRandom(min, max) {
+		return Math.floor(Math.random() * max) + min;
+	}
+
 </script>
 <style>
 	html {
@@ -283,13 +298,16 @@
 
 	#ember {
 		position: absolute;
+		border-radius: 10px;
 		width: 20px;
 		height: 20px;
 		z-index: 10000;
+		background: blue !important;
 	}
 
 	#ember2 {
 		position: absolute;
+		border-radius: 10px;
 		width: 20px;
 		height: 20px;
 		z-index: 10000;
@@ -331,6 +349,7 @@
 
 	.utvonal {
 		position: absolute;
+		border-radius: 10px;
 		width: 20px;
 		height: 20px;
 		background-color: silver;
@@ -338,6 +357,7 @@
 
 	.fal {
 		position: absolute;
+		border-radius: 10px;
 		background-color: orangered;
 	}
 
