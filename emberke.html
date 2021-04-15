@@ -9,12 +9,15 @@
 </head>
 
 <body onload="init()">
+	<button id="startButton">START</button>
 	<span id="score"></span>
 	<span id="tav"></span>
 	<span id="sebesseg"></span>
 	<div id="screen">
 		<div id="ember" class="emberRight"></div>
-		<div id="targy" class="targyBronze">$</div>
+		<div id="targy" class="targyBronze">
+			<p>$</p>
+		</div>
 		<div id="ember2" class="emberLeft"></div>
 	</div>
 </body>
@@ -30,7 +33,7 @@
 	let utkozottFal;
 	let speed = 1;
 	const minLepesek = 1;
-	const maxLepesek = 10;
+	const maxLepesek = 5;
 	let score = {
 		ember: 0,
 		ember2: 0
@@ -66,24 +69,61 @@
 		const screen = document.getElementById('screen');
 
 		let div = document.createElement('div');
+		//div.innerHTML = 'fal' + 0;
 		div.id = 'fal' + 0;
 		div.className = 'fal';
-		div.style.height = '400px';
-		div.style.width = '20px';
-		div.style.top = screen.getBoundingClientRect().top + 30 + 'px';
-		div.style.left = screen.getBoundingClientRect().left + 800 + 'px';
+		div.style.height = '20px';
+		div.style.width = screen.getBoundingClientRect().width / 2 + 'px';
+		div.style.top = ((screen.getBoundingClientRect().top + screen.getBoundingClientRect().height) * 0.2) + 10 + 'px';
+		div.style.left = screen.getBoundingClientRect().left + (ember.getBoundingClientRect().width * 5) + 'px';
 		falak.push(div);
 		screen.appendChild(div);
 
 		div = document.createElement('div');
+		//div.innerHTML = 'fal' + 1;
 		div.id = 'fal' + 1;
 		div.className = 'fal';
 		div.style.height = '20px';
-		div.style.width = '500px';
-		div.style.top = screen.getBoundingClientRect().top + 230 + 'px';
-		div.style.left = screen.getBoundingClientRect().left + 30 + 'px';
+		div.style.width = screen.getBoundingClientRect().width / 2 + 'px';
+		div.style.top = ((screen.getBoundingClientRect().top + screen.getBoundingClientRect().height) * 0.5) + 10 + 'px';
+		div.style.left = screen.getBoundingClientRect().left + (ember.getBoundingClientRect().width * 5) + 'px';
 		falak.push(div);
 		screen.appendChild(div);
+
+		div = document.createElement('div');
+		//div.innerHTML = 'fal' + 2;
+		div.id = 'fal' + 2;
+		div.className = 'fal';
+		div.style.height = '20px';
+		div.style.width = screen.getBoundingClientRect().width / 2 + 'px';
+		div.style.top = ((screen.getBoundingClientRect().top + screen.getBoundingClientRect().height) * 0.8) + 10 + 'px';
+		div.style.left = screen.getBoundingClientRect().left + (ember.getBoundingClientRect().width * 5) + 'px';
+		falak.push(div);
+		screen.appendChild(div);
+
+		div = document.createElement('div');
+		//div.innerHTML = 'fal' + 3;
+		div.id = 'fal' + 3;
+		div.className = 'fal';
+		div.style.height = screen.getBoundingClientRect().height - (ember.getBoundingClientRect().height * 5) + 'px';
+		div.style.width = '20px';
+		div.style.top = screen.getBoundingClientRect().top + (screen.getBoundingClientRect().height - (screen.getBoundingClientRect().height - (ember.getBoundingClientRect().height * 5))) / 2 + 'px';
+		div.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width * 0.7 + 'px';
+		falak.push(div);
+		screen.appendChild(div);
+
+		div = document.createElement('div');
+		//div.innerHTML = 'fal' + 4;
+		div.id = 'fal' + 4;
+		div.className = 'fal';
+		div.style.height = screen.getBoundingClientRect().height - (ember.getBoundingClientRect().height * 5) + 'px';
+		div.style.width = '20px';
+		div.style.top = screen.getBoundingClientRect().top + (screen.getBoundingClientRect().height - (screen.getBoundingClientRect().height - (ember.getBoundingClientRect().height * 5))) / 2 + 'px';
+		div.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width * 0.85 + 'px';
+		falak.push(div);
+		screen.appendChild(div);
+
+
 	}
 
 	function crashFal(element) {
@@ -288,12 +328,37 @@
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
+		margin: 0px;
+		padding: 0px;
+		background-color: blanchedalmond;
+		font-weight: bold;
+		font-family: sans-serif;
+	}
+
+	#startButton {
+		font-weight: bold;
+		border-radius: 5px;
+		border: 2px solid black;
+		box-shadow: 0px 0px 20px -6px black;
+		background-color: rgb(255, 89, 89);
+		width: 100px;
+		height: 30px;
+		margin: 10px;
+		cursor: pointer;
 	}
 
 	#screen {
 		width: 1400px;
 		height: 800px;
 		border: 5px solid black;
+		background-color: white;
+		border-radius: 50px;
+		box-shadow: 0px 0px 20px -6px black;
+		background: url(resources/tile.svg);
+		background-attachment: fixed;
+		background-repeat: repeat;
+		background-size: 200px;
+		margin: 20px;
 	}
 
 	#ember {
@@ -303,6 +368,7 @@
 		height: 20px;
 		z-index: 10000;
 		background: blue !important;
+		box-shadow: 0px 0px 20px -6px black;
 	}
 
 	#ember2 {
@@ -312,6 +378,7 @@
 		height: 20px;
 		z-index: 10000;
 		background: chartreuse !important;
+		box-shadow: 0px 0px 20px -6px black;
 	}
 
 	.targyBronze {
@@ -323,6 +390,9 @@
 		height: 20px;
 		border-radius: 10px;
 		background-color: brown;
+		border: 1px solid black;
+		box-shadow: 0px 0px 20px -6px black;
+		display: flex;
 	}
 
 	.targySilver {
@@ -334,6 +404,9 @@
 		height: 20px;
 		border-radius: 10px;
 		background-color: silver;
+		border: 1px solid black;
+		box-shadow: 0px 0px 20px -6px black;
+		display: flex;
 	}
 
 	.targyGold {
@@ -345,6 +418,9 @@
 		height: 20px;
 		border-radius: 10px;
 		background-color: gold;
+		border: 1px solid black;
+		box-shadow: 0px 0px 20px -6px black;
+		display: flex;
 	}
 
 	.utvonal {
@@ -358,7 +434,11 @@
 	.fal {
 		position: absolute;
 		border-radius: 10px;
-		background-color: orangered;
+		background: url(resources/brick.svg);
+		background-attachment: fixed;
+		background-repeat: repeat;
+		background-size: 100px;
+		box-shadow: 0px 0px 20px -6px black;
 	}
 
 	.emberRight {
