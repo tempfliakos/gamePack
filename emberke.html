@@ -14,6 +14,10 @@
 	<span id="tav"></span>
 	<span id="sebesseg"></span>
 	<div id="screen">
+		<div id="balfal" class="screenFalOldalt"></div>
+		<div id="jobbfal" class="screenFalOldalt"></div>
+		<div id="fentfal" class="screenFalFentLent"></div>
+		<div id="lentfal" class="screenFalFentLent"></div>
 		<div id="ember" class="emberRight"></div>
 		<div id="targy" class="targyBronze">
 			<p>$</p>
@@ -53,8 +57,32 @@
 		randomFalak();
 		//setPositions();
 		randomElementPosition(targy);
+		screenFalak();
 		jatekosInditas();
 		move();
+	}
+
+	function screenFalak() {
+		let bal = document.getElementById('balfal');
+		let jobb = document.getElementById('jobbfal');
+		let fent = document.getElementById('fentfal');
+		let lent = document.getElementById('lentfal');
+
+		bal.style.height = screen.getBoundingClientRect().height + 'px';
+		bal.style.top = screen.getBoundingClientRect().top + 'px';
+		bal.style.left = screen.getBoundingClientRect().left + 'px'
+
+		jobb.style.height = screen.getBoundingClientRect().height + 'px';
+		jobb.style.top = screen.getBoundingClientRect().top + 'px';
+		jobb.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width + 'px';
+
+		fent.style.width = screen.getBoundingClientRect().width + 'px';
+		fent.style.top = screen.getBoundingClientRect().top + 'px';
+		fent.style.left = screen.getBoundingClientRect().left + 'px';
+
+		lent.style.width = screen.getBoundingClientRect().width + 'px';
+		lent.style.top = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height + 'px';
+		lent.style.left = screen.getBoundingClientRect().left + 'px';
 	}
 
 	function jatekosInditas() {
@@ -359,6 +387,18 @@
 		background-repeat: repeat;
 		background-size: 200px;
 		margin: 20px;
+	}
+
+	.screenFalOldalt {
+		width: 1px;
+		background-color: red;
+		position: absolute;
+	}
+
+	.screenFalFentLent {
+		height: 1px;
+		background-color: red;
+		position: absolute;
 	}
 
 	#ember {
