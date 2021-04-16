@@ -9,9 +9,8 @@
 </head>
 
 <body onload="init()">
-	<input id="emberColor" type="color" onchange="colorPickEmber()">
+
 	<button id="startButton">START</button>
-	<input id="ember2Color" type="color" onchange="colorPickEmber()">
 	<span id="score"></span>
 	<span id="tav"></span>
 	<span id="sebesseg"></span>
@@ -20,8 +19,10 @@
 		<div id="jobbfal" class="screenFalOldalt"></div>
 		<div id="fentfal" class="screenFalFentLent"></div>
 		<div id="lentfal" class="screenFalFentLent"></div>
-		<div id="ember" class="emberRight"></div>
-		<div id="ember2" class="emberLeft"></div>
+		<div id="ember" class="ember"><input id="emberColor" type="color" onchange="colorPickEmber()"></div>
+		<div id="ember2" class="ember"><input id="emberColor" type="color" onchange="colorPickEmber()"></div>
+		<div id="ember3" class="ember"><input id="emberColor" type="color" onchange="colorPickEmber()"></div>
+		<div id="ember4" class="ember"><input id="emberColor" type="color" onchange="colorPickEmber()"></div>
 		<div id="targy" class="targyBronze">
 			<p>$</p>
 		</div>
@@ -31,6 +32,8 @@
 
 	const ember = document.getElementById('ember');
 	const ember2 = document.getElementById('ember2');
+	const ember3 = document.getElementById('ember3');
+	const ember4 = document.getElementById('ember4');
 	const targy = document.getElementById('targy');
 	const screen = document.getElementById('screen');
 	const ponttabla = document.getElementById('score');
@@ -61,27 +64,26 @@
 		window.clearTimeout();
 		score = {
 			ember: 0,
-			ember2: 0
+			ember2: 0,
+			ember3: 0,
+			ember4: 0
 		}
 		lepesek = {
 			ember: minLepesek,
-			ember2: minLepesek
+			ember2: minLepesek,
+			ember3: minLepesek,
+			ember4: minLepesek
 		}
-		ponttabla.innerHTML = `A Játékos: ${score['ember']} B Játékos: ${score['ember2']}`;
-		sebesseg.innerHTML = `A Játékos sebessége: ${lepesek['ember']} B Játékos sebessége: ${lepesek['ember2']}`;
+		printTabla();
 		randomElementPosition(targy);
 		jatekosInditas();
 		move();
 	}
 
 	function colorPickEmber() {
-		if(event.target.id == "emberColor") {
-			ember.style.backgroundColor = window.getComputedStyle(ember, null).getPropertyValue('background-color');
-			ember.style.backgroundColor = event.target.value;
-		} else {
-			ember2.style.backgroundColor = window.getComputedStyle(ember2, null).getPropertyValue('background-color');
-			ember2.style.backgroundColor = event.target.value;
-		}
+		const element = event.target.parentElement;
+		element.style.backgroundColor = window.getComputedStyle(element, null).getPropertyValue('background-color');
+		element.style.backgroundColor = event.target.value;
 	}
 
 	function screenFalak() {
@@ -118,6 +120,12 @@
 
 		ember2.style.top = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height - ember2.getBoundingClientRect().height - 15 + 'px';
 		ember2.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width - ember2.getBoundingClientRect().width - 15 + 'px';
+
+		ember3.style.top = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height - ember3.getBoundingClientRect().height - 15 + 'px';
+		ember3.style.left = screen.getBoundingClientRect().left + 15 + 'px';
+
+		ember4.style.top = screen.getBoundingClientRect().top + 15 + 'px';
+		ember4.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width - ember4.getBoundingClientRect().width - 15 + 'px';
 	}
 
 	function randomFalak() {
@@ -127,7 +135,7 @@
 		//div.innerHTML = 'fal' + 0;
 		div.id = 'fal' + 0;
 		div.className = 'fal';
-		div.style.height = '20px';
+		div.style.height = '40px';
 		div.style.width = screen.getBoundingClientRect().width / 2 + 'px';
 		div.style.top = ((screen.getBoundingClientRect().top + screen.getBoundingClientRect().height) * 0.2) + 10 + 'px';
 		div.style.left = screen.getBoundingClientRect().left + (ember.getBoundingClientRect().width * 5) + 'px';
@@ -138,7 +146,7 @@
 		//div.innerHTML = 'fal' + 1;
 		div.id = 'fal' + 1;
 		div.className = 'fal';
-		div.style.height = '20px';
+		div.style.height = '40px';
 		div.style.width = screen.getBoundingClientRect().width / 2 + 'px';
 		div.style.top = ((screen.getBoundingClientRect().top + screen.getBoundingClientRect().height) * 0.5) + 10 + 'px';
 		div.style.left = screen.getBoundingClientRect().left + (ember.getBoundingClientRect().width * 5) + 'px';
@@ -149,7 +157,7 @@
 		//div.innerHTML = 'fal' + 2;
 		div.id = 'fal' + 2;
 		div.className = 'fal';
-		div.style.height = '20px';
+		div.style.height = '40px';
 		div.style.width = screen.getBoundingClientRect().width / 2 + 'px';
 		div.style.top = ((screen.getBoundingClientRect().top + screen.getBoundingClientRect().height) * 0.8) + 10 + 'px';
 		div.style.left = screen.getBoundingClientRect().left + (ember.getBoundingClientRect().width * 5) + 'px';
@@ -161,7 +169,7 @@
 		div.id = 'fal' + 3;
 		div.className = 'fal';
 		div.style.height = screen.getBoundingClientRect().height - (ember.getBoundingClientRect().height * 5) + 'px';
-		div.style.width = '20px';
+		div.style.width = '40px';
 		div.style.top = screen.getBoundingClientRect().top + (screen.getBoundingClientRect().height - (screen.getBoundingClientRect().height - (ember.getBoundingClientRect().height * 5))) / 2 + 'px';
 		div.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width * 0.7 + 'px';
 		falak.push(div);
@@ -172,7 +180,7 @@
 		div.id = 'fal' + 4;
 		div.className = 'fal';
 		div.style.height = screen.getBoundingClientRect().height - (ember.getBoundingClientRect().height * 5) + 'px';
-		div.style.width = '20px';
+		div.style.width = '40px';
 		div.style.top = screen.getBoundingClientRect().top + (screen.getBoundingClientRect().height - (screen.getBoundingClientRect().height - (ember.getBoundingClientRect().height * 5))) / 2 + 'px';
 		div.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width * 0.85 + 'px';
 		falak.push(div);
@@ -249,7 +257,7 @@
 
 		setEmberByEmberCopy(ember, emberJSON);
 		if (crash(emberJSON, targyJSON)) {
-			const sumOfscore = score["ember"] + score["ember2"];
+			const sumOfscore = score["ember"] + score["ember2"] + score["ember3"] + score["ember4"];
 			if (sumOfscore > 50 && sumOfscore < 100) {
 				targy.className = 'targySilver';
 			} else if (sumOfscore >= 100) {
@@ -259,15 +267,23 @@
 			score[ember.id] += 1;
 			lepesek['ember'] = getRandom(minLepesek, maxLepesek);
 			lepesek['ember2'] = getRandom(minLepesek, maxLepesek);
-			sebesseg.innerHTML = `A Játékos sebessége: ${lepesek['ember']} B Játékos sebessége: ${lepesek['ember2']}`;
-			ponttabla.innerHTML = `A Játékos: ${score['ember']} B Játékos: ${score['ember2']}`
+			lepesek['ember3'] = getRandom(minLepesek, maxLepesek);
+			lepesek['ember4'] = getRandom(minLepesek, maxLepesek);
+			printTabla();
 		}
+	}
+
+	function printTabla() {
+		ponttabla.innerHTML = `A Játékos: ${score['ember']} B Játékos: ${score['ember2']} C Játékos: ${score['ember3']} D Játékos: ${score['ember4']}`;
+		sebesseg.innerHTML = `A Játékos sebessége: ${lepesek['ember']} B Játékos sebessége: ${lepesek['ember2']} C Játékos sebessége: ${lepesek['ember3']} D Játékos sebessége: ${lepesek['ember4']}`;
 	}
 
 
 	function move() {
-		const emberJSON = calculateStep(ember);
-		const ember2JSON = calculateStep(ember2);
+		calculateStep(ember);
+		calculateStep(ember2);
+		calculateStep(ember3);
+		calculateStep(ember4);
 		setTimeout(move, speed);
 	}
 
@@ -427,21 +443,13 @@
 		position: absolute;
 	}
 
-	#ember {
+	.ember {
 		position: absolute;
 		border-radius: 10px;
 		width: 20px;
 		height: 20px;
 		z-index: 10000;
-		box-shadow: 0px 0px 20px -6px black;
-	}
-
-	#ember2 {
-		position: absolute;
-		border-radius: 10px;
-		width: 20px;
-		height: 20px;
-		z-index: 10000;
+		background: black;
 		box-shadow: 0px 0px 20px -6px black;
 	}
 
