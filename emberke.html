@@ -50,17 +50,57 @@
 	const maxLepesek = 5;
 	let score;
 	let lepesek;
+	let elozoLepesek;
 	const falszam = 3;
 	const minFalmagassag = 20;
 	const minFalhosssz = 20;
 
+	let direction = {
+		left: 0,
+		top: 0
+	}
+
+	document.addEventListener('keydown', (event) => {
+		if (event.code == 'ArrowLeft') {
+			direction.left = -10;
+			direction.top = 0;
+		} else if (event.code == 'ArrowUp') {
+			direction.top = -10;
+			direction.left = 0;
+		} else if (event.code == 'ArrowRight') {
+			direction.left = 10;
+			direction.top = 0;
+		} else if (event.code == 'ArrowDown') {
+			direction.top = 10;
+			direction.left = 0;
+		}
+		foodReposition();
+	});
+
+	function foodReposition() {
+		const elementJSON = createJSON(targy);
+		targy.style.left = elementJSON.left + direction.left + 'px';
+		targy.style.top = elementJSON.top + direction.top + 'px';
+	}
+
 	function init() {
-		ponttabla.innerHTML = `A Játékos: 0 B Játékos: 0`;
-		sebesseg.innerHTML = `A Játékos sebessége: 0 B Játékos sebessége: 0`;
 		btnStart.addEventListener('click', startGame);
 		randomFalak();
 		jatekosInditas();
 		randomElementPosition(targy);
+		score = {
+			ember: 0,
+			ember2: 0,
+			ember3: 0,
+			ember4: 0
+		}
+		lepesek = {
+			ember: minLepesek,
+			ember2: minLepesek,
+			ember3: minLepesek,
+			ember4: minLepesek
+		}
+		printTabla();
 		//setPositions();
 	}
 
@@ -221,59 +261,104 @@
 		}
 	}
 
-	function merreMehet(ember,targyJSON) {
-		const result = [];
-
+	function merreMehet(ember, targyJSON) {
+		const resultArray = [];
 		let emberJSON = createJSON(ember);
 		emberJSON.left = emberJSON.left + lepesek[ember.id];
 		if (!crashFal(emberJSON)) {
-			result.push(emberJSON);
-		} 
+			emberJSON.distance = Math.abs(targyJSON.left - emberJSON.left) + Math.abs(targyJSON.top - emberJSON.top);
+			resultArray.push(emberJSON);
+		}
 
 		emberJSON = createJSON(ember);
 		emberJSON.top = emberJSON.top + lepesek[ember.id];
 		if (!crashFal(emberJSON)) {
-			result.push(emberJSON);
-		} 
+			emberJSON.distance = Math.abs(targyJSON.left - emberJSON.left) + Math.abs(targyJSON.top - emberJSON.top);
+			resultArray.push(emberJSON);
+		}
 
 		emberJSON = createJSON(ember);
 		emberJSON.left = emberJSON.left - lepesek[ember.id];
 		if (!crashFal(emberJSON)) {
-			result.push(emberJSON);
-		} 
+			emberJSON.distance = Math.abs(targyJSON.left - emberJSON.left) + Math.abs(targyJSON.top - emberJSON.top);
+			resultArray.push(emberJSON);
+		}
 
 		emberJSON = createJSON(ember);
 		emberJSON.top = emberJSON.top - lepesek[ember.id];
 		if (!crashFal(emberJSON)) {
-			result.push(emberJSON);
+			emberJSON.distance = Math.abs(targyJSON.left - emberJSON.left) + Math.abs(targyJSON.top - emberJSON.top);
+			resultArray.push(emberJSON);
 		}
+
+		emberJSON = createJSON(ember);
+		emberJSON.left = emberJSON.left + lepesek[ember.id];
+		emberJSON.left = emberJSON.top + lepesek[ember.id];
+		if (!crashFal(emberJSON)) {
+			emberJSON.distance = Math.abs(targyJSON.left - emberJSON.left) + Math.abs(targyJSON.top - emberJSON.top);
+			resultArray.push(emberJSON);
+		}
+
+		emberJSON = createJSON(ember);
+		emberJSON.left = emberJSON.left - lepesek[ember.id];
+		emberJSON.top = emberJSON.top + lepesek[ember.id];
+		if (!crashFal(emberJSON)) {
+			emberJSON.distance = Math.abs(targyJSON.left - emberJSON.left) + Math.abs(targyJSON.top - emberJSON.top);
+			resultArray.push(emberJSON);
+		}
+
+		emberJSON = createJSON(ember);
+		emberJSON.left = emberJSON.left - lepesek[ember.id];
+		emberJSON.left = emberJSON.top - lepesek[ember.id];
+		if (!crashFal(emberJSON)) {
+			emberJSON.distance = Math.abs(targyJSON.left - emberJSON.left) + Math.abs(targyJSON.top - emberJSON.top);
+			resultArray.push(emberJSON);
+		}
+
+		emberJSON = createJSON(ember);
+		emberJSON.left = emberJSON.left + lepesek[ember.id];
+		emberJSON.top = emberJSON.top - lepesek[ember.id];
+		if (!crashFal(emberJSON)) {
+			emberJSON.distance = Math.abs(targyJSON.left - emberJSON.left) + Math.abs(targyJSON.top - emberJSON.top);
+			resultArray.push(emberJSON);
+		}
+
+		let min = 1_000_000_000;
+
+		let result;
+		for (let actual of resultArray) {
+			let contains = false;
+			for (let actualLepes of elozoLepesek[ember.id]) {
+				if (actualLepes.top == actual.top && actualLepes.left == actual.left) {
+					contains = true;
+				}
+			}
+			if (!contains && actual.distance < min) {
+				min = actual.distance;
+				result = actual;
+			}
+		}
+		return result;
 	}
 
 	function calculateStep(ember) {
-		const emberJSON = createJSON(ember);
+
 		const targyJSON = createJSON(targy);
-		merreMehet(ember,targyJSON);
-				if (emberJSON.left < targyJSON.left) {
-					emberJSON.left = emberJSON.left + lepesek[ember.id];
-					if (crashFal(emberJSON)) {
-						emberJSON.left = emberJSON.left - lepesek[ember.id];
-					}
-				} if (emberJSON.top < targyJSON.top) {
-					emberJSON.top = emberJSON.top + lepesek[ember.id];
-					if (crashFal(emberJSON)) {
-						emberJSON.top = emberJSON.top - lepesek[ember.id];
-					}
-				} if (emberJSON.top > targyJSON.top) {
-					emberJSON.top = emberJSON.top - lepesek[ember.id];
-					if (crashFal(emberJSON)) {
-						emberJSON.top = emberJSON.top + lepesek[ember.id];
-					}
-				} if (emberJSON.left > targyJSON.left) {
-					emberJSON.left = emberJSON.left - lepesek[ember.id];
-					if (crashFal(emberJSON)) {
-						emberJSON.left = emberJSON.left + lepesek[ember.id];
-					}
-				}
+		//const emberJSON = merreMehet(ember, targyJSON);
+		const emberJSON = createJSON(ember);
+
+		if (emberJSON.left < targyJSON.left) {
+			emberJSON.left = emberJSON.left + lepesek[ember.id];
+		}
+		if (emberJSON.top < targyJSON.top) {
+			emberJSON.top = emberJSON.top + lepesek[ember.id];
+		}
+		if (emberJSON.top > targyJSON.top) {
+			emberJSON.top = emberJSON.top - lepesek[ember.id];
+		}
+		if (emberJSON.left > targyJSON.left) {
+			emberJSON.left = emberJSON.left - lepesek[ember.id];
+		}
 
 		if (crashFal(emberJSON)) {
 			if (utkozottFal.height > utkozottFal.width) {
@@ -340,6 +425,12 @@
 	}
 
 	function randomElementPosition(element) {
+		elozoLepesek = {
+			ember: [],
+			ember2: [],
+			ember3: [],
+			ember4: []
+		}
 		let bal = screen.getBoundingClientRect().left;
 		let jobb = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width - element.getBoundingClientRect().width;
 		let fent = screen.getBoundingClientRect().top;
@@ -372,6 +463,10 @@
 		} else if (emberJSON.top - emberCopy.top > 0) {
 			emberCopy.top += lepesek[ember.id];
 		}
+
+		let temp = elozoLepesek[ember.id];
+		temp.push(emberCopy);
+		elozoLepesek[ember.id] = temp.slice(temp.length - 100000000000, temp.length);
 		ember.style.left = emberCopy.left + 'px';
 		ember.style.top = emberCopy.top + 'px';
 
