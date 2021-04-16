@@ -19,10 +19,14 @@
 		<div id="jobbfal" class="screenFalOldalt"></div>
 		<div id="fentfal" class="screenFalFentLent"></div>
 		<div id="lentfal" class="screenFalFentLent"></div>
-		<div id="ember" class="ember"><input id="emberColor" value="#2e8f34" type="color" onchange="colorPickEmber()"></div>
-		<div id="ember2" class="ember"><input id="emberColor" value="#d12424" type="color" onchange="colorPickEmber()"></div>
-		<div id="ember3" class="ember"><input id="emberColor" value="#3a34d9" type="color" onchange="colorPickEmber()"></div>
-		<div id="ember4" class="ember"><input id="emberColor" value="#e6d21e" type="color" onchange="colorPickEmber()"></div>
+		<div id="ember" class="ember"><input id="emberColor" value="#2e8f34" type="color" onchange="colorPickEmber()">
+		</div>
+		<div id="ember2" class="ember"><input id="emberColor" value="#d12424" type="color" onchange="colorPickEmber()">
+		</div>
+		<div id="ember3" class="ember"><input id="emberColor" value="#3a34d9" type="color" onchange="colorPickEmber()">
+		</div>
+		<div id="ember4" class="ember"><input id="emberColor" value="#e6d21e" type="color" onchange="colorPickEmber()">
+		</div>
 		<div id="targy" class="targyBronze">
 			<p>$</p>
 		</div>
@@ -217,21 +221,59 @@
 		}
 	}
 
+	function merreMehet(ember,targyJSON) {
+		const result = [];
+
+		let emberJSON = createJSON(ember);
+		emberJSON.left = emberJSON.left + lepesek[ember.id];
+		if (!crashFal(emberJSON)) {
+			result.push(emberJSON);
+		} 
+
+		emberJSON = createJSON(ember);
+		emberJSON.top = emberJSON.top + lepesek[ember.id];
+		if (!crashFal(emberJSON)) {
+			result.push(emberJSON);
+		} 
+
+		emberJSON = createJSON(ember);
+		emberJSON.left = emberJSON.left - lepesek[ember.id];
+		if (!crashFal(emberJSON)) {
+			result.push(emberJSON);
+		} 
+
+		emberJSON = createJSON(ember);
+		emberJSON.top = emberJSON.top - lepesek[ember.id];
+		if (!crashFal(emberJSON)) {
+			result.push(emberJSON);
+		}
+	}
+
 	function calculateStep(ember) {
 		const emberJSON = createJSON(ember);
 		const targyJSON = createJSON(targy);
-		if (emberJSON.left < targyJSON.left) {
-			emberJSON.left = emberJSON.left + lepesek[ember.id];
-		}
-		if (emberJSON.top < targyJSON.top) {
-			emberJSON.top = emberJSON.top + lepesek[ember.id];
-		}
-		if (emberJSON.top > targyJSON.top) {
-			emberJSON.top = emberJSON.top - lepesek[ember.id];
-		}
-		if (emberJSON.left > targyJSON.left) {
-			emberJSON.left = emberJSON.left - lepesek[ember.id];
-		}
+		merreMehet(ember,targyJSON);
+				if (emberJSON.left < targyJSON.left) {
+					emberJSON.left = emberJSON.left + lepesek[ember.id];
+					if (crashFal(emberJSON)) {
+						emberJSON.left = emberJSON.left - lepesek[ember.id];
+					}
+				} if (emberJSON.top < targyJSON.top) {
+					emberJSON.top = emberJSON.top + lepesek[ember.id];
+					if (crashFal(emberJSON)) {
+						emberJSON.top = emberJSON.top - lepesek[ember.id];
+					}
+				} if (emberJSON.top > targyJSON.top) {
+					emberJSON.top = emberJSON.top - lepesek[ember.id];
+					if (crashFal(emberJSON)) {
+						emberJSON.top = emberJSON.top + lepesek[ember.id];
+					}
+				} if (emberJSON.left > targyJSON.left) {
+					emberJSON.left = emberJSON.left - lepesek[ember.id];
+					if (crashFal(emberJSON)) {
+						emberJSON.left = emberJSON.left + lepesek[ember.id];
+					}
+				}
 
 		if (crashFal(emberJSON)) {
 			if (utkozottFal.height > utkozottFal.width) {
@@ -336,7 +378,7 @@
 		const div = document.createElement('div');
 		div.id = nrOfSteps;
 		div.className = 'utvonal';
-		div.style.backgroundColor = window.getComputedStyle(ember, null).getPropertyValue('background-color');
+		div.style.backgroundColor = ember.firstChild.value;
 		div.style.opacity = 0.2;
 		div.style.top = emberCopy.top + 'px';
 		div.style.left = emberCopy.left + 'px';
@@ -423,18 +465,19 @@
 		height: 800px;
 		border: 5px solid black;
 		background-color: rgb(233, 233, 233);
-		border-radius: 50px;
 		margin: 20px;
 	}
 
 	.screenFalOldalt {
 		width: 10px;
 		position: absolute;
+		background-color: red;
 	}
 
 	.screenFalFentLent {
 		height: 10px;
 		position: absolute;
+		background-color: red
 	}
 
 	input[type="color"] {
