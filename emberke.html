@@ -19,10 +19,10 @@
 		<div id="jobbfal" class="screenFalOldalt"></div>
 		<div id="fentfal" class="screenFalFentLent"></div>
 		<div id="lentfal" class="screenFalFentLent"></div>
-		<div id="ember" class="ember"><input id="emberColor" type="color" onchange="colorPickEmber()"></div>
-		<div id="ember2" class="ember"><input id="emberColor" type="color" onchange="colorPickEmber()"></div>
-		<div id="ember3" class="ember"><input id="emberColor" type="color" onchange="colorPickEmber()"></div>
-		<div id="ember4" class="ember"><input id="emberColor" type="color" onchange="colorPickEmber()"></div>
+		<div id="ember" class="ember"><input id="emberColor" value="#2e8f34" type="color" onchange="colorPickEmber()"></div>
+		<div id="ember2" class="ember"><input id="emberColor" value="#d12424" type="color" onchange="colorPickEmber()"></div>
+		<div id="ember3" class="ember"><input id="emberColor" value="#3a34d9" type="color" onchange="colorPickEmber()"></div>
+		<div id="ember4" class="ember"><input id="emberColor" value="#e6d21e" type="color" onchange="colorPickEmber()"></div>
 		<div id="targy" class="targyBronze">
 			<p>$</p>
 		</div>
@@ -115,17 +115,17 @@
 	}
 
 	function jatekosInditas() {
-		ember.style.top = screen.getBoundingClientRect().top + 15 + 'px';
-		ember.style.left = screen.getBoundingClientRect().left + 15 + 'px';
+		ember.style.top = screen.getBoundingClientRect().top + 20 + 'px';
+		ember.style.left = screen.getBoundingClientRect().left + 20 + 'px';
 
-		ember2.style.top = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height - ember2.getBoundingClientRect().height - 15 + 'px';
-		ember2.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width - ember2.getBoundingClientRect().width - 15 + 'px';
+		ember2.style.top = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height - ember2.getBoundingClientRect().height - 20 + 'px';
+		ember2.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width - ember2.getBoundingClientRect().width - 20 + 'px';
 
-		ember3.style.top = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height - ember3.getBoundingClientRect().height - 15 + 'px';
-		ember3.style.left = screen.getBoundingClientRect().left + 15 + 'px';
+		ember3.style.top = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height - ember3.getBoundingClientRect().height - 20 + 'px';
+		ember3.style.left = screen.getBoundingClientRect().left + 20 + 'px';
 
-		ember4.style.top = screen.getBoundingClientRect().top + 15 + 'px';
-		ember4.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width - ember4.getBoundingClientRect().width - 15 + 'px';
+		ember4.style.top = screen.getBoundingClientRect().top + 20 + 'px';
+		ember4.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width - ember4.getBoundingClientRect().width - 20 + 'px';
 	}
 
 	function randomFalak() {
@@ -402,7 +402,6 @@
 		flex-direction: column;
 		margin: 0px;
 		padding: 0px;
-		background-color: blanchedalmond;
 		font-weight: bold;
 		font-family: sans-serif;
 	}
@@ -423,13 +422,8 @@
 		width: 1400px;
 		height: 800px;
 		border: 5px solid black;
-		background-color: white;
+		background-color: rgb(233, 233, 233);
 		border-radius: 50px;
-		box-shadow: 0px 0px 20px -6px black;
-		background: url(resources/tile.svg);
-		background-attachment: fixed;
-		background-repeat: repeat;
-		background-size: 200px;
 		margin: 20px;
 	}
 
@@ -441,6 +435,27 @@
 	.screenFalFentLent {
 		height: 10px;
 		position: absolute;
+	}
+
+	input[type="color"] {
+		-webkit-appearance: none;
+		border: none;
+		width: 20px;
+		height: 20px;
+		border-radius: 10px;
+		padding: 0px;
+	}
+
+	input[type="color"]::-webkit-color-swatch-wrapper {
+		border-radius: 10px;
+		padding: 0px;
+		border: none;
+	}
+
+	input[type="color"]::-webkit-color-swatch {
+		border: none;
+		border-radius: 10px;
+		padding: 0px;
 	}
 
 	.ember {
