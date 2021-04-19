@@ -14,7 +14,7 @@
 	<span id="score"></span>
 	<span id="tav"></span>
 	<span id="sebesseg"></span>
-	<div id="screen">
+	<div id="screen" onmousemove="getMouse(event)">
 		<div id="balfal" class="screenFalOldalt"></div>
 		<div id="jobbfal" class="screenFalOldalt"></div>
 		<div id="fentfal" class="screenFalFentLent"></div>
@@ -34,6 +34,16 @@
 </body>
 <script language="JavaScript">
 
+	function getMouse() {
+		mouseCoords.left = event.clientX;
+		mouseCoords.top = event.clientY;
+	}
+
+	const mouseCoords = {
+		left: 0,
+		top : 0
+	}
+
 	const ember = document.getElementById('ember');
 	const ember2 = document.getElementById('ember2');
 	const ember3 = document.getElementById('ember3');
@@ -46,7 +56,7 @@
 	const falak = [];
 	let utkozottFal;
 	let speed = 1;
-	const minLepesek = 1;
+	const minLepesek = 5;
 	const maxLepesek = 5;
 	let score;
 	let lepesek;
@@ -54,6 +64,7 @@
 	const falszam = 3;
 	const minFalmagassag = 20;
 	const minFalhosssz = 20;
+	let timeout;
 
 	let direction = {
 		left: 0,
@@ -105,7 +116,6 @@
 	}
 
 	function startGame() {
-		window.clearTimeout();
 		score = {
 			ember: 0,
 			ember2: 0,
@@ -343,7 +353,7 @@
 
 	function calculateStep(ember) {
 
-		const targyJSON = createJSON(targy);
+		const targyJSON = mouseCoords;//createJSON(targy);
 		//const emberJSON = merreMehet(ember, targyJSON);
 		const emberJSON = createJSON(ember);
 
@@ -383,21 +393,21 @@
 		}
 
 		setEmberByEmberCopy(ember, emberJSON);
-		if (crash(emberJSON, targyJSON)) {
-			const sumOfscore = score["ember"] + score["ember2"] + score["ember3"] + score["ember4"];
-			if (sumOfscore > 50 && sumOfscore < 100) {
-				targy.className = 'targySilver';
-			} else if (sumOfscore >= 100) {
-				targy.className = 'targyGold';
-			}
-			randomElementPosition(targy), 1000;
-			score[ember.id] += 1;
-			lepesek['ember'] = getRandom(minLepesek, maxLepesek);
-			lepesek['ember2'] = getRandom(minLepesek, maxLepesek);
-			lepesek['ember3'] = getRandom(minLepesek, maxLepesek);
-			lepesek['ember4'] = getRandom(minLepesek, maxLepesek);
-			printTabla();
-		}
+		//if (crash(emberJSON, targyJSON)) {
+		//	const sumOfscore = score["ember"] + score["ember2"] + score["ember3"] + score["ember4"];
+		//	if (sumOfscore > 50 && sumOfscore < 100) {
+		//		targy.className = 'targySilver';
+		//	} else if (sumOfscore >= 100) {
+		//		targy.className = 'targyGold';
+		//	}
+		//	randomElementPosition(targy);
+		//	score[ember.id] += 1;
+		//	lepesek['ember'] = getRandom(minLepesek, maxLepesek);
+		//	lepesek['ember2'] = getRandom(minLepesek, maxLepesek);
+		//	lepesek['ember3'] = getRandom(minLepesek, maxLepesek);
+		//	lepesek['ember4'] = getRandom(minLepesek, maxLepesek);
+		//	printTabla();
+		//}
 	}
 
 	function printTabla() {
@@ -405,13 +415,13 @@
 		sebesseg.innerHTML = `A Játékos sebessége: ${lepesek['ember']} B Játékos sebessége: ${lepesek['ember2']} C Játékos sebessége: ${lepesek['ember3']} D Játékos sebessége: ${lepesek['ember4']}`;
 	}
 
-
 	function move() {
 		calculateStep(ember);
 		calculateStep(ember2);
 		calculateStep(ember3);
 		calculateStep(ember4);
-		setTimeout(move, speed);
+		clearTimeout(timeout);
+		timeout = setTimeout(move, speed);
 	}
 
 	function createJSON(element) {
