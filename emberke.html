@@ -42,13 +42,14 @@
 	const ponttabla2 = document.getElementById('score2');
 	const ponttabla3 = document.getElementById('score3');
 	const ponttabla4 = document.getElementById('score4');
+	let scores = [];
 	const sebesseg = document.getElementById('sebesseg');
 	const btnStart = document.getElementById('startButton');
 	const falak = [];
 	let utkozottFal;
 	let speed = 1;
-	const minLepesek = 5;
-	const maxLepesek = 5;
+	const minLepesek = 2;
+	const maxLepesek = 2;
 	let score;
 	let lepesek;
 	let elozoLepesek;
@@ -79,7 +80,12 @@
 		}
 		printTabla();
 		//setPositions();
-		document.getElementById('balfal').addEventListener('click', ()=> { debugger});
+		document.getElementById('balfal').addEventListener('click', () => { debugger });
+		document.getElementById('fal0').addEventListener('click', () => { debugger });
+		document.getElementById('fal1').addEventListener('click', () => { debugger });
+		document.getElementById('fal2').addEventListener('click', () => { debugger });
+		document.getElementById('fal3').addEventListener('click', () => { debugger });
+		document.getElementById('fal4').addEventListener('click', () => { debugger });
 	}
 
 	function getMouse() {
@@ -192,17 +198,17 @@
 	}
 
 	function jatekosInditas() {
-		ember.style.top = screen.getBoundingClientRect().top + 30 + 'px';
-		ember.style.left = screen.getBoundingClientRect().left + 30 + 'px';
+		ember.style.top = screen.getBoundingClientRect().top + 35 + 'px';
+		ember.style.left = screen.getBoundingClientRect().left + 35 + 'px';
 
-		ember2.style.top = screen.getBoundingClientRect().top + 30 + 'px';
-		ember2.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width - ember2.getBoundingClientRect().width - 30 + 'px';
+		ember2.style.top = screen.getBoundingClientRect().top + 35 + 'px';
+		ember2.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width - ember2.getBoundingClientRect().width - 35 + 'px';
 
-		ember3.style.top = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height - ember3.getBoundingClientRect().height - 30 + 'px';
-		ember3.style.left = screen.getBoundingClientRect().left + 30 + 'px';
+		ember3.style.top = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height - ember3.getBoundingClientRect().height - 35 + 'px';
+		ember3.style.left = screen.getBoundingClientRect().left + 35 + 'px';
 
-		ember4.style.top = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height - ember4.getBoundingClientRect().height - 30 + 'px';
-		ember4.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width - ember4.getBoundingClientRect().width - 30 + 'px';
+		ember4.style.top = screen.getBoundingClientRect().top + screen.getBoundingClientRect().height - ember4.getBoundingClientRect().height - 35 + 'px';
+		ember4.style.left = screen.getBoundingClientRect().left + screen.getBoundingClientRect().width - ember4.getBoundingClientRect().width - 35 + 'px';
 	}
 
 	function randomFalak() {
@@ -373,19 +379,19 @@
 
 	function calculateStep(ember) {
 
-		const targyJSON = mouseCoords;//createJSON(targy);
+		const targyJSON = createJSON(targy); //mouseCoords;
 		//const emberJSON = merreMehet(ember, targyJSON);
 		const emberJSON = createJSON(ember);
 
 		if (emberJSON.left < targyJSON.left) {
 			emberJSON.left = emberJSON.left + lepesek[ember.id];
-		} 
+		}
 		if (emberJSON.top < targyJSON.top) {
 			emberJSON.top = emberJSON.top + lepesek[ember.id];
-		} 
+		}
 		if (emberJSON.top > targyJSON.top) {
 			emberJSON.top = emberJSON.top - lepesek[ember.id];
-		} 
+		}
 		if (emberJSON.left > targyJSON.left) {
 			emberJSON.left = emberJSON.left - lepesek[ember.id];
 		}
@@ -405,7 +411,7 @@
 				const left = Math.abs(utkozottFal.left - targyJSON.left);
 				const right = Math.abs(utkozottFal.left + utkozottFal.width - targyJSON.left - targyJSON.width);
 				//if (Math.min(left, right) == left) {
-				if (((utkozottFal.left + utkozottFal.width / 2) > targyJSON.left) ) {
+				if (((utkozottFal.left + utkozottFal.width / 2) > targyJSON.left)) {
 					emberJSON.left = emberJSON.left - lepesek[ember.id] - 1;
 				} else {
 					emberJSON.left = emberJSON.left + lepesek[ember.id] + 1;
@@ -415,21 +421,21 @@
 		}
 
 		setEmberByEmberCopy(ember, emberJSON);
-		//if (crash(emberJSON, targyJSON)) {
-		//	const sumOfscore = score["ember"] + score["ember2"] + score["ember3"] + score["ember4"];
-		//	if (sumOfscore > 50 && sumOfscore < 100) {
-		//		targy.className = 'targySilver';
-		//	} else if (sumOfscore >= 100) {
-		//		targy.className = 'targyGold';
-		//	}
-		//	randomElementPosition(targy);
-		//	score[ember.id] += 1;
-		//	lepesek['ember'] = getRandom(minLepesek, maxLepesek);
-		//	lepesek['ember2'] = getRandom(minLepesek, maxLepesek);
-		//	lepesek['ember3'] = getRandom(minLepesek, maxLepesek);
-		//	lepesek['ember4'] = getRandom(minLepesek, maxLepesek);
-		//	printTabla();
-		//}
+		if (crash(emberJSON, targyJSON)) {
+			const sumOfscore = score["ember"] + score["ember2"] + score["ember3"] + score["ember4"];
+			if (sumOfscore > 50 && sumOfscore < 100) {
+				targy.className = 'targySilver';
+			} else if (sumOfscore >= 100) {
+				targy.className = 'targyGold';
+			}
+			randomElementPosition(targy);
+			score[ember.id] += 1;
+			lepesek['ember'] = getRandom(minLepesek, maxLepesek);
+			lepesek['ember2'] = getRandom(minLepesek, maxLepesek);
+			lepesek['ember3'] = getRandom(minLepesek, maxLepesek);
+			lepesek['ember4'] = getRandom(minLepesek, maxLepesek);
+			printTabla();
+		}
 	}
 
 	function printTabla() {
@@ -437,6 +443,20 @@
 		ponttabla2.innerHTML = score['ember2'];
 		ponttabla3.innerHTML = score['ember3'];
 		ponttabla4.innerHTML = score['ember4'];
+		scores = [];
+		let scoreEmber = { name: 'ember', score: score['ember'] };
+		let score2Ember = { name: 'ember2', score: score['ember2'] };
+		let score3Ember = { name: 'ember3', score: score['ember3'] };
+		let score4Ember = { name: 'ember4', score: score['ember4'] };
+		scores.push(scoreEmber);
+		scores.push(score2Ember);
+		scores.push(score3Ember);
+		scores.push(score4Ember);
+		let maxScore = scores[0];
+		for (let i = 0; i < scores.length; i++) {
+			maxScore = scores[i].score > maxScore.score ? scores[i] : maxScore;
+		}
+		screen.style.backgroundColor = document.getElementById(maxScore.name).firstChild.value;
 	}
 
 	function move() {
@@ -594,7 +614,7 @@
 		font-size: 3vh;
 	}
 
-	.alfal{
+	.alfal {
 		border: 1px solid blue;
 		position: absolute;
 	}
@@ -606,6 +626,8 @@
 		background-attachment: fixed;
 		background-repeat: repeat;
 		background-size: 100px;
+		border: 1px solid black;
+		box-shadow: 0px 0px 20px -6px black;
 	}
 
 	.screenFalFentLent {
@@ -616,6 +638,8 @@
 		background-attachment: fixed;
 		background-repeat: repeat;
 		background-size: 100px;
+		border: 1px solid black;
+		box-shadow: 0px 0px 20px -6px black;
 	}
 
 	input[type="color"] {
@@ -647,6 +671,7 @@
 		z-index: 10000;
 		background: black;
 		box-shadow: 0px 0px 20px -6px black;
+		border: 1px solid black;
 	}
 
 	.targyBronze {
@@ -706,6 +731,7 @@
 		background-repeat: repeat;
 		background-size: 100px;
 		box-shadow: 0px 0px 20px -6px black;
+		border: 1px solid black;
 	}
 
 	.emberRight {
