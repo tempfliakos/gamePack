@@ -9,6 +9,13 @@ function initCanvasSize() {
 	$('body').height(document.documentElement.clientHeight);
 }
 
+const mouse = { x: 0, y: 0 };
+canvas.addEventListener("mousemove", e => {
+	mouse.x = e.clientX;
+	mouse.y = e.clientY;
+	rotate();
+});
+
 var keysDown = {};
 addEventListener("keydown", function (e) {
 	keysDown[e.keyCode] = true;
@@ -16,29 +23,6 @@ addEventListener("keydown", function (e) {
 addEventListener("keyup", function (e) {
 	delete keysDown[e.keyCode];
 }, false);
-
-var heroImage = new Image();
-heroImage.src = "../resources/hero.svg";
-class Hero {
-	constructor(name, positionX, positionY) {
-		context.clearRect(0, 0, innerWidth, innerHeight);
-		this.name = name;
-		this.positionX = positionX;
-		this.positionY = positionY;
-		this.speed = 300;
-		context.beginPath();
-		context.drawImage(heroImage, positionX, positionY, 40, 40);
-	}
-}
-
-var main = function () {
-	var now = Date.now();
-	var delta = now - then;
-	step(delta / 1000);
-	hero = new Hero(hero.name, hero.positionX, hero.positionY, false);
-	then = now;
-	requestAnimationFrame(main);
-}
 
 var step = function (modifier) {
 	if (87 in keysDown) {
@@ -52,8 +36,44 @@ var step = function (modifier) {
 	}
 }
 
+class Hero {
+	constructor(name, positionX, positionY, heroWidth, heroHeight) {
+		this.name = name;
+		this.positionX = positionX;
+		this.positionY = positionY;
+		this.speed = 300;
+		this.width = heroWidth;
+		this.height = heroHeight;
+		this.image = new Image();
+		this.image.src = "../resources/hero.svg";
+	}
+}
+
+function rotate() {
+	context.save();
+	context.translate(hero.positionX + hero.width / 2, hero.positionY + hero.height / 2);
+	context.rotate(Math.atan2(mouse.x - hero.positionX, -(mouse.y - hero.positionY)));
+	context.translate(-(hero.positionX + hero.width / 2), -(hero.positionY + hero.height / 2));
+	drawHero();
+}
+
+function drawHero() {
+	context.clearRect(0, 0, innerWidth, innerHeight);
+	context.beginPath();
+	context.drawImage(hero.image, hero.positionX, hero.positionY, hero.width, hero.height);
+}
+
+var main = function () {
+	var now = Date.now();
+	var delta = now - then;
+	step(delta / 1000);
+	drawHero();
+	then = now;
+	requestAnimationFrame(main);
+}
+
 initCanvasSize();
 window.addEventListener('resize', initCanvasSize);
-let hero = new Hero('Unkindled', (canvas.width / 2) - 20, (canvas.height / 2) - 20);
+let hero = new Hero('Unkindled', (canvas.width / 2) - 20, (canvas.height / 2) - 20, 40, 40);
 var then = Date.now();
 main();
