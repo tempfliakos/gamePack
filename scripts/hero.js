@@ -17,7 +17,7 @@ addEventListener("mousemove", e => {
 });
 
 class Hero {
-    constructor(name, positionX, positionY, width, height) {
+    constructor(name, positionX, positionY, width, height, actualHp, maxHp) {
         this.name = name;
         this.positionX = positionX;
         this.positionY = positionY;
@@ -26,6 +26,8 @@ class Hero {
         this.height = height;
         this.image = new Image();
         this.image.src = "../resources/hero.svg";
+        this.actualHp = actualHp;
+        this.maxHp = maxHp;
     }
 
     draw() {
