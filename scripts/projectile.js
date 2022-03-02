@@ -8,7 +8,7 @@
 */
 
 const defaultType = {
-    radius: 5,
+    radius: 4,
     damage: 1,
     color: 'black',
     speed: 500
@@ -38,6 +38,9 @@ class Projectile {
             if (isProjectileHit(this, enemy)) {
                 this.hit = true;
                 enemy.hp -= this.type.damage;
+				if(enemy.hp <= 0){
+					deadEnemies++;
+				}
             }
         }
         const velocity = this.type.speed * modifier;

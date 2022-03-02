@@ -1,9 +1,32 @@
-html, body {
-	width: 100%;
-	height: 100%;
-    margin: 0;
-	background-color: gray;
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background-color: gray;
 }
-canvas{
-	cursor: crosshair;
+canvas {
+  cursor: url("../resources/crosshair.cur") 1 1, default;
+}
+
+.gameOver {
+  position: absolute;
+  background-color: grey;
+  border: 2px solid black;
+  border-radius: 5px;
+  font-family: Arial;
+  font-size: 5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.gameOver button {
+  width: 4em;
+  height: 2em;
+  border-radius: 5px;
+  font-size: 0.5em;
+  margin: 1em;
+  cursor: pointer;
 }

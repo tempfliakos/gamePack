@@ -49,9 +49,9 @@ let enemies = [];
 let maxEnemies = 10;
 
 function drawHud() {
-	let bad = "rgba(168, 55, 55, 0.75)";
-	let normal = "rgba(211, 224, 46, 0.75)";
-	let good = "rgba(101, 165, 90, 0.75)";
+	let bad = "rgba(168, 55, 55, 0.5)";
+	let normal = "rgba(211, 224, 46, 0.5)";
+	let good = "rgba(101, 165, 90, 0.5)";
 
 	context.beginPath();
 
@@ -60,7 +60,7 @@ function drawHud() {
 	context.stroke();
 
 	//hp line
-	let hpPercentage = ((hero.actualHp / hero.maxHp) * 100);
+	let hpPercentage = Math.round(((hero.actualHp / hero.maxHp) * 100));
 	let hpLine = ((hpPercentage / 100) * 200) >= 200 ? 200 : ((hpPercentage / 100) * 200) <= 0 ? 0 : ((hpPercentage / 100) * 200);
 	context.fillStyle = (hpPercentage >= 66) ? good : (33 <= hpPercentage && hpPercentage <= 66) ? normal : (hpPercentage <= 33) ? bad : "#000000";
 	context.fillRect(10, canvas.height - 50, hpLine, 30);
@@ -68,6 +68,9 @@ function drawHud() {
 	//text style
 	context.font = "bold 15pt Arial";
 	context.fillStyle = "#000000";
+
+	//hero hp text
+	context.fillText(hpPercentage, 90, canvas.height - 30);
 
 	//hero level text
 	context.fillText("Lvl: " + hero.level, 10, canvas.height - 135);
@@ -78,14 +81,44 @@ function drawHud() {
 	//hero Weapon text
 	context.fillText("Weapon: " + hero.weapon, 10, canvas.height - 85);
 
-	//enemy num text
-	context.fillText("Enemies: " + enemies.length, 10, canvas.height - 60);
+	//dead enemy num text
+	context.fillText("Dead enemies: " + deadEnemies, 10, canvas.height - 60);
 
+}
+
+let hps = [];
+function drawHp() {
+	for (let i = 0; i < hps.length; i++) {
+		context.beginPath();
+		context.fillStyle = "white";
+		context.fillRect(hps[i].x, hps[i].y, 40, 40);
+		context.fillStyle = "red";
+		context.fillText("HP", hps[i].x + 5, hps[i].y + 30);
+		context.closePath();
+
+
+		let dx = (hps[i].x + 25) - (hero.positionX + hero.width / 2);
+		let dy = (hps[i].y + 25) - (hero.positionY + hero.height / 2);
+		let rSum = 25 + hero.width / 2;
+		if (dx * dx + dy * dy <= rSum * rSum) {
+			hero.actualHp = hero.actualHp + 5;
+		}
+	}
 }
 
 function drawObjects(delta) {
 	drawMap(canvas, context);
 	drawHud();
+	if (randomInterval(0, 1000) == 5) {
+		hps.push(
+			{
+				x: randomInterval(0, canvas.width),
+				y: randomInterval(0, canvas.height),
+				used: false
+			})
+	};
+	hps = hps.filter(e => !e.used);
+	drawHp();
 
 	for (let projectile of projectiles) {
 		projectile.step(delta / 1000, enemies);
@@ -98,8 +131,8 @@ function drawObjects(delta) {
 }
 
 function generateEnemies() {
-	if (enemies.length === 0) {
-		for (let i = 0; i < maxEnemies; i++) {
+	if (enemies.length <= 3) {
+		for (let i = 0; i < randomInterval(0, maxEnemies); i++) {
 			let sideRandom = Math.random();
 			let enemy;
 			if (sideRandom > 0 && sideRandom <= 0.25) {
@@ -120,6 +153,30 @@ function randomInterval(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+
+function stop() {
+	cancelAnimationFrame(animId);
+	const gameoverdiv = document.createElement('div');
+	gameoverdiv.className = 'gameOver';
+	gameoverdiv.style.width = 500 + 'px';
+	gameoverdiv.style.height = 300 + 'px';
+	gameoverdiv.style.left = document.documentElement.clientWidth / 2 - 250 + 'px';
+	gameoverdiv.style.top = document.documentElement.clientHeight / 2 - 150 + 'px';
+	gameoverdiv.innerText = 'Game Over';
+	const retry = document.createElement('button');
+	retry.innerHTML = 'Retry';
+	retry.onclick = () => document.location.reload();
+	gameoverdiv.appendChild(retry);
+	document.getElementsByTagName('html')[0].appendChild(gameoverdiv);
+}
+
+function start() {
+	animId = requestAnimationFrame(main);
+}
+
+let animId;
+let deadEnemies = 0;
+let gameOver = false;
 const main = function () {
 	context.clearRect(0, 0, innerWidth, innerHeight);
 	const now = Date.now();
@@ -130,7 +187,11 @@ const main = function () {
 	enemies = enemies.filter(e => e.hp > 0);
 	drawObjects(delta);
 	generateEnemies();
-	requestAnimationFrame(main);
+	if (gameOver) {
+		stop();
+	} else {
+		animId = requestAnimationFrame(main);
+	}
 }
 
 main();

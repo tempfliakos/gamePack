@@ -17,23 +17,23 @@ addEventListener("mousemove", e => {
 });
 
 class Hero {
-    constructor(name, positionX, positionY, width, height, actualHp, maxHp) {
-        this.name = name;
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.speed = 100;
-        this.width = width;
-        this.height = height;
-        this.image = new Image();
-        this.image.src = "../resources/hero.svg";
-        this.actualHp = actualHp;
-        this.maxHp = maxHp;
+	constructor(name, positionX, positionY, width, height, actualHp, maxHp) {
+		this.name = name;
+		this.positionX = positionX;
+		this.positionY = positionY;
+		this.speed = 100;
+		this.width = width;
+		this.height = height;
+		this.image = new Image();
+		this.image.src = "../resources/hero.svg";
+		this.actualHp = actualHp;
+		this.maxHp = maxHp;
 		this.level = 1
-		this.weapon = "rock";
-    }
+		this.weapon = "Sling-shot";
+	}
 
-    draw() {
-        rotate = Math.atan2(mouse.y - this.positionY, mouse.x - this.positionX) + Math.PI / 2;
+	draw() {
+		rotate = Math.atan2(mouse.y - this.positionY, mouse.x - this.positionX) + Math.PI / 2;
 
 		context.save();
 
@@ -41,6 +41,16 @@ class Hero {
 		context.rotate(rotate);
 		context.translate(-this.positionX + -this.width / 2, -this.positionY + -this.height / 2);
 		context.drawImage(this.image, this.positionX, this.positionY, this.width, this.height);
+
+		//weapon
+		context.beginPath();
+		context.moveTo(this.positionX + this.width / 2, this.positionY);
+		context.lineTo(this.positionX + this.width / 2, this.positionY - 15);
+		context.lineWidth = 10;
+		context.stroke();
+		context.lineWidth = 1;
+		context.closePath();
+
 		context.beginPath();
 		context.arc(this.positionX + this.width / 2, this.positionY + this.height / 2, this.width / 2, 0, 2 * Math.PI, false);
 		context.stroke();
@@ -48,34 +58,34 @@ class Hero {
 		context.closePath();
 
 		context.restore();
-    }
+	}
 
-    step(modifier) {
-        const velocity = this.speed * modifier;
-        if ('KeyW' in keysDown) {
-            this.positionY -= velocity;
-        }
-        if ('KeyA' in keysDown) {
-            this.positionX -= velocity;
-        }
-        if ('KeyS' in keysDown) {
-            this.positionY += velocity;
-        }
-        if ('KeyD' in keysDown) {
-            this.positionX += velocity;
-        }
+	step(modifier) {
+		const velocity = this.speed * modifier;
+		if ('KeyW' in keysDown) {
+			this.positionY -= velocity;
+		}
+		if ('KeyA' in keysDown) {
+			this.positionX -= velocity;
+		}
+		if ('KeyS' in keysDown) {
+			this.positionY += velocity;
+		}
+		if ('KeyD' in keysDown) {
+			this.positionX += velocity;
+		}
 
-        if (this.positionY < 0) {
-            this.positionY = 0;
-        }
-        if (this.positionX < 0) {
-            this.positionX = 0;
-        }
-        if (this.positionY + this.height > canvas.height) {
-            this.positionY = canvas.height - this.height;
-        }
-        if (this.positionX + this.width > canvas.width) {
-            this.positionX = canvas.width - this.width;
-        }
-    }
+		if (this.positionY < 0) {
+			this.positionY = 0;
+		}
+		if (this.positionX < 0) {
+			this.positionX = 0;
+		}
+		if (this.positionY + this.height > canvas.height) {
+			this.positionY = canvas.height - this.height;
+		}
+		if (this.positionX + this.width > canvas.width) {
+			this.positionX = canvas.width - this.width;
+		}
+	}
 }
