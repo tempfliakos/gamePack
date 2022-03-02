@@ -26,6 +26,9 @@ canvas.onmousedown = function (e) {
 let interval;
 
 canvas.addEventListener("mousedown", e => {
+	if (interval) {
+		clearInterval(interval);
+	}
 	interval = setInterval(generateProjectile, 100);
 });
 
@@ -37,52 +40,13 @@ addEventListener('resize', initCanvasSize);
 
 initCanvasSize();
 
-class Enemy {
-	constructor(name, positionX, positionY, width, height, hp, damage, src) {
-		this.name = name;
-		this.positionX = positionX;
-		this.positionY = positionY;
-		this.speed = 50;
-		this.width = width;
-		this.height = height;
-		this.hp = hp;
-		this.damage = damage;
-		this.image = new Image();
-		this.image.src = src;
-	}
-
-	draw() {
-		rotate = Math.atan2(hero.positionY - this.positionY, hero.positionX - this.positionX) + Math.PI / 2;
-		context.beginPath();
-		context.save();
-		context.translate(this.positionX + this.width / 2, this.positionY + this.height / 2);
-		context.rotate(rotate);
-		context.translate(-this.positionX + -this.width / 2, -this.positionY + -this.height / 2);
-		context.drawImage(this.image, this.positionX, this.positionY, this.width, this.height);
-
-		context.restore();
-	}
-
-	step(modifier) {
-		const angle = Math.atan2(this.positionY - hero.positionY, this.positionX - hero.positionX);
-		const heroPosition = {
-			x: Math.cos(angle),
-			y: Math.sin(angle)
-		}
-		const velocity = this.speed * modifier;
-		//this.positionX -= (heroPosition.x * velocity);
-		//this.positionY -= heroPosition.y * velocity;
-		this.draw();
-	}
-}
-
-let hero = new Hero('Unkindled', (canvas.width / 2) - 20, (canvas.height / 2) - 20, 40, 40, 20, 100);
+let hero = new Hero('Unkindled', (canvas.width / 2) - 20, (canvas.height / 2) - 20, 40, 40, 1000, 1000);
 let then = Date.now();
 let rotate;
 
 let projectiles = [];
 let enemies = [];
-let maxEnemies = 1;
+let maxEnemies = 10;
 
 function drawHud() {
 	let bad = "rgba(168, 55, 55, 0.75)";
@@ -122,14 +86,15 @@ function drawHud() {
 function drawObjects(delta) {
 	drawMap(canvas, context);
 	drawHud();
-	hero.draw();
+
 	for (let projectile of projectiles) {
 		projectile.step(delta / 1000, enemies);
 	}
 
 	for (let enemy of enemies) {
-		enemy.step(delta / 1000);
+		enemy.step(delta / 1000, hero);
 	}
+	hero.draw();
 }
 
 function generateEnemies() {

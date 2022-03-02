@@ -9,7 +9,7 @@
 
 const defaultType = {
     radius: 5,
-    damage: 10,
+    damage: 1,
     color: 'black',
     speed: 500
 }
@@ -37,7 +37,7 @@ class Projectile {
         for (let enemy of enemies) {
             if (isProjectileHit(this, enemy)) {
                 this.hit = true;
-                enemy.hp -= this.damage;
+                enemy.hp -= this.type.damage;
             }
         }
         const velocity = this.type.speed * modifier;
@@ -48,8 +48,8 @@ class Projectile {
 }
 
 function isProjectileHit(projectile, enemy) {
-    let dx = enemy.positionX - projectile.positionX;
-    let dy = enemy.positionY - projectile.positionY;
-    let rSum = projectile.width + enemy.width;
+    let dx = (enemy.positionX + enemy.width / 2) - projectile.positionX;
+    let dy = (enemy.positionY + enemy.height / 2) - projectile.positionY;
+    let rSum = projectile.type.radius + enemy.width / 2;
     return (dx * dx + dy * dy <= rSum * rSum);
 }

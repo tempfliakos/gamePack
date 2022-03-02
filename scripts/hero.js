@@ -34,13 +34,20 @@ class Hero {
 
     draw() {
         rotate = Math.atan2(mouse.y - this.positionY, mouse.x - this.positionX) + Math.PI / 2;
-        context.beginPath();
-        context.save();
-        context.translate(this.positionX + this.width / 2, this.positionY + this.height / 2);
-        context.rotate(rotate);
-        context.translate(-this.positionX + -this.width / 2, -this.positionY + -this.height / 2);
-        context.drawImage(this.image, this.positionX, this.positionY, this.width, this.height);
-        context.restore();
+
+		context.save();
+
+		context.translate(this.positionX + this.width / 2, this.positionY + this.height / 2);
+		context.rotate(rotate);
+		context.translate(-this.positionX + -this.width / 2, -this.positionY + -this.height / 2);
+		context.drawImage(this.image, this.positionX, this.positionY, this.width, this.height);
+		context.beginPath();
+		context.arc(this.positionX + this.width / 2, this.positionY + this.height / 2, this.width / 2, 0, 2 * Math.PI, false);
+		context.stroke();
+		context.clip();
+		context.closePath();
+
+		context.restore();
     }
 
     step(modifier) {
