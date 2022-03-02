@@ -55,7 +55,6 @@ function drawMap(canvas, context) {
 	}
 
 	context.font = "bold 15pt Arial";
-	context.c
 	context.fillStyle = "#000000";
 	context.fillText("FPS: " + framesLastSecond, 10, 30);
 }

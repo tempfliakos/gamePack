@@ -62,8 +62,21 @@ let rotate;
 let projectiles = [];
 let enemies = [enemy];
 
+function drawHud() {
+	context.beginPath();
+	context.rect(canvas.width - 210, canvas.height - 50, 200, 30);
+	context.stroke();
+	let hpLine = (((hero.hp / hero.defaultHp) * 100) / 100) * 200;
+	context.fillStyle = "rgba(101, 165, 90, 0.75)";
+	context.fillRect(canvas.width - 210, canvas.height - 50, hpLine, 30);
+	context.font = "bold 15pt Arial";
+	context.fillStyle = "#000000";
+	context.fillText("Hero",canvas.width - 130, canvas.height - 30);
+}
+
 function drawObjects(delta) {
 	drawMap(canvas, context);
+	drawHud();
 	hero.draw();
 	for (let projectile of projectiles) {
 		projectile.step(delta / 1000, enemies);
