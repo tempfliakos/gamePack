@@ -21,16 +21,55 @@ canvas.addEventListener("click", e => {
 addEventListener('resize', initCanvasSize);
 
 initCanvasSize();
+
+class Enemy {
+	constructor(name, positionX, positionY, width, height, hp, damage, src) {
+		this.name = name;
+		this.positionX = positionX;
+		this.positionY = positionY;
+		this.speed = 50;
+		this.width = width;
+		this.height = height;
+		this.hp = hp;
+		this.damage = damage;
+		this.image = new Image();
+		this.image.src = src;
+	}
+
+	draw() {
+		context.beginPath();
+		context.drawImage(this.image, this.positionX, this.positionY, this.width, this.height);
+	}
+
+	step(modifier) {
+		const angle = Math.atan2(this.positionY - hero.positionY, this.positionX - hero.positionX);
+		const heroPosition = {
+			x: Math.cos(angle),
+			y: Math.sin(angle)
+		}
+		const velocity = this.speed * modifier;
+		this.positionX -= (heroPosition.x * velocity);
+		this.positionY -= heroPosition.y * velocity;
+		this.draw();
+	}
+}
+
 let hero = new Hero('Unkindled', (canvas.width / 2) - 20, (canvas.height / 2) - 20, 40, 40);
+let enemy = new Enemy('Unkindled', (canvas.width / 2) - 100, (canvas.height / 2) - 100, 40, 40, 10, 10, "../resources/enemy.svg");
 let then = Date.now();
 let rotate;
 
 let projectiles = [];
+let enemies = [enemy];
 
 function drawObjects(delta) {
 	hero.draw();
 	for (let projectile of projectiles) {
-		projectile.step(delta / 1000);
+		projectile.step(delta / 1000, enemies);
+	}
+
+	for (let enemy of enemies) {
+		enemy.step(delta / 1000);
 	}
 }
 
@@ -40,7 +79,8 @@ const main = function () {
 	const delta = now - then;
 	hero.step(delta / 1000);
 	then = now;
-	projectiles = projectiles.filter(p => p.positionX > 0 && p.positionX < canvas.width && p.positionY > 0 && p.positionY < canvas.height);
+	projectiles = projectiles.filter(p => p.hit !== true && p.positionX > 0 && p.positionX < canvas.width && p.positionY > 0 && p.positionY < canvas.height);
+	enemies = enemies.filter(e => e.hp > 0);
 	drawObjects(delta);
 	requestAnimationFrame(main);
 }
