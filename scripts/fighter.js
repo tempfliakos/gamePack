@@ -74,7 +74,7 @@ class Enemy {
 	}
 }
 
-let hero = new Hero('Unkindled', (canvas.width / 2) - 20, (canvas.height / 2) - 20, 40, 40, 80, 100);
+let hero = new Hero('Unkindled', (canvas.width / 2) - 20, (canvas.height / 2) - 20, 40, 40, 20, 100);
 let then = Date.now();
 let rotate;
 
@@ -83,12 +83,23 @@ let enemies = [];
 let maxEnemies = 1;
 
 function drawHud() {
+	let bad = "rgba(168, 55, 55, 0.75)";
+	let normal = "rgba(211, 224, 46, 0.75)";
+	let good = "rgba(101, 165, 90, 0.75)";
+
 	context.beginPath();
+
+	//hp stroke
 	context.rect(canvas.width - 210, canvas.height - 50, 200, 30);
 	context.stroke();
-	let hpLine = (((hero.actualHp / hero.maxHp) * 100) / 100) * 200;
-	context.fillStyle = "rgba(101, 165, 90, 0.75)";
+
+	//hp line
+	let hpPercentage = ((hero.actualHp / hero.maxHp) * 100);
+	let hpLine = ((hpPercentage / 100) * 200) >= 200 ? 200 : ((hpPercentage / 100) * 200) <= 0 ? 0 : ((hpPercentage / 100) * 200);
+	context.fillStyle = (hpPercentage >= 66) ? good : (33 <= hpPercentage && hpPercentage <= 66) ? normal : (hpPercentage <= 33) ? bad : "#000000";
 	context.fillRect(canvas.width - 210, canvas.height - 50, hpLine, 30);
+
+	//hero text
 	context.font = "bold 15pt Arial";
 	context.fillStyle = "#000000";
 	context.fillText("Hero", canvas.width - 130, canvas.height - 30);
