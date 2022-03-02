@@ -15,7 +15,7 @@ canvas.addEventListener("click", e => {
 		x: Math.cos(angle),
 		y: Math.sin(angle)
 	}
-	projectiles.push(new Projectile(hero.positionX, hero.positionY, hero.width / 4, hero.height / 4, shootDestination, 10, "../resources/bullet_default.svg"));
+	projectiles.push(new Projectile(hero.positionX + hero.width / 2, hero.positionY + hero.height / 2, hero.width / 6, hero.height / 6, shootDestination, 10, "../resources/bullet_default.svg"));
 });
 
 addEventListener('resize', initCanvasSize);
@@ -63,6 +63,7 @@ let projectiles = [];
 let enemies = [enemy];
 
 function drawObjects(delta) {
+	drawMap(canvas, context);
 	hero.draw();
 	for (let projectile of projectiles) {
 		projectile.step(delta / 1000, enemies);

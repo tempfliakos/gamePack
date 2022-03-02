@@ -2,7 +2,7 @@ class Projectile {
     constructor(positionX, positionY, width, height, destination, damage, src) {
         this.positionX = positionX;
         this.positionY = positionY;
-        this.speed = 200;
+        this.speed = 500;
         this.width = width;
         this.height = height;
         this.destination = destination;
