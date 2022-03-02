@@ -9,6 +9,7 @@ function initCanvasSize() {
 	$('body').height(document.documentElement.clientHeight);
 }
 
+let shots = 0;
 function generateProjectile() {
 	const angle = Math.atan2(mouse.y - hero.positionY, mouse.x - hero.positionX);
 	const shootDestination = {
@@ -16,6 +17,7 @@ function generateProjectile() {
 		y: Math.sin(angle)
 	}
 	projectiles.push(new Projectile(hero.positionX + hero.width / 2, hero.positionY + hero.height / 2, shootDestination));
+	shots++;
 }
 
 canvas.onmousedown = function (e) {
@@ -90,19 +92,31 @@ function drawHud() {
 	context.beginPath();
 
 	//hp stroke
-	context.rect(canvas.width - 210, canvas.height - 50, 200, 30);
+	context.rect(10, canvas.height - 50, 200, 30);
 	context.stroke();
 
 	//hp line
 	let hpPercentage = ((hero.actualHp / hero.maxHp) * 100);
 	let hpLine = ((hpPercentage / 100) * 200) >= 200 ? 200 : ((hpPercentage / 100) * 200) <= 0 ? 0 : ((hpPercentage / 100) * 200);
 	context.fillStyle = (hpPercentage >= 66) ? good : (33 <= hpPercentage && hpPercentage <= 66) ? normal : (hpPercentage <= 33) ? bad : "#000000";
-	context.fillRect(canvas.width - 210, canvas.height - 50, hpLine, 30);
+	context.fillRect(10, canvas.height - 50, hpLine, 30);
 
-	//hero text
+	//text style
 	context.font = "bold 15pt Arial";
 	context.fillStyle = "#000000";
-	context.fillText("Hero", canvas.width - 130, canvas.height - 30);
+
+	//hero level text
+	context.fillText("Lvl: " + hero.level, 10, canvas.height - 135);
+
+	//hero shots text
+	context.fillText("Shots: " + shots, 10, canvas.height - 110);
+
+	//hero Weapon text
+	context.fillText("Weapon: " + hero.weapon, 10, canvas.height - 85);
+
+	//enemy num text
+	context.fillText("Enemies: " + enemies.length, 10, canvas.height - 60);
+
 }
 
 function drawObjects(delta) {
