@@ -29,9 +29,9 @@ class Enemy {
 		context.closePath();
 		context.restore();
 
-		let bad = "rgba(168, 55, 55, 0.75)";
-		let normal = "rgba(211, 224, 46, 0.75)";
-		let good = "rgba(101, 165, 90, 0.75)";
+		let bad = "rgba(168, 55, 55, 0.9)";
+		let normal = "rgba(211, 224, 46, 0.9)";
+		let good = "rgba(101, 165, 90, 0.9)";
 		let hpPercentage = (this.hp / this.maxHp) * 100;
 		context.beginPath();
 		context.lineWidth = 5;

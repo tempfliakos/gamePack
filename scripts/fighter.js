@@ -77,7 +77,7 @@ function drawHud() {
 	hpParentDiv.innerText = 'HP: ';
 	const hpPercentageText = document.createElement('div');
 	hpPercentageText.id = 'hpPercentageText';
-	hpPercentageText.style.width = hpPercentage/10 + 'px';
+	hpPercentageText.style.width = hpPercentage / 10 + 'px';
 	hpPercentageText.style.height = '10px';
 	hpPercentageText.style.backgroundColor = 'black';
 	hpPercentageText.style.margin = '0 5px';
@@ -99,8 +99,6 @@ function drawHud() {
 	hudPanel.appendChild(shotsText);
 	hudPanel.appendChild(heroWeaponText);
 	hudPanel.appendChild(deadEnemiesText);
-	//context.fillStyle = (hpPercentage >= 66) ? good : (33 <= hpPercentage && hpPercentage <= 66) ? normal : (hpPercentage <= 33) ? bad : "#000000";
-	//context.fillRect(10, canvas.height - 50, hpLine, 30);
 }
 
 function updateHud() {
@@ -112,10 +110,11 @@ function updateHud() {
 }
 
 let hps = [];
+let healed = false;
 function drawHp() {
-	for (let i = 0; i < hps.length; i++) {
+	if (hps.length > 0) {
 		context.beginPath();
-		context.arc(hps[i].x, hps[i].y, hps[i].rad, 0, 10);
+		context.arc(hps[0].x, hps[0].y, hps[0].rad, 0, 10);
 		context.fillStyle = 'white';
 		context.fill();
 		context.closePath();
@@ -127,32 +126,35 @@ function drawHp() {
 		context.closePath();
 
 		context.beginPath();
-		context.moveTo(hps[i].x - hps[i].rad, hps[i].y);
-		context.lineTo(hps[i].x + hps[i].rad, hps[i].y);
-		context.moveTo(hps[i].x, hps[i].y - hps[i].rad);
-		context.lineTo(hps[i].x, hps[i].y + hps[i].rad);
-		context.lineWidth = Math.round(hps[i].rad / 2);
+		context.moveTo(hps[0].x - hps[0].rad, hps[0].y);
+		context.lineTo(hps[0].x + hps[0].rad, hps[0].y);
+		context.moveTo(hps[0].x, hps[0].y - hps[0].rad);
+		context.lineTo(hps[0].x, hps[0].y + hps[0].rad);
+		context.lineWidth = Math.round(hps[0].rad / 2);
 		context.stroke();
 		context.lineWidth = 1;
 		context.closePath();
 		context.strokeStyle = 'black';
 
-		let dx = (hps[i].x + 25) - (hero.positionX + hero.width / 2);
-		let dy = (hps[i].y + 25) - (hero.positionY + hero.height / 2);
+		let dx = (hps[0].x + 25) - (hero.positionX + hero.width / 2);
+		let dy = (hps[0].y + 25) - (hero.positionY + hero.height / 2);
 		let rSum = 25 + hero.width / 2;
 		if (dx * dx + dy * dy <= rSum * rSum) {
 			hero.actualHp = hero.actualHp + 5;
 			if (hero.actualHp > hero.maxHp) {
 				hero.actualHp = hero.maxHp;
 			}
+			healed = true;
 		}
 	}
+	if (healed) { hps = [] };
 }
 
 function drawObjects(delta) {
 	drawMap(Mcanvas, Mcontext);
 	if (randomInterval(0, 1000) == 5) {
-		hps = [];
+		hps = []
+		healed = false;
 		hps.push(
 			{
 				x: randomInterval(0, canvas.width),
@@ -160,7 +162,6 @@ function drawObjects(delta) {
 				rad: 15
 			})
 	};
-	hps = hps.filter(e => !e.used);
 	drawHp();
 
 	for (let projectile of projectiles) {
@@ -215,7 +216,7 @@ function stop() {
 		return;
 	}
 	if (paused) {
-		console.log(paused);
+		console.log('paused');
 	}
 }
 
