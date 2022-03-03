@@ -32,13 +32,12 @@ class Enemy {
 		let bad = "rgba(168, 55, 55, 0.75)";
 		let normal = "rgba(211, 224, 46, 0.75)";
 		let good = "rgba(101, 165, 90, 0.75)";
-		let hpPercentage = ((this.hp / this.maxHp) * 100);
-		let hpLine = ((hpPercentage / 100) * 50) >= 50 ? 50 : ((hpPercentage / 100) * 50) <= 0 ? 0 : ((hpPercentage / 100) * 50);
+		let hpPercentage = (this.hp / this.maxHp) * 100;
 		context.beginPath();
-		context.moveTo(this.positionX, this.positionY - 10);
-		context.lineTo(this.positionX + hpLine, this.positionY - 10);
 		context.lineWidth = 5;
 		context.strokeStyle = (hpPercentage >= 66) ? good : (33 <= hpPercentage && hpPercentage <= 66) ? normal : (hpPercentage <= 33) ? bad : "#000000";
+		let hpLine = this.hp / this.maxHp * 2;
+		context.arc(this.positionX + this.width / 2, this.positionY + this.height / 2, this.width / 2 + 5, 0, hpLine * Math.PI, false);
 		context.stroke();
 		context.lineWidth = 1;
 		context.strokeStyle = 'black';
