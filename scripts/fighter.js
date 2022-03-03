@@ -150,7 +150,7 @@ function drawObjects(delta) {
 	}
 
 	for (let enemy of enemies) {
-		enemy.step(delta / 1000, hero);
+		enemy.step(delta / 1000, hero, enemies);
 	}
 	hero.draw();
 }
@@ -206,7 +206,7 @@ const main = function () {
 	context.clearRect(0, 0, innerWidth, innerHeight);
 	const now = Date.now();
 	const delta = now - then;
-	hero.step(delta / 1000);
+	hero.step(delta / 1000, enemies);
 	then = now;
 	projectiles = projectiles.filter(p => p.hit !== true && p.positionX > 0 && p.positionX < canvas.width && p.positionY > 0 && p.positionY < canvas.height);
 	enemies = enemies.filter(e => e.hp > 0);

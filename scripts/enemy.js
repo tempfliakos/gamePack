@@ -44,7 +44,7 @@ class Enemy {
 		context.strokeStyle = 'black';
 	}
 
-	step(modifier, hero) {
+	step(modifier, hero, enemies) {
 		const angle = Math.atan2(this.positionY - hero.positionY, this.positionX - hero.positionX);
 		const heroPosition = {
 			x: Math.cos(angle),
@@ -55,10 +55,34 @@ class Enemy {
 			if (hero.actualHp <= 0) {
 				gameOver = true;
 			}
+		} else {
+			let enemyPosition;
+			for (let enemy of enemies) {
+				if (this !== enemy && isEnemyHit(this, enemy)) {
+					enemyPosition = {
+						positionX: enemy.positionX,
+						positionY: enemy.positionY,
+					}
+				}
+			}
+			const velocity = this.speed * modifier;
+			if (!enemyPosition) {
+				this.positionX -= heroPosition.x * velocity;
+				this.positionY -= heroPosition.y * velocity;
+			} else {
+				if (this.positionX > enemyPosition.positionX) {
+					this.positionX += 1 * velocity;
+				} else if (this.positionX < enemyPosition.positionX) {
+					this.positionX -= 1 * velocity;
+				}
+
+				if (this.positionY > enemyPosition.positionY) {
+					this.positionY += 1 * velocity;
+				} else if (this.positionY < enemyPosition.positionY) {
+					this.positionY -= 1 * velocity;
+				}
+			}
 		}
-		const velocity = this.speed * modifier;
-		this.positionX -= (heroPosition.x * velocity);
-		this.positionY -= heroPosition.y * velocity;
 		this.draw();
 	}
 }

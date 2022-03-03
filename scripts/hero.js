@@ -60,32 +60,64 @@ class Hero {
 		context.restore();
 	}
 
-	step(modifier) {
+	step(modifier, enemies) {
 		const velocity = this.speed * modifier;
+		let x = this.positionX;
+		let y = this.positionY;
+		let notarget = false;
 		if ('KeyW' in keysDown) {
-			this.positionY -= velocity;
+			y -= velocity;
 		}
 		if ('KeyA' in keysDown) {
-			this.positionX -= velocity;
+			x -= velocity;
 		}
 		if ('KeyS' in keysDown) {
-			this.positionY += velocity;
+			y += velocity;
 		}
 		if ('KeyD' in keysDown) {
-			this.positionX += velocity;
+			x += velocity;
+		}
+		if ('Space' in keysDown) {
+			notarget = true;
 		}
 
-		if (this.positionY < 0) {
-			this.positionY = 0;
+		if (y < 0) {
+			y = 0;
 		}
-		if (this.positionX < 0) {
-			this.positionX = 0;
+		if (x < 0) {
+			x = 0;
 		}
-		if (this.positionY + this.height > canvas.height) {
-			this.positionY = canvas.height - this.height;
+		if (y + this.height > canvas.height) {
+			y = canvas.height - this.height;
 		}
-		if (this.positionX + this.width > canvas.width) {
-			this.positionX = canvas.width - this.width;
+		if (x + this.width > canvas.width) {
+			x = canvas.width - this.width;
+		}
+
+		let enemyMet = false;
+		let heroTemp = {
+			positionX: x,
+			positionY: y,
+			width: this.width,
+			height: this.height
+		}
+		if (!notarget) {
+			for (let enemy of enemies) {
+				if (this !== enemy && isEnemyHit(enemy, heroTemp)) {
+					enemyMet = true;
+				}
+			}
+		}
+		if (!enemyMet) {
+			this.positionX = x;
+			this.positionY = y;
 		}
 	}
+}
+
+function isEnemyHit(enemy, hero) {
+	let dx = (enemy.positionX + enemy.width / 2) - (hero.positionX + hero.width / 2);
+	let dy = (enemy.positionY + enemy.height / 2) - (hero.positionY + hero.height / 2);
+	let rSum = enemy.width / 2 + hero.width / 4;
+	return (dx * dx + dy * dy <= rSum * rSum);
 }
