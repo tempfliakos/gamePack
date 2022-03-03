@@ -23,6 +23,13 @@ function generateProjectile() {
 canvas.onmousedown = function (e) {
 	generateProjectile(e)
 }
+
+addEventListener('keydown', e => {
+	if (e.code == 'Escape') {
+		paused = !paused;
+		paused ? stop() : start();
+	}
+})
 let interval;
 
 canvas.addEventListener("mousedown", e => {
@@ -181,42 +188,52 @@ function randomInterval(min, max) {
 
 function stop() {
 	cancelAnimationFrame(animId);
-	const gameoverdiv = document.createElement('div');
-	gameoverdiv.className = 'gameOver';
-	gameoverdiv.style.width = 500 + 'px';
-	gameoverdiv.style.height = 300 + 'px';
-	gameoverdiv.style.left = document.documentElement.clientWidth / 2 - 250 + 'px';
-	gameoverdiv.style.top = document.documentElement.clientHeight / 2 - 150 + 'px';
-	gameoverdiv.innerText = 'Game Over';
-	const retry = document.createElement('button');
-	retry.innerHTML = 'Retry';
-	retry.onclick = () => document.location.reload();
-	gameoverdiv.appendChild(retry);
-	document.getElementsByTagName('html')[0].appendChild(gameoverdiv);
+	if (gameOver) {
+		const gameoverdiv = document.createElement('div');
+		gameoverdiv.className = 'gameOver';
+		gameoverdiv.style.width = 500 + 'px';
+		gameoverdiv.style.height = 300 + 'px';
+		gameoverdiv.style.left = document.documentElement.clientWidth / 2 - 250 + 'px';
+		gameoverdiv.style.top = document.documentElement.clientHeight / 2 - 150 + 'px';
+		gameoverdiv.innerText = 'Game Over';
+		const retry = document.createElement('button');
+		retry.innerHTML = 'Retry';
+		retry.onclick = () => document.location.reload();
+		gameoverdiv.appendChild(retry);
+		document.getElementsByTagName('html')[0].appendChild(gameoverdiv);
+		return;
+	}
+	if(paused) {
+		console.log(paused);
+	}
 }
 
 function start() {
+	then = Date.now();
 	animId = requestAnimationFrame(main);
 }
 
 let animId;
 let deadEnemies = 0;
 let gameOver = false;
+let paused = false;
 const main = function () {
-	context.clearRect(0, 0, innerWidth, innerHeight);
-	const now = Date.now();
-	const delta = now - then;
-	hero.step(delta / 1000, enemies);
-	then = now;
-	projectiles = projectiles.filter(p => p.hit !== true && p.positionX > 0 && p.positionX < canvas.width && p.positionY > 0 && p.positionY < canvas.height);
-	enemies = enemies.filter(e => e.hp > 0);
-	drawObjects(delta);
-	generateEnemies();
-	updateHud();
-	if (gameOver) {
-		stop();
-	} else {
-		animId = requestAnimationFrame(main);
+	if (!paused) {
+		context.clearRect(0, 0, innerWidth, innerHeight);
+		const now = Date.now();
+		const delta = now - then;
+		hero.step(delta / 1000, enemies);
+		then = now;
+		projectiles = projectiles.filter(p => p.hit !== true && p.positionX > 0 && p.positionX < canvas.width && p.positionY > 0 && p.positionY < canvas.height);
+		enemies = enemies.filter(e => e.hp > 0);
+		drawObjects(delta);
+		generateEnemies();
+		updateHud();
+		if (gameOver) {
+			stop();
+		} else {
+			animId = requestAnimationFrame(main);
+		}
 	}
 }
 
