@@ -28,7 +28,7 @@ class Hero {
 		this.image.src = "../resources/hero.svg";
 		this.actualHp = actualHp;
 		this.maxHp = maxHp;
-		this.level = 1
+		this.level = 1;
 		this.weapon = "Sling-shot";
 	}
 
