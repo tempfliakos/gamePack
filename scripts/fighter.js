@@ -26,8 +26,10 @@ function generateProjectile() {
 	shots++;
 }
 
+let shooting = false;
 canvas.onmousedown = function (e) {
 	generateProjectile(e)
+	shooting = true;
 }
 
 addEventListener('keydown', e => {
@@ -47,6 +49,7 @@ canvas.addEventListener("mousedown", e => {
 
 canvas.addEventListener("mouseup", e => {
 	clearInterval(interval);
+	shooting = false;
 });
 
 addEventListener('resize', initCanvasSize);
