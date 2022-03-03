@@ -2,17 +2,24 @@
 <html lang="hu">
 
 <head>
-    <meta charset="utf-8">
-    <title>Shooter</title>
-    <link rel="icon" type="image/x-icon" href="../resources/favicon.ico">
-    <link rel="stylesheet" href="../styles/fighter.css"/>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<meta charset="utf-8">
+	<title>Shooter</title>
+	<link rel="icon" type="image/x-icon" href="../resources/favicon.ico">
+	<link rel="stylesheet" href="../styles/fighter.css" />
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <script src="../scripts/config.js"></script>
+	<script src="../scripts/config.js"></script>
 	<canvas id="gameCanvas" style="z-index: 1;"></canvas>
 	<canvas id="mapCanvas" style="z-index: 0;"></canvas>
+	<div id="options" class="options">
+		<button onclick="location.reload()">New Game</button>
+		<button disabled="disabled">Save</button>
+		<button disabled="disabled">Load</button>
+		<button disabled="disabled">Upgrade</button>
+	</div>
 	<script src="../scripts/tilemap.js"></script>
 	<script src="../scripts/hero.js"></script>
 	<script src="../scripts/projectile.js"></script>

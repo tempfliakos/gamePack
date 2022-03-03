@@ -9,10 +9,11 @@ const Mcontext = Mcanvas.getContext('2d');
 function initCanvasSize() {
 	canvas.width = document.documentElement.clientWidth;
 	canvas.height = document.documentElement.clientHeight;
-
 	Mcanvas.width = document.documentElement.clientWidth;
 	Mcanvas.height = document.documentElement.clientHeight;
 	$('body').height(document.documentElement.clientHeight);
+	$('#options').css('left', document.documentElement.clientWidth / 2 - ($('#options').width() / 2));
+	$('#options').css('top', document.documentElement.clientHeight / 2 - ($('#options').height() / 2));
 }
 
 let shots = 0;
@@ -35,7 +36,14 @@ canvas.onmousedown = function (e) {
 addEventListener('keydown', e => {
 	if (e.code == 'Escape') {
 		paused = !paused;
-		paused ? stop() : start();
+		if (paused) {
+			stop();
+			document.getElementById('options').style.visibility = 'visible';
+		} else {
+			start();
+			document.getElementById('options').style.visibility = 'hidden';
+		};
+
 	}
 })
 let interval;
@@ -204,18 +212,7 @@ function randomInterval(min, max) {
 function stop() {
 	cancelAnimationFrame(animId);
 	if (gameOver) {
-		const gameoverdiv = document.createElement('div');
-		gameoverdiv.className = 'gameOver';
-		gameoverdiv.style.width = 500 + 'px';
-		gameoverdiv.style.height = 300 + 'px';
-		gameoverdiv.style.left = document.documentElement.clientWidth / 2 - 250 + 'px';
-		gameoverdiv.style.top = document.documentElement.clientHeight / 2 - 150 + 'px';
-		gameoverdiv.innerText = 'Game Over';
-		const retry = document.createElement('button');
-		retry.innerHTML = 'Retry';
-		retry.onclick = () => document.location.reload();
-		gameoverdiv.appendChild(retry);
-		document.getElementsByTagName('html')[0].appendChild(gameoverdiv);
+		document.getElementById('options').style.visibility = 'visible';
 		return;
 	}
 	if (paused) {
