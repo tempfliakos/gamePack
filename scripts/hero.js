@@ -17,19 +17,23 @@ addEventListener("mousemove", e => {
 });
 
 class Hero {
-	constructor(name, positionX, positionY, width, height, actualHp, maxHp) {
-		this.name = name;
+	constructor(positionX, positionY, name = defaultHero.name, width = defaultHero.size, height = defaultHero.size, actualHp = defaultHero.hp, upgrades = defaultHero.upgrades, appearence = defaultHero.appearence, level = defaultHero.level, weapon = defaultHero.weapon, xp = defaultHero.xp, points = defaultHero.points) {
 		this.positionX = positionX;
 		this.positionY = positionY;
-		this.speed = 100;
 		this.width = width;
 		this.height = height;
-		this.image = new Image();
-		this.image.src = "../resources/hero.svg";
+
+		this.name = name;
 		this.actualHp = actualHp;
-		this.maxHp = maxHp;
-		this.level = 1;
-		this.weapon = "Sling-shot";
+		this.maxHp = actualHp + upgrades.hp;
+		this.velocity = defaultHero.velocity + upgrades.velocity;
+		this.image = new Image();
+		this.image.src = appearence;
+		this.level = level;
+		this.weapon = weapon;
+		this.xp = xp;
+		this.points = points;
+		this.damage = upgrades.damage;
 	}
 
 	draw() {
@@ -61,7 +65,7 @@ class Hero {
 	}
 
 	step(modifier, enemies) {
-		const velocity = this.speed * modifier;
+		const velocity = this.velocity * modifier;
 		let x = this.positionX;
 		let y = this.positionY;
 		let notarget = false;

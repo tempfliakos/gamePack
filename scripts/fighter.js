@@ -47,7 +47,7 @@ addEventListener('resize', initCanvasSize);
 
 initCanvasSize();
 
-let hero = new Hero('Unkindled', (canvas.width / 2) - 20, (canvas.height / 2) - 20, 40, 40, 1000, 1000);
+let hero = new Hero((canvas.width / 2) - 20, (canvas.height / 2) - 20);
 let then = Date.now();
 let rotate;
 
