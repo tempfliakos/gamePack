@@ -77,7 +77,7 @@ function drawHud() {
 	hpParentDiv.innerText = 'HP: ';
 	const hpPercentageText = document.createElement('div');
 	hpPercentageText.id = 'hpPercentageText';
-	hpPercentageText.style.width = hpPercentage + 'px';
+	hpPercentageText.style.width = hpPercentage/10 + 'px';
 	hpPercentageText.style.height = '10px';
 	hpPercentageText.style.backgroundColor = 'black';
 	hpPercentageText.style.margin = '0 5px';
@@ -142,6 +142,9 @@ function drawHp() {
 		let rSum = 25 + hero.width / 2;
 		if (dx * dx + dy * dy <= rSum * rSum) {
 			hero.actualHp = hero.actualHp + 5;
+			if (hero.actualHp > hero.maxHp) {
+				hero.actualHp = hero.maxHp;
+			}
 		}
 	}
 }
@@ -211,7 +214,7 @@ function stop() {
 		document.getElementsByTagName('html')[0].appendChild(gameoverdiv);
 		return;
 	}
-	if(paused) {
+	if (paused) {
 		console.log(paused);
 	}
 }
