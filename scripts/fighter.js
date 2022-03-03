@@ -49,51 +49,76 @@ let enemies = [];
 let maxEnemies = 10;
 
 function drawHud() {
-	let bad = "rgba(168, 55, 55, 0.5)";
-	let normal = "rgba(211, 224, 46, 0.5)";
-	let good = "rgba(101, 165, 90, 0.5)";
-
-	context.beginPath();
-
-	//hp stroke
-	context.rect(10, canvas.height - 50, 200, 30);
-	context.stroke();
-
-	//hp line
 	let hpPercentage = Math.round(((hero.actualHp / hero.maxHp) * 100));
-	let hpLine = ((hpPercentage / 100) * 200) >= 200 ? 200 : ((hpPercentage / 100) * 200) <= 0 ? 0 : ((hpPercentage / 100) * 200);
-	context.fillStyle = (hpPercentage >= 66) ? good : (33 <= hpPercentage && hpPercentage <= 66) ? normal : (hpPercentage <= 33) ? bad : "#000000";
-	context.fillRect(10, canvas.height - 50, hpLine, 30);
 
-	//text style
-	context.font = "bold 15pt Arial";
-	context.fillStyle = "#000000";
+	const hudPanel = document.createElement('div');
+	hudPanel.className = 'hudPanel';
+	hudPanel.style.left = '10px';
+	hudPanel.style.top = document.documentElement.clientHeight - 50 + 'px';
+	document.getElementsByTagName('html')[0].appendChild(hudPanel);
+	const hpParentDiv = document.createElement('div');
+	hpParentDiv.id = 'hpParentDiv';
+	hpParentDiv.style.minWidth = '150px';
+	hpParentDiv.style.display = 'flex';
+	hpParentDiv.style.alignItems = 'center';
+	hpParentDiv.innerText = 'HP: ';
+	const hpPercentageText = document.createElement('div');
+	hpPercentageText.id = 'hpPercentageText';
+	hpPercentageText.style.width = hpPercentage + 'px';
+	hpPercentageText.style.height = '10px';
+	hpPercentageText.style.backgroundColor = 'black';
+	hpPercentageText.style.margin = '0 5px';
+	hpParentDiv.appendChild(hpPercentageText);
+	const heroLevelText = document.createElement('span');
+	heroLevelText.id = 'heroLevelText';
+	heroLevelText.innerText = 'Lvl: ' + hero.level;
+	const shotsText = document.createElement('span');
+	shotsText.id = 'shotsText';
+	shotsText.innerText = 'Shots: ' + shots;
+	const heroWeaponText = document.createElement('span');
+	heroWeaponText.id = 'heroWeaponText';
+	heroWeaponText.innerText = 'Weapon: ' + hero.weapon;
+	const deadEnemiesText = document.createElement('span');
+	deadEnemiesText.id = 'deadEnemiesText';
+	deadEnemiesText.innerText = 'Kills: ' + deadEnemies;
+	hudPanel.appendChild(hpParentDiv);
+	hudPanel.appendChild(heroLevelText);
+	hudPanel.appendChild(shotsText);
+	hudPanel.appendChild(heroWeaponText);
+	hudPanel.appendChild(deadEnemiesText);
+	//context.fillStyle = (hpPercentage >= 66) ? good : (33 <= hpPercentage && hpPercentage <= 66) ? normal : (hpPercentage <= 33) ? bad : "#000000";
+	//context.fillRect(10, canvas.height - 50, hpLine, 30);
+}
 
-	//hero hp text
-	context.fillText(hpPercentage, 90, canvas.height - 30);
-
-	//hero level text
-	context.fillText("Lvl: " + hero.level, 10, canvas.height - 135);
-
-	//hero shots text
-	context.fillText("Shots: " + shots, 10, canvas.height - 110);
-
-	//hero Weapon text
-	context.fillText("Weapon: " + hero.weapon, 10, canvas.height - 85);
-
-	//dead enemy num text
-	context.fillText("Dead enemies: " + deadEnemies, 10, canvas.height - 60);
-
+function updateHud() {
+	document.getElementById('hpPercentageText').style.width = Math.round(((hero.actualHp / hero.maxHp) * 100)) + 'px';
+	document.getElementById('heroLevelText').innerText = 'Lvl: ' + hero.level;
+	document.getElementById('shotsText').innerText = 'Shots: ' + shots;
+	document.getElementById('heroWeaponText').innerText = 'Weapon: ' + hero.weapon;
+	document.getElementById('deadEnemiesText').innerText = 'Kills: ' + deadEnemies;
 }
 
 let hps = [];
 function drawHp() {
 	for (let i = 0; i < hps.length; i++) {
 		context.beginPath();
-		context.fillStyle = "white";
-		context.fillRect(hps[i].x, hps[i].y, 40, 40);
-		context.fillStyle = "red";
-		context.fillText("HP", hps[i].x + 5, hps[i].y + 30);
+		context.arc(hps[i].x, hps[i].y, hps[i].rad, 0, 10);
+		context.fillStyle = 'white';
+		context.fill();
+
+		context.lineWidth = 1;
+		context.strokeStyle = 'red';
+		context.stroke();
+		context.closePath();
+
+		context.beginPath();
+		context.moveTo(hps[i].x - hps[i].rad, hps[i].y);
+		context.lineTo(hps[i].x + hps[i].rad, hps[i].y);
+		context.moveTo(hps[i].x, hps[i].y - hps[i].rad);
+		context.lineTo(hps[i].x, hps[i].y + hps[i].rad);
+		context.lineWidth = Math.round(hps[i].rad / 2);
+		context.stroke();
+		context.lineWidth = 1;
 		context.closePath();
 
 
@@ -108,13 +133,13 @@ function drawHp() {
 
 function drawObjects(delta) {
 	drawMap(canvas, context);
-	drawHud();
 	if (randomInterval(0, 1000) == 5) {
+		hps = [];
 		hps.push(
 			{
 				x: randomInterval(0, canvas.width),
 				y: randomInterval(0, canvas.height),
-				used: false
+				rad: 15
 			})
 	};
 	hps = hps.filter(e => !e.used);
@@ -187,6 +212,7 @@ const main = function () {
 	enemies = enemies.filter(e => e.hp > 0);
 	drawObjects(delta);
 	generateEnemies();
+	updateHud();
 	if (gameOver) {
 		stop();
 	} else {
@@ -194,4 +220,5 @@ const main = function () {
 	}
 }
 
+drawHud();
 main();
