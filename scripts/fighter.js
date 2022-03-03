@@ -3,9 +3,15 @@
 const canvas = document.getElementById('gameCanvas');
 const context = canvas.getContext('2d');
 
+const Mcanvas = document.getElementById('mapCanvas');
+const Mcontext = Mcanvas.getContext('2d');
+
 function initCanvasSize() {
 	canvas.width = document.documentElement.clientWidth;
 	canvas.height = document.documentElement.clientHeight;
+
+	Mcanvas.width = document.documentElement.clientWidth;
+	Mcanvas.height = document.documentElement.clientHeight;
 	$('body').height(document.documentElement.clientHeight);
 }
 
@@ -65,7 +71,7 @@ function drawHud() {
 	document.getElementsByTagName('html')[0].appendChild(hudPanel);
 	const hpParentDiv = document.createElement('div');
 	hpParentDiv.id = 'hpParentDiv';
-	hpParentDiv.style.minWidth = '150px';
+	hpParentDiv.style.width = '150px';
 	hpParentDiv.style.display = 'flex';
 	hpParentDiv.style.alignItems = 'center';
 	hpParentDiv.innerText = 'HP: ';
@@ -112,7 +118,9 @@ function drawHp() {
 		context.arc(hps[i].x, hps[i].y, hps[i].rad, 0, 10);
 		context.fillStyle = 'white';
 		context.fill();
+		context.closePath();
 
+		context.beginPath();
 		context.lineWidth = 1;
 		context.strokeStyle = 'red';
 		context.stroke();
@@ -127,7 +135,7 @@ function drawHp() {
 		context.stroke();
 		context.lineWidth = 1;
 		context.closePath();
-
+		context.strokeStyle = 'black';
 
 		let dx = (hps[i].x + 25) - (hero.positionX + hero.width / 2);
 		let dy = (hps[i].y + 25) - (hero.positionY + hero.height / 2);
@@ -139,7 +147,7 @@ function drawHp() {
 }
 
 function drawObjects(delta) {
-	drawMap(canvas, context);
+	drawMap(Mcanvas, Mcontext);
 	if (randomInterval(0, 1000) == 5) {
 		hps = [];
 		hps.push(
