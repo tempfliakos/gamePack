@@ -7,7 +7,7 @@ const levels = [
         "groundType": 1,
         "enemies": {
             "low": 15,
-            "medium": 8,
+            "normal": 8,
             "huge": 2
         },
         "maxEnemyOnScreen": 5,
@@ -19,7 +19,7 @@ const levels = [
         "groundType": 2,
         "enemies": {
             "low": 50,
-            "medium": 0,
+            "normal": 0,
             "huge": 0
         },
         "maxEnemyOnScreen": 10,
@@ -30,32 +30,60 @@ const levels = [
 const enemyTypes = [
     {
         "type": "low",
-        "hp": 100,
+        "hp": 10,
         "damage": 1,
+        "damageInterval": 1000,
         "velocity": 100,
         "appearence": resource + "enemy.svg",
         "size": 20,
-        "reward": 1
+        "reward": 1,
     },
     {
-        "type": "medium",
-        "hp": 100,
+        "type": "normal",
+        "hp": 20,
         "damage": 5,
+        "damageInterval": 1000,
         "velocity": 90,
         "appearence": resource + "enemy.svg",
-        "size": 30,
+        "size": 40,
         "reward": 5
     },
     {
         "type": "huge",
-        "hp": 100,
+        "hp": 30,
         "damage": 10,
+        "damageInterval": 1000,
         "velocity": 80,
         "appearence": resource + "enemy.svg",
-        "size": 40,
+        "size": 80,
         "reward": 10
     }
 ];
+
+const enemyTypesMap = {
+    "low": 0,
+    "normal": 1,
+    "huge": 2,
+}
+
+const weapons = [
+    {
+        "type": "Sling-shot",
+        "ref": "sling",
+        "damage": 1,
+        "velocity": 500,
+        "color": "black",
+        "radius": 4,
+        "upgrades": {
+            "damage": 0,
+            "velocity": 0
+        }
+    }
+];
+
+const weaponsMap = {
+        "sling": 0,
+};
 
 const defaultHero = {
     "name": "Hero",
@@ -64,7 +92,7 @@ const defaultHero = {
     "appearence": resource + "hero.svg",
     "size": 40,
     "level": 1,
-    "weapon": "Sling-shot",
+    "weapon": weapons[weaponsMap.sling],
     "xp": 0,
     "points": 0,
     "upgrades": {
@@ -73,18 +101,6 @@ const defaultHero = {
         "velocity": 0
     }
 };
-
-const weapons = [
-    {
-        "type": "Sling-shot",
-        "damage": 10,
-        "velocity": 10,
-        "upgrades": {
-            "damage": 0,
-            "velocity": 0
-        }
-    }
-];
 
 const heroLevels = [
     {

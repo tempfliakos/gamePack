@@ -191,13 +191,13 @@ function generateEnemies() {
 			let sideRandom = Math.random();
 			let enemy;
 			if (sideRandom > 0 && sideRandom <= 0.25) {
-				enemy = new Enemy('Unkindled', randomInterval(0, canvas.width), 0, 40, 40, 10, 10, "../resources/enemy.svg");
+				enemy = new Enemy(randomInterval(0, canvas.width), 0, enemyTypesMap.huge);
 			} else if (sideRandom > 0.25 && sideRandom <= 0.5) {
-				enemy = new Enemy('Unkindled', canvas.width, randomInterval(0, canvas.height), 40, 40, 10, 10, "../resources/enemy.svg");
+				enemy = new Enemy(canvas.width, randomInterval(0, canvas.height), enemyTypesMap.huge);
 			} else if (sideRandom > 0.5 && sideRandom <= 0.75) {
-				enemy = new Enemy('Unkindled', randomInterval(0, canvas.width), canvas.height, 40, 40, 10, 10, "../resources/enemy.svg");
+				enemy = new Enemy(randomInterval(0, canvas.width), canvas.height, enemyTypesMap.huge);
 			} else if (sideRandom > 0.75 && sideRandom <= 1) {
-				enemy = new Enemy('Unkindled', 0, randomInterval(0, canvas.height), 40, 40, 10, 10, "../resources/enemy.svg");
+				enemy = new Enemy(0, randomInterval(0, canvas.height), enemyTypesMap.huge);
 			}
 			enemies.push(enemy);
 		}

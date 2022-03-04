@@ -1,16 +1,22 @@
 class Enemy {
-	constructor(name, positionX, positionY, width, height, hp, damage, src) {
-		this.name = name;
+	constructor(positionX, positionY, type) {
 		this.positionX = positionX;
 		this.positionY = positionY;
-		this.speed = 100;
-		this.width = width;
-		this.height = height;
-		this.maxHp = 10;
-		this.hp = hp;
-		this.damage = damage;
+
+		let enemyType = enemyTypes[type];
+
+		this.maxHp = enemyType.hp;
+		this.hp = enemyType.hp;
+		this.damage = enemyType.damage;
+		this.velocity = enemyType.velocity;
 		this.image = new Image();
-		this.image.src = src;
+		this.image.src = enemyType.appearence;
+		this.width = enemyType.size;
+		this.height = enemyType.size;
+		this.reward = enemyType.reward;
+		this.damageInterval = enemyType.damageInterval;
+
+		this.lastDamage = undefined;
 	}
 
 	draw() {
@@ -50,9 +56,12 @@ class Enemy {
 			y: Math.sin(angle)
 		}
 		if (isEnemyHit(this, hero)) {
-			hero.actualHp -= this.damage;
-			if (hero.actualHp <= 0) {
-				gameOver = true;
+			if (!this.lastDamage || (new Date() - this.lastDamage) > this.damageInterval) {
+				hero.actualHp -= this.damage;
+				this.lastDamage = new Date();
+				if (hero.actualHp <= 0) {
+					gameOver = true;
+				}
 			}
 		} else {
 			let enemyPosition;
@@ -64,7 +73,7 @@ class Enemy {
 					}
 				}
 			}
-			const velocity = this.speed * modifier;
+			const velocity = this.velocity * modifier;
 			if (!enemyPosition) {
 				this.positionX -= heroPosition.x * velocity;
 				this.positionY -= heroPosition.y * velocity;

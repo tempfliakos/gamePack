@@ -1,27 +1,11 @@
-/** 
- * type: {
- * radius: number
- * damage: number
- * color: string
- * speed: number
- * }
-*/
-
-const defaultType = {
-	radius: 4,
-	damage: 1,
-	color: 'black',
-	speed: 500
-}
-
 class Projectile {
-	constructor(positionX, positionY, destination, type = defaultType) {
-		this.positionX = positionX;
-		this.positionY = positionY;
-		this.destination = destination;
-		this.type = type;
-		this.hit = false;
-	}
+    constructor(positionX, positionY, destination, type = hero.weapon) {
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.destination = destination;
+        this.type = type;
+        this.hit = false;
+    }
 
 	draw() {
 		context.beginPath();
@@ -41,13 +25,13 @@ class Projectile {
 				if (enemy.hp <= 0) {
 					deadEnemies++;
 				}
-			}
-		}
-		const velocity = this.type.speed * modifier;
-		this.positionX += (this.destination.x * velocity);
-		this.positionY += this.destination.y * velocity;
-		this.draw();
-	}
+            }
+        }
+        const velocity = this.type.velocity * modifier;
+        this.positionX += (this.destination.x * velocity);
+        this.positionY += this.destination.y * velocity;
+        this.draw();
+    }
 }
 
 function isProjectileHit(projectile, enemy) {
