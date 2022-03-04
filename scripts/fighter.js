@@ -70,7 +70,7 @@ let rotate;
 
 let projectiles = [];
 let enemies = [];
-let maxEnemies = 10;
+let actualLevel = levels[0];
 
 function drawHud() {
 	let hpPercentage = Math.round(((hero.actualHp / hero.maxHp) * 100));
@@ -186,26 +186,46 @@ function drawObjects(delta) {
 }
 
 function generateEnemies() {
-	if (enemies.length <= 3) {
-		for (let i = 0; i < randomInterval(0, maxEnemies); i++) {
+	let availableEnemiesArray = availableEnemies();
+	if (enemies.length <= actualLevel.minEnemyOnScreen && availableEnemiesArray.length > 0) {
+		for (let i = 0; i < randomInterval(0, actualLevel.maxEnemyOnScreen); i++) {
 			let sideRandom = Math.random();
 			let enemy;
+			let enemyType = randomEnemy();
+			actualLevel.enemies[enemyType] -= 1;
 			if (sideRandom > 0 && sideRandom <= 0.25) {
-				enemy = new Enemy(randomInterval(0, canvas.width), 0, enemyTypesMap.huge);
+				enemy = new Enemy(randomInterval(0, canvas.width), 0, enemyTypesMap[enemyType]);
 			} else if (sideRandom > 0.25 && sideRandom <= 0.5) {
-				enemy = new Enemy(canvas.width, randomInterval(0, canvas.height), enemyTypesMap.huge);
+				enemy = new Enemy(canvas.width, randomInterval(0, canvas.height), enemyTypesMap[enemyType]);
 			} else if (sideRandom > 0.5 && sideRandom <= 0.75) {
-				enemy = new Enemy(randomInterval(0, canvas.width), canvas.height, enemyTypesMap.huge);
+				enemy = new Enemy(randomInterval(0, canvas.width), canvas.height, enemyTypesMap[enemyType]);
 			} else if (sideRandom > 0.75 && sideRandom <= 1) {
-				enemy = new Enemy(0, randomInterval(0, canvas.height), enemyTypesMap.huge);
+				enemy = new Enemy(0, randomInterval(0, canvas.height), enemyTypesMap[enemyType]);
 			}
 			enemies.push(enemy);
 		}
+	} else if(enemies.length == 0 && availableEnemiesArray == 0) {
+		actualLevel = levels[actualLevel.id];
 	}
 }
 
 function randomInterval(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function availableEnemies() {
+	let available = [];
+	Object.keys(actualLevel.enemies).forEach(function(key) {
+		if(actualLevel.enemies[key] > 0) {
+			available.push(key);
+		}
+	  })
+	return available;
+}
+
+function randomEnemy() {
+	let available = availableEnemies();
+	return available[randomInterval(0, available.length-1)];
 }
 
 
@@ -248,6 +268,7 @@ const main = function () {
 		}
 	}
 }
+
 
 drawHud();
 main();

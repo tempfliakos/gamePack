@@ -10,6 +10,7 @@ const levels = [
             "normal": 8,
             "huge": 2
         },
+        "minEnemyOnScreen": 3,
         "maxEnemyOnScreen": 5,
         "reward": 10
     },
@@ -22,6 +23,7 @@ const levels = [
             "normal": 0,
             "huge": 0
         },
+        "minEnemyOnScreen": 3,
         "maxEnemyOnScreen": 10,
         "reward": 10
     }
