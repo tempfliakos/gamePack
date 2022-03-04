@@ -24,6 +24,7 @@ class Projectile {
 				enemy.hp -= this.type.damage;
 				if (enemy.hp <= 0) {
 					deadEnemies++;
+					hero.gainExp(enemy.reward);
 				}
             }
         }

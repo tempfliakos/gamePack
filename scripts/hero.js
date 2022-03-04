@@ -17,7 +17,7 @@ addEventListener("mousemove", e => {
 });
 
 class Hero {
-	constructor(positionX, positionY, name = defaultHero.name, width = defaultHero.size, height = defaultHero.size, actualHp = defaultHero.hp, upgrades = defaultHero.upgrades, appearence = defaultHero.appearence, level = defaultHero.level, weapon = defaultHero.weapon, xp = defaultHero.xp, points = defaultHero.points) {
+	constructor(positionX, positionY, name = defaultHero.name, width = defaultHero.size, height = defaultHero.size, actualHp = defaultHero.hp, upgrades = defaultHero.upgrades, appearence = defaultHero.appearence, level = defaultHero.level, weapon = defaultHero.weapon, xp = defaultHero.xp, attributePoints = defaultHero.attributePoints) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.width = width;
@@ -32,7 +32,7 @@ class Hero {
 		this.level = level;
 		this.weapon = weapon;
 		this.xp = xp;
-		this.points = points;
+		this.attributePoints = attributePoints;
 		this.damage = upgrades.damage;
 	}
 
@@ -126,6 +126,18 @@ class Hero {
 		if (!enemyMet) {
 			this.positionX = x;
 			this.positionY = y;
+		}
+	}
+
+	gainExp(numberOfExp) {
+		this.xp += numberOfExp;
+		let heroLevel = heroLevels[hero.level-1];
+		if(heroLevel && this.xp >= heroLevel.required) {
+			hero.level += 1;
+			hero.attributePoints += heroLevel.reward;
+			numberOfExp = this.xp - heroLevel.required;
+			this.xp = 0;
+			this.gainExp(numberOfExp);
 		}
 	}
 }

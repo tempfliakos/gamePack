@@ -56,7 +56,7 @@ const enemyTypes = [
         "velocity": 80,
         "appearence": resource + "enemy.svg",
         "size": 80,
-        "reward": 10
+        "reward": 151
     }
 ];
 
@@ -94,7 +94,7 @@ const defaultHero = {
     "level": 1,
     "weapon": weapons[weaponsMap.sling],
     "xp": 0,
-    "points": 0,
+    "attributePoints": 0,
     "upgrades": {
         "hp": 0,
         "damage": 0,
@@ -105,8 +105,8 @@ const defaultHero = {
 const heroLevels = [
     {
         "level": 1,
-        "required": 0,
-        "reward": 0
+        "required": 50,
+        "reward": 1
     },
     {
         "level": 2,

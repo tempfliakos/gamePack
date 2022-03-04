@@ -101,7 +101,7 @@ function drawHud() {
 	shotsText.innerText = 'Shots: ' + shots;
 	const heroWeaponText = document.createElement('span');
 	heroWeaponText.id = 'heroWeaponText';
-	heroWeaponText.innerText = 'Weapon: ' + hero.weapon;
+	heroWeaponText.innerText = 'Weapon: ' + hero.weapon.type;
 	const deadEnemiesText = document.createElement('span');
 	deadEnemiesText.id = 'deadEnemiesText';
 	deadEnemiesText.innerText = 'Kills: ' + deadEnemies;
@@ -116,7 +116,7 @@ function updateHud() {
 	document.getElementById('hpPercentageText').style.width = Math.round(((hero.actualHp / hero.maxHp) * 100)) + 'px';
 	document.getElementById('heroLevelText').innerText = 'Lvl: ' + hero.level;
 	document.getElementById('shotsText').innerText = 'Shots: ' + shots;
-	document.getElementById('heroWeaponText').innerText = 'Weapon: ' + hero.weapon;
+	document.getElementById('heroWeaponText').innerText = 'Weapon: ' + hero.weapon.type;
 	document.getElementById('deadEnemiesText').innerText = 'Kills: ' + deadEnemies;
 }
 
@@ -228,7 +228,7 @@ function start() {
 let animId;
 let deadEnemies = 0;
 let gameOver = false;
-let paused = false;
+let paused = undefined;
 const main = function () {
 	if (!paused) {
 		context.clearRect(0, 0, innerWidth, innerHeight);
