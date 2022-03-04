@@ -64,7 +64,7 @@
 
 	function stop() {
 		stopped = stopped ? false : true;
-		btnStop.style.background = stopped ? "url('resources/play.svg')" : "url('resources/stop.svg')";
+		btnStop.style.background = stopped ? "url('../resources/play.svg')" : "url('../resources/stop.svg')";
 		move();
 	}
 
@@ -162,9 +162,9 @@
 	function startGame() {
 		running = true;
 		stopped = false;
-		btnStop.style.background = (stopped && running) ? "url('resources/play.svg')" : "url('resources/stop.svg')";
+		btnStop.style.background = (stopped && running) ? "url('../resources/play.svg')" : "url('../resources/stop.svg')";
 		btnStop.style.visibility = 'visible';
-		btnStart.style.background = running ? "url('resources/retry.svg')" : "url('resources/play.svg')";
+		btnStart.style.background = running ? "url('../resources/retry.svg')" : "url('../resources/play.svg')";
 		btnStart.style.backgroundSize = 'contain';
 		score = {
 			ember: 0,
@@ -624,7 +624,7 @@
 		border: none;
 		width: 30px;
 		height: 30px;
-		background: url('resources/play.svg');
+		background: url('../resources/play.svg');
 		background-position: center;
 		background-size: auto;
 	}
@@ -636,7 +636,7 @@
 		border: none;
 		width: 30px;
 		height: 30px;
-		background: url('resources/stop.svg');
+		background: url('../resources/stop.svg');
 		background-position: center;
 		background-size: auto;
 		visibility: hidden;
@@ -664,7 +664,7 @@
 	.screenFalOldalt {
 		width: 30px;
 		position: absolute;
-		background: url("resources/brick.svg");
+		background: url("../resources/brick.svg");
 		background-attachment: fixed;
 		background-repeat: repeat;
 		background-size: 100px;
@@ -675,7 +675,7 @@
 	.screenFalFentLent {
 		height: 30px;
 		position: absolute;
-		background: url("resources/brick.svg");
+		background: url("../resources/brick.svg");
 		background-color: red;
 		background-attachment: fixed;
 		background-repeat: repeat;
@@ -768,7 +768,7 @@
 
 	.fal {
 		position: absolute;
-		background: url(resources/brick.svg);
+		background: url('../resources/brick.svg');
 		background-attachment: fixed;
 		background-repeat: repeat;
 		background-size: 100px;
