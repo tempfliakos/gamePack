@@ -5,6 +5,12 @@ body {
   margin: 0;
   font-family: monospace;
   overflow: hidden;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 canvas {
   cursor: url("../resources/crosshair.cur") 1 1, default;
