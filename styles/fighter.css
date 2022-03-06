@@ -4,34 +4,13 @@ body {
   height: 100%;
   margin: 0;
   font-family: monospace;
+  overflow: hidden;
 }
 canvas {
   cursor: url("../resources/crosshair.cur") 1 1, default;
   position: absolute;
   top: 0;
   left: 0;
-}
-
-.gameOver {
-  position: absolute;
-  background-color: grey;
-  border: 2px solid black;
-  border-radius: 5px;
-  font-size: 5em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  z-index: 2;
-}
-
-.gameOver button {
-  width: 4em;
-  height: 2em;
-  border-radius: 5px;
-  font-size: 0.5em;
-  margin: 1em;
-  cursor: pointer;
 }
 
 .hudPanel {
@@ -51,24 +30,22 @@ canvas {
 }
 
 .options {
-  visibility: hidden;
   position: absolute;
-  left: 100px;
-  top: 100px;
+  left: -310px;
+  top: 0px;
+  width: 300px;
   background-color: rgba(128, 128, 128, 0.698);
   border: 2px solid grey;
   font-size: 5em;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
-  z-index: 2;
+  z-index: 3;
+  transition: 0.5s;
 }
 
 .options button {
-  width: 20em;
-  height: 5em;
   font-size: 0.3em;
   font-weight: bold;
   font-family: monospace;
+  height: 5em;
 }

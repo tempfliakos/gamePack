@@ -12,8 +12,9 @@ function initCanvasSize() {
 	Mcanvas.width = document.documentElement.clientWidth;
 	Mcanvas.height = document.documentElement.clientHeight;
 	$('body').height(document.documentElement.clientHeight);
-	$('#options').css('left', document.documentElement.clientWidth / 2 - ($('#options').width() / 2));
-	$('#options').css('top', document.documentElement.clientHeight / 2 - ($('#options').height() / 2));
+	$('#options').css('left', - 310);
+	$('#options').css('top', 0);
+	$('#options').css('height', canvas.height);
 }
 
 let shots = 0;
@@ -38,10 +39,10 @@ addEventListener('keydown', e => {
 		paused = !paused;
 		if (paused) {
 			stop();
-			document.getElementById('options').style.visibility = 'visible';
+			document.getElementById('options').style.left = '0px';
 		} else {
 			start();
-			document.getElementById('options').style.visibility = 'hidden';
+			document.getElementById('options').style.left = '-310px';
 		};
 
 	}
@@ -263,6 +264,7 @@ const main = function () {
 		updateHud();
 		if (gameOver) {
 			stop();
+			document.getElementById('options').style.left = '0px';
 		} else {
 			animId = requestAnimationFrame(main);
 		}
