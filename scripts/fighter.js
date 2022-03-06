@@ -271,6 +271,5 @@ const main = function () {
 	}
 }
 
-
 drawHud();
 main();
