@@ -1,11 +1,11 @@
 class Projectile {
-    constructor(positionX, positionY, destination, type = hero.weapon) {
-        this.positionX = positionX;
-        this.positionY = positionY;
-        this.destination = destination;
-        this.type = type;
-        this.hit = false;
-    }
+	constructor(positionX, positionY, destination, type = hero.weapon) {
+		this.positionX = positionX;
+		this.positionY = positionY;
+		this.destination = destination;
+		this.type = type;
+		this.hit = false;
+	}
 
 	draw() {
 		context.beginPath();
@@ -26,13 +26,13 @@ class Projectile {
 					deadEnemies++;
 					hero.gainExp(enemy.reward);
 				}
-            }
-        }
-        const velocity = this.type.velocity * modifier;
-        this.positionX += (this.destination.x * velocity);
-        this.positionY += this.destination.y * velocity;
-        this.draw();
-    }
+			}
+		}
+		const velocity = this.type.velocity * modifier;
+		this.positionX += (this.destination.x * velocity);
+		this.positionY += this.destination.y * velocity;
+		this.draw();
+	}
 }
 
 function isProjectileHit(projectile, enemy) {

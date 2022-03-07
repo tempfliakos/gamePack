@@ -39,6 +39,16 @@ class Hero {
 	draw() {
 		rotate = Math.atan2(mouse.y - this.positionY, mouse.x - this.positionX) + Math.PI / 2;
 
+
+		//shadow
+		context.beginPath();
+		context.fillStyle = "#00000044";
+		context.filter = 'blur(4px)';
+		context.arc(this.positionX + 10, this.positionY + 10, this.width / 2, 0, 2 * Math.PI, false);
+		context.fill();
+		context.filter = 'none';
+		context.closePath();
+
 		context.save();
 
 		context.translate(this.positionX + this.width / 2, this.positionY + this.height / 2);

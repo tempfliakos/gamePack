@@ -22,6 +22,15 @@ class Enemy {
 	draw() {
 		rotate = Math.atan2(hero.positionY - this.positionY, hero.positionX - this.positionX) + Math.PI / 2;
 
+		//shadow
+		context.beginPath();
+		context.fillStyle = "#00000044";
+		context.filter = 'blur(4px)';
+		context.arc(this.positionX, this.positionY, this.width / 2, 0, 2 * Math.PI, false);
+		context.fill();
+		context.closePath();
+		context.filter = 'none';
+
 		context.save();
 
 		context.translate(this.positionX + this.width / 2, this.positionY + this.height / 2);

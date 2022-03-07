@@ -205,7 +205,7 @@ function generateEnemies() {
 			}
 			enemies.push(enemy);
 		}
-	} else if(enemies.length == 0 && availableEnemiesArray == 0) {
+	} else if (enemies.length == 0 && availableEnemiesArray == 0) {
 		actualLevel = levels[actualLevel.id];
 	}
 }
@@ -216,17 +216,17 @@ function randomInterval(min, max) {
 
 function availableEnemies() {
 	let available = [];
-	Object.keys(actualLevel.enemies).forEach(function(key) {
-		if(actualLevel.enemies[key] > 0) {
+	Object.keys(actualLevel.enemies).forEach(function (key) {
+		if (actualLevel.enemies[key] > 0) {
 			available.push(key);
 		}
-	  })
+	})
 	return available;
 }
 
 function randomEnemy() {
 	let available = availableEnemies();
-	return available[randomInterval(0, available.length-1)];
+	return available[randomInterval(0, available.length - 1)];
 }
 
 
