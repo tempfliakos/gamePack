@@ -59,18 +59,40 @@ canvas {
   cursor: pointer;
 }
 
-.options button:disabled{
-	cursor: not-allowed;
+.options button:disabled {
+  cursor: not-allowed;
 }
 
 #fps {
-	position: absolute;
-	left: 10px;
-	top: 10px;
-	font-size: 1em;
-	z-index: 2;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-size: 1em;
+  z-index: 2;
 }
 
-#state{
-	margin: 1em 0;
+#state {
+  margin: 1em 0;
+}
+
+.youdied {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  z-index: 2;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  color: #f54d4d;
+  text-align: center;
+  font-size: 9em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: auto;
 }

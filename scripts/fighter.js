@@ -233,8 +233,12 @@ function stop() {
 	cancelAnimationFrame(animId);
 	if (gameOver) {
 		document.getElementById('options').style.left = '0px';
-		document.getElementById('state').innerText = 'Game Over';
+		document.getElementById('state').innerText = '';
 		canvas.style.backgroundColor = '#f54d4d';
+		let youDied = document.createElement('div');
+		youDied.className = 'youdied';
+		youDied.innerText = 'YOU DIED';
+		document.getElementsByTagName('body')[0].appendChild(youDied);
 		return;
 	}
 	if (paused) {
