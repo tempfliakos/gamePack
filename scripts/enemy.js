@@ -22,15 +22,6 @@ class Enemy {
 	draw() {
 		rotate = Math.atan2(hero.positionY - this.positionY, hero.positionX - this.positionX) + Math.PI / 2;
 
-		//shadow
-		context.beginPath();
-		context.fillStyle = "#00000044";
-		context.filter = 'blur(4px)';
-		context.arc(this.positionX, this.positionY, this.width / 2, 0, 2 * Math.PI, false);
-		context.fill();
-		context.closePath();
-		context.filter = 'none';
-
 		context.save();
 
 		context.translate(this.positionX + this.width / 2, this.positionY + this.height / 2);
@@ -44,9 +35,9 @@ class Enemy {
 		context.closePath();
 		context.restore();
 
-		let bad = "rgba(168, 55, 55, 0.9)";
-		let normal = "rgba(211, 224, 46, 0.9)";
-		let good = "rgba(101, 165, 90, 0.9)";
+		let bad = "rgba(168, 55, 55, 1)";
+		let normal = "rgba(211, 224, 46, 1)";
+		let good = "rgba(101, 165, 90, 1)";
 		let hpPercentage = (this.hp / this.maxHp) * 100;
 		context.beginPath();
 		context.lineWidth = 5;

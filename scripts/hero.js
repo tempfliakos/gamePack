@@ -39,16 +39,6 @@ class Hero {
 	draw() {
 		rotate = Math.atan2(mouse.y - this.positionY, mouse.x - this.positionX) + Math.PI / 2;
 
-
-		//shadow
-		context.beginPath();
-		context.fillStyle = "#00000044";
-		context.filter = 'blur(4px)';
-		context.arc(this.positionX + 10, this.positionY + 10, this.width / 2, 0, 2 * Math.PI, false);
-		context.fill();
-		context.filter = 'none';
-		context.closePath();
-
 		context.save();
 
 		context.translate(this.positionX + this.width / 2, this.positionY + this.height / 2);
@@ -83,6 +73,16 @@ class Hero {
 		context.closePath();
 
 		context.restore();
+
+		if (shadow) {
+			context.beginPath();
+			context.shadowColor = 'black';
+			context.shadowBlur = 10;
+			context.shadowOffsetX = 5;
+			context.shadowOffsetY = 5;
+			context.fill();
+			context.closePath();
+		}
 	}
 
 	step(modifier, enemies) {
@@ -141,8 +141,8 @@ class Hero {
 
 	gainExp(numberOfExp) {
 		this.xp += numberOfExp;
-		let heroLevel = heroLevels[hero.level-1];
-		if(heroLevel && this.xp >= heroLevel.required) {
+		let heroLevel = heroLevels[hero.level - 1];
+		if (heroLevel && this.xp >= heroLevel.required) {
 			hero.level += 1;
 			hero.attributePoints += heroLevel.reward;
 			numberOfExp = this.xp - heroLevel.required;

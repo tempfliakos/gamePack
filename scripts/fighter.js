@@ -163,7 +163,7 @@ function drawHp() {
 }
 
 function drawObjects(delta) {
-	drawMap(Mcanvas, Mcontext);
+	//drawMap(Mcanvas, Mcontext);
 	if (randomInterval(0, 1000) == 5) {
 		hps = []
 		healed = false;
@@ -246,6 +246,21 @@ function start() {
 	animId = requestAnimationFrame(main);
 }
 
+var currentSecond = 0, frameCount = 0, framesLastSecond = 0;
+function fpsCalc(){
+	var sec = Math.floor(Date.now()/1000);
+	if(sec!=currentSecond)
+	{
+		currentSecond = sec;
+		framesLastSecond = frameCount;
+		frameCount = 1;
+	}
+	else { frameCount++; }
+
+	document.getElementById('fps').innerText = 'FPS: ' + framesLastSecond;
+}
+
+let shadow = false;
 let animId;
 let deadEnemies = 0;
 let gameOver = false;
@@ -268,6 +283,7 @@ const main = function () {
 		} else {
 			animId = requestAnimationFrame(main);
 		}
+		fpsCalc();
 	}
 }
 

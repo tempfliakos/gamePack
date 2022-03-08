@@ -27,20 +27,11 @@ let mapH = 20;
 let image = new Image();
 image.src = "../resources/tilemap_ground.png";
 
-var currentSecond = 0, frameCount = 0, framesLastSecond = 0;
+
 
 function drawMap(canvas, context) {
 	tileW = canvas.width / mapW;
 	tileH = canvas.height / mapH;
-
-	var sec = Math.floor(Date.now()/1000);
-	if(sec!=currentSecond)
-	{
-		currentSecond = sec;
-		framesLastSecond = frameCount;
-		frameCount = 1;
-	}
-	else { frameCount++; }
 
 	for (var y = 0; y < mapH; ++y) {
 		for (var x = 0; x < mapW; ++x) {
@@ -53,8 +44,4 @@ function drawMap(canvas, context) {
 			}
 		}
 	}
-
-	context.font = "bold 15pt Arial";
-	context.fillStyle = "#000000";
-	context.fillText("FPS: " + framesLastSecond, 10, 30);
 }
