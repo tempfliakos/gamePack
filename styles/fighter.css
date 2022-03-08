@@ -48,6 +48,7 @@ canvas {
   flex-direction: column;
   z-index: 3;
   transition: 0.5s;
+  text-align: center;
 }
 
 .options button {
@@ -55,6 +56,11 @@ canvas {
   font-weight: bold;
   font-family: monospace;
   height: 5em;
+  cursor: pointer;
+}
+
+.options button:disabled{
+	cursor: not-allowed;
 }
 
 #fps {
@@ -63,4 +69,8 @@ canvas {
 	top: 10px;
 	font-size: 1em;
 	z-index: 2;
+}
+
+#state{
+	margin: 1em 0;
 }

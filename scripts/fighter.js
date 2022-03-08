@@ -39,7 +39,6 @@ addEventListener('keydown', e => {
 		paused = !paused;
 		if (paused) {
 			stop();
-			document.getElementById('options').style.left = '0px';
 		} else {
 			start();
 			document.getElementById('options').style.left = '-310px';
@@ -233,11 +232,13 @@ function randomEnemy() {
 function stop() {
 	cancelAnimationFrame(animId);
 	if (gameOver) {
-		document.getElementById('options').style.visibility = 'visible';
+		document.getElementById('options').style.left = '0px';
+		document.getElementById('state').innerText = 'Game Over';
 		return;
 	}
 	if (paused) {
-		console.log('paused');
+		document.getElementById('options').style.left = '0px';
+		document.getElementById('state').innerText = 'Paused';
 	}
 }
 
@@ -247,10 +248,9 @@ function start() {
 }
 
 var currentSecond = 0, frameCount = 0, framesLastSecond = 0;
-function fpsCalc(){
-	var sec = Math.floor(Date.now()/1000);
-	if(sec!=currentSecond)
-	{
+function fpsCalc() {
+	var sec = Math.floor(Date.now() / 1000);
+	if (sec != currentSecond) {
 		currentSecond = sec;
 		framesLastSecond = frameCount;
 		frameCount = 1;
@@ -279,7 +279,6 @@ const main = function () {
 		updateHud();
 		if (gameOver) {
 			stop();
-			document.getElementById('options').style.left = '0px';
 		} else {
 			animId = requestAnimationFrame(main);
 		}
