@@ -76,6 +76,7 @@ function drawHud() {
 	let hpPercentage = Math.round(((hero.actualHp / hero.maxHp) * 100));
 
 	const hudPanel = document.createElement('div');
+	hudPanel.id = 'hudPanel';
 	hudPanel.className = 'hudPanel';
 	hudPanel.style.left = '10px';
 	hudPanel.style.top = document.documentElement.clientHeight - 50 + 'px';
@@ -234,7 +235,8 @@ function stop() {
 	if (gameOver) {
 		document.getElementById('options').style.left = '0px';
 		document.getElementById('state').innerText = '';
-		canvas.style.backgroundColor = '#f54d4d';
+		canvas.remove();
+		Mcanvas.style.backgroundColor = '#f54d4d';
 		let youDied = document.createElement('div');
 		youDied.className = 'youdied';
 		youDied.innerText = 'YOU DIED';

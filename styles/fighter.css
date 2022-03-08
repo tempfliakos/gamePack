@@ -14,10 +14,13 @@ body {
 }
 canvas {
   cursor: url("../resources/crosshair.cur") 1 1, default;
-  background-color: #a3f5a3;
   position: absolute;
   top: 0;
   left: 0;
+}
+
+#mapCanvas {
+  background-color: #a3f5a3;
 }
 
 .hudPanel {
