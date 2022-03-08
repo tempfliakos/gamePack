@@ -234,6 +234,7 @@ function stop() {
 	if (gameOver) {
 		document.getElementById('options').style.left = '0px';
 		document.getElementById('state').innerText = 'Game Over';
+		canvas.style.backgroundColor = '#f54d4d';
 		return;
 	}
 	if (paused) {
@@ -266,24 +267,39 @@ let deadEnemies = 0;
 let gameOver = false;
 let paused = undefined;
 const main = function () {
-	if (!paused) {
-		context.clearRect(0, 0, innerWidth, innerHeight);
-		const now = Date.now();
-		const delta = now - then;
-		hero.step(delta / 1000, enemies);
-		then = now;
-		projectiles = projectiles.filter(p => p.hit !== true && p.positionX > 0 && p.positionX < canvas.width && p.positionY > 0 && p.positionY < canvas.height);
-		enemies = enemies.filter(e => e.hp > 0);
-		drawObjects(delta);
-		generateEnemies();
-		updateHud();
-		if (gameOver) {
-			stop();
-		} else {
-			animId = requestAnimationFrame(main);
+	try{
+		if (!paused) {
+			context.clearRect(0, 0, innerWidth, innerHeight);
+			const now = Date.now();
+			const delta = now - then;
+			hero.step(delta / 1000, enemies);
+			then = now;
+			projectiles = projectiles.filter(p => p.hit !== true && p.positionX > 0 && p.positionX < canvas.width && p.positionY > 0 && p.positionY < canvas.height);
+			enemies = enemies.filter(e => e.hp > 0);
+			drawObjects(delta);
+			generateEnemies();
+			updateHud();
+			if (gameOver) {
+				stop();
+			} else {
+				animId = requestAnimationFrame(main);
+			}
+			fpsCalc();
 		}
-		fpsCalc();
+	} catch(e){
+		let hiba = document.createElement('div');
+		hiba.style.position = 'absolute';
+		hiba.style.padding = '5px';
+		hiba.style.left = '10px';
+		hiba.style.top = '10px';
+		hiba.style.backgroundColor = 'red';
+		hiba.style.color = 'white';
+		hiba.style.fontSize = '2em';
+		hiba.innerText = e;
+		hiba.style.zIndex = '3';
+		document.getElementsByTagName('body')[0].appendChild(hiba);
 	}
+
 }
 
 drawHud();
