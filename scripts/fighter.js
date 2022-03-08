@@ -15,7 +15,13 @@ function initCanvasSize() {
 	$('#options').css('left', - 310);
 	$('#options').css('top', 0);
 	$('#options').css('height', canvas.height);
+	$(window).blur(function() {
+		paused = true;
+		stop();
+	});
 }
+
+
 
 let shots = 0;
 function generateProjectile() {
@@ -273,7 +279,7 @@ let deadEnemies = 0;
 let gameOver = false;
 let paused = undefined;
 const main = function () {
-	try{
+	try {
 		if (!paused) {
 			context.clearRect(0, 0, innerWidth, innerHeight);
 			const now = Date.now();
@@ -292,7 +298,7 @@ const main = function () {
 			}
 			fpsCalc();
 		}
-	} catch(e){
+	} catch (e) {
 		let hiba = document.createElement('div');
 		hiba.style.position = 'absolute';
 		hiba.style.padding = '5px';
