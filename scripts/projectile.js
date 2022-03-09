@@ -26,6 +26,7 @@ class Projectile {
 					deadEnemies++;
 					hero.gainExp(enemy.reward);
 				}
+				enemyHits.push({ damage: this.type.damage, enemy: enemy, timeout: addSeconds(1) });
 			}
 		}
 		const velocity = this.type.velocity * modifier;

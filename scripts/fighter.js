@@ -163,6 +163,7 @@ function drawHp() {
 		context.fillStyle = 'white';
 		context.fill();
 		context.closePath();
+		context.fillStyle = 'black';
 
 		context.beginPath();
 		context.arc(hps[0].x, hps[0].y, hps[0].rad, 0, 10);
@@ -204,6 +205,16 @@ function drawHp() {
 function drawObjects(delta) {
 	//drawMap(Mcanvas, Mcontext);
 
+	for (let i = 0; i < enemyHits.length; i++) {
+		if (enemyHits[i].timeout < new Date()) {
+			enemyHits.splice(i, 1);
+		} else {
+			context.beginPath();
+			context.font = "20px Arial";
+			context.fillText( enemyHits[i].enemy.maxHp - enemyHits[i].enemy.hp, enemyHits[i].enemy.positionX + (enemyHits[i].enemy.width / 2), enemyHits[i].enemy.positionY - 10);
+			context.closePath();
+		}
+	}
 	drawHud();
 	if (randomInterval(0, 1000) == 5) {
 		hps = []
@@ -314,12 +325,17 @@ function fpsCalc() {
 	document.getElementById('fps').innerText = 'FPS: ' + framesLastSecond;
 }
 
+function addSeconds(sec, date = new Date()) {
+	date.setSeconds(date.getSeconds() + sec);
+	return date;
+}
+
 let shadow = false;
 let animId;
 let deadEnemies = 0;
 let gameOver = false;
 let paused = undefined;
-
+let enemyHits = [];
 const main = function () {
 	try {
 		if (!paused || !gameOver) {
