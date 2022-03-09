@@ -128,7 +128,7 @@ function upgrade() {
 let hudElements = [];
 function drawHud() {
 	hudElements = [
-		{ id: 'hpPercentageText', text: 'HP: ', data: hero.actualHp + '/' +  hero.maxHp },
+		{ id: 'hpPercentageText', text: 'HP: ', data: hero.actualHp < 0 ? 0 + '/' + hero.maxHp : hero.actualHp + '/' + hero.maxHp },
 		{ id: 'heroLevelText', text: 'Lvl: ', data: hero.level },
 		{ id: 'heroXp', text: 'XP: ', data: hero.xp },
 		{ id: 'shotsText', text: 'Shots: ', data: shots },
@@ -274,14 +274,18 @@ function randomEnemy() {
 function stop() {
 	cancelAnimationFrame(animId);
 	if (gameOver) {
-		document.getElementById('options').style.left = '0px';
-		document.getElementById('state').innerText = '';
-		canvas.remove();
-		Mcanvas.style.backgroundColor = '#f54d4d';
-		let youDied = document.createElement('div');
-		youDied.className = 'youdied';
-		youDied.innerText = 'YOU DIED';
-		document.getElementsByTagName('body')[0].appendChild(youDied);
+		if ($('#youDied').length < 1) {
+			document.getElementById('options').style.left = '0px';
+			document.getElementById('state').innerText = '';
+			document.getElementById('upgradeBtn').disabled = 'disabled';
+			canvas.remove();
+			Mcanvas.style.backgroundColor = '#f54d4d';
+			let youDied = document.createElement('div');
+			youDied.id = 'youDied';
+			youDied.className = 'youdied';
+			youDied.innerText = 'YOU DIED';
+			document.getElementsByTagName('body')[0].appendChild(youDied);
+		}
 		return;
 	}
 	if (paused) {
@@ -291,8 +295,10 @@ function stop() {
 }
 
 function start() {
-	then = Date.now();
-	animId = requestAnimationFrame(main);
+	if (!gameOver) {
+		then = Date.now();
+		animId = requestAnimationFrame(main);
+	}
 }
 
 var currentSecond = 0, frameCount = 0, framesLastSecond = 0;
@@ -316,7 +322,7 @@ let paused = undefined;
 
 const main = function () {
 	try {
-		if (!paused) {
+		if (!paused || !gameOver) {
 			context.clearRect(0, 0, innerWidth, innerHeight);
 			const now = Date.now();
 			const delta = now - then;
@@ -324,13 +330,13 @@ const main = function () {
 			then = now;
 			projectiles = projectiles.filter(p => p.hit !== true && p.positionX > 0 && p.positionX < canvas.width && p.positionY > 0 && p.positionY < canvas.height);
 			enemies = enemies.filter(e => e.hp > 0);
-			drawObjects(delta);
 			generateEnemies();
 			if (gameOver) {
 				stop();
 			} else {
 				animId = requestAnimationFrame(main);
 			}
+			drawObjects(delta);
 			fpsCalc();
 		}
 	} catch (e) {

@@ -16,11 +16,11 @@
 	<canvas id="mapCanvas" style="z-index: 0;" oncontextmenu="return false;"></canvas>
 	<div id="options" class="options">
 		<span id="state"></span>
-		<button onclick="location.reload()">New Game</button>
-		<button disabled="disabled">Save</button>
-		<button disabled="disabled">Load</button>
-		<button onclick="upgrade();">Upgrade</button>
-		<button onclick="location.href = 'index_fighter.html';">Main Screen</button>
+		<button id="newGameBtn" onclick="location.reload()">New Game</button>
+		<button id="saveBtn" disabled="disabled">Save</button>
+		<button id="loadBtn" disabled="disabled">Load</button>
+		<button id="upgradeBtn" onclick="upgrade();">Upgrade</button>
+		<button id="mainScreenBtn" onclick="location.href = 'index_fighter.html';">Main Screen</button>
 	</div>
 	<div id="upgradeDiv" class="upgradeDiv">
 	</div>
