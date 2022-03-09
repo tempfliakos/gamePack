@@ -128,7 +128,7 @@ function upgrade() {
 let hudElements = [];
 function drawHud() {
 	hudElements = [
-		{ id: 'hpPercentageText', text: 'HP: ', data: Math.round(((hero.actualHp / hero.maxHp) * 100)) },
+		{ id: 'hpPercentageText', text: 'HP: ', data: hero.actualHp + '/' +  hero.maxHp },
 		{ id: 'heroLevelText', text: 'Lvl: ', data: hero.level },
 		{ id: 'heroXp', text: 'XP: ', data: hero.xp },
 		{ id: 'shotsText', text: 'Shots: ', data: shots },
@@ -162,6 +162,12 @@ function drawHp() {
 		context.arc(hps[0].x, hps[0].y, hps[0].rad, 0, 10);
 		context.fillStyle = 'white';
 		context.fill();
+		context.closePath();
+
+		context.beginPath();
+		context.arc(hps[0].x, hps[0].y, hps[0].rad, 0, 10);
+		context.strokeStyle = 'black';
+		context.stroke();
 		context.closePath();
 
 		context.beginPath();
