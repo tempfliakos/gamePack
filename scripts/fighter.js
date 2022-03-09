@@ -87,7 +87,7 @@ function upgrade() {
 
 	document.getElementById('upgradeDiv').style.visibility = 'visible';
 	let heroxp = document.createElement('label');
-	heroxp.innerText = 'Available XP: ' + hero.xp;
+	heroxp.innerText = 'Attribute Points: ' + hero.attributePoints;
 	heroxp.style.fontWeight = 'bold';
 	heroxp.id = 'heroXP';
 	document.getElementById('upgradeDiv').appendChild(heroxp);
@@ -100,19 +100,20 @@ function upgrade() {
 		for (const [key, value] of Object.entries(upgradesList[i])) {
 			let parent = document.createElement('div');
 			let name = document.createElement('label');
-			name.innerText = i == 0 ? `Hero ${key}: ` : `Wapon ${key}: `;
+			name.innerText = i == 0 ? `Hero ${key}: ` : `Weapon ${key}: `;
 			let number = document.createElement('label');
 			number.innerText = `${value}`;
 			let buttonParent = document.createElement('div');
 			buttonParent.id = 'buttonParent';
-			let minus = document.createElement('button');
-			minus.innerText = '-'
-			minus.onClick = ()=>{};
 			let plus = document.createElement('button');
 			plus.innerText = '+';
-			plus.onClick = ()=>{};
+			plus.onClick = ()=>{
+				
+			};
+			if(hero.attributePoints < 1){
+				plus.disabled = 'disabled';
+			}
 
-			buttonParent.appendChild(minus);
 			buttonParent.appendChild(plus);
 			parent.appendChild(name);
 			parent.appendChild(number);
