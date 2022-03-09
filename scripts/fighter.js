@@ -206,12 +206,24 @@ function drawObjects(delta) {
 	//drawMap(Mcanvas, Mcontext);
 
 	for (let i = 0; i < enemyHits.length; i++) {
-		if (enemyHits[i].timeout < new Date()) {
+		if (bloodDisapear && enemyHits[i].timeout < new Date()) {
 			enemyHits.splice(i, 1);
 		} else {
 			context.beginPath();
-			context.font = "20px Arial";
-			context.fillText( enemyHits[i].enemy.maxHp - enemyHits[i].enemy.hp, enemyHits[i].enemy.positionX + (enemyHits[i].enemy.width / 2), enemyHits[i].enemy.positionY - 10);
+
+			//sebzes
+			//context.font = "20px Arial";
+			//context.fillText(enemyHits[i].damage, enemyHits[i].x + (enemyHits[i].enemyProt.width / 2), enemyHits[i].y - 10);
+
+			//blood
+			context.fillStyle = enemyHits[i].bloodColor;
+			context.arc(
+				enemyHits[i].x + enemyHits[i].enemyProt.width / 2,
+				enemyHits[i].y + enemyHits[i].enemyProt.height / 2,
+				enemyHits[i].rad,
+				0,
+				10);
+			context.fill();
 			context.closePath();
 		}
 	}
@@ -330,6 +342,7 @@ function addSeconds(sec, date = new Date()) {
 	return date;
 }
 
+let bloodDisapear = false;
 let shadow = false;
 let animId;
 let deadEnemies = 0;

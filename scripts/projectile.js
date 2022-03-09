@@ -26,7 +26,16 @@ class Projectile {
 					deadEnemies++;
 					hero.gainExp(enemy.reward);
 				}
-				enemyHits.push({ damage: this.type.damage, enemy: enemy, timeout: addSeconds(1) });
+				//blood
+				enemyHits.push({
+					damage: this.type.damage,
+					enemyProt: enemy,
+					x: randomInterval(enemy.positionX - 5, enemy.positionX + 5),
+					y: randomInterval(enemy.positionY - 5, enemy.positionY + 5),
+					rad: (1 - (enemy.hp / enemy.maxHp)) * randomInterval((enemy.width / 2) - 5, (enemy.width / 2) + 5),
+					bloodColor: '#ff0000' + Math.round((1 - (enemy.hp / enemy.maxHp)) * 9) + Math.round((1 - (enemy.hp / enemy.maxHp)) * 9),
+					timeout: addSeconds(10)
+				});
 			}
 		}
 		const velocity = this.type.velocity * modifier;
