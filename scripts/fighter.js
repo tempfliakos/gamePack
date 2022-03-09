@@ -47,6 +47,9 @@ addEventListener('keydown', e => {
 		} else {
 			start();
 			document.getElementById('options').style.left = '-310px';
+			if (document.getElementById('upgradeDiv').style.visibility = 'visible') {
+				document.getElementById('upgradeDiv').style.visibility = 'hidden';
+			}
 		};
 
 	}
@@ -77,6 +80,52 @@ let projectiles = [];
 let enemies = [];
 let actualLevel = levels[0];
 
+function upgrade() {
+	if ($('#holderDiv').length > 0) {
+		document.getElementById('upgradeDiv').innerHTML = "";
+	}
+
+	document.getElementById('upgradeDiv').style.visibility = 'visible';
+	let heroxp = document.createElement('label');
+	heroxp.innerText = 'Available XP: ' + hero.xp;
+	heroxp.style.fontWeight = 'bold';
+	heroxp.id = 'heroXP';
+	document.getElementById('upgradeDiv').appendChild(heroxp);
+	let holderDiv = document.createElement('div');
+	holderDiv.id = 'holderDiv';
+	document.getElementById('upgradeDiv').appendChild(holderDiv);
+
+	let upgradesList = [hero.upgrades, hero.weapon.upgrades];
+	for (let i = 0; i < upgradesList.length; i++) {
+		for (const [key, value] of Object.entries(upgradesList[i])) {
+			let parent = document.createElement('div');
+			let name = document.createElement('label');
+			name.innerText = i == 0 ? `Hero ${key}: ` : `Wapon ${key}: `;
+			let number = document.createElement('label');
+			number.innerText = `${value}`;
+			let buttonParent = document.createElement('div');
+			buttonParent.id = 'buttonParent';
+			let minus = document.createElement('button');
+			minus.innerText = '-'
+			minus.onClick = ()=>{};
+			let plus = document.createElement('button');
+			plus.innerText = '+';
+			plus.onClick = ()=>{};
+
+			buttonParent.appendChild(minus);
+			buttonParent.appendChild(plus);
+			parent.appendChild(name);
+			parent.appendChild(number);
+			parent.appendChild(buttonParent);
+			document.getElementById('holderDiv').appendChild(parent);
+		}
+	}
+
+
+	document.getElementById('upgradeDiv').style.left = (document.documentElement.clientWidth / 2) - (document.getElementById('upgradeDiv').getBoundingClientRect().width / 2) + 'px';
+	document.getElementById('upgradeDiv').style.top = (document.documentElement.clientHeight / 2) - (document.getElementById('upgradeDiv').getBoundingClientRect().height / 2) + 'px';
+}
+
 let hudElements = [];
 function drawHud() {
 	hudElements = [
@@ -85,7 +134,8 @@ function drawHud() {
 		{ id: 'heroXp', text: 'XP: ', data: hero.xp },
 		{ id: 'shotsText', text: 'Shots: ', data: shots },
 		{ id: 'heroWeaponText', text: 'Weapon: ', data: hero.weapon.type },
-		{ id: 'deadEnemiesText', text: 'Kills: ', data: deadEnemies }
+		{ id: 'deadEnemiesText', text: 'Kills: ', data: deadEnemies },
+		{ id: 'actualLevel', text: 'Map: ', data: actualLevel.name }
 	];
 
 	for (let i = 0; i < hudElements.length; i++) {
@@ -290,6 +340,7 @@ const main = function () {
 		hiba.innerText = e;
 		hiba.style.zIndex = '3';
 		document.getElementsByTagName('body')[0].appendChild(hiba);
+		console.error(e);
 	}
 
 }

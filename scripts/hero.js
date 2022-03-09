@@ -23,17 +23,18 @@ class Hero {
 		this.width = width;
 		this.height = height;
 
+		this.upgrades = upgrades;
 		this.name = name;
 		this.actualHp = actualHp;
-		this.maxHp = actualHp + upgrades.hp;
-		this.velocity = defaultHero.velocity + upgrades.velocity;
+		this.maxHp = actualHp + this.upgrades.hp;
+		this.velocity = defaultHero.velocity + this.upgrades.velocity;
 		this.image = new Image();
 		this.image.src = appearence;
 		this.level = level;
 		this.weapon = weapon;
 		this.xp = xp;
 		this.attributePoints = attributePoints;
-		this.damage = upgrades.damage;
+		this.damage = this.upgrades.damage;
 	}
 
 	draw() {

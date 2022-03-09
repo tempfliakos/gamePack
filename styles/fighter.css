@@ -67,6 +67,29 @@ canvas {
   cursor: not-allowed;
 }
 
+.upgradeDiv {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: auto;
+  background-color: rgba(128, 128, 128, 0.698);
+  border: 2px solid grey;
+  font-size: 2em;
+  display: flex;
+  flex-direction: column;
+  z-index: 3;
+  text-align: center;
+  visibility: hidden;
+  padding: 0.5em;
+}
+
+.upgradeDiv #holderDiv div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5em;
+}
+
 #fps {
   position: absolute;
   left: 10px;
