@@ -36,7 +36,7 @@ const enemyTypes = [
         "damage": 1,
         "damageInterval": 1000,
         "velocity": 100,
-        "appearence": resource + "enemy.svg",
+        "appearence": resource + "enemy_red.svg",
         "size": 20,
         "reward": 1,
     },
@@ -46,7 +46,7 @@ const enemyTypes = [
         "damage": 5,
         "damageInterval": 1000,
         "velocity": 90,
-        "appearence": resource + "enemy.svg",
+        "appearence": resource + "enemy_blue.svg",
         "size": 40,
         "reward": 5
     },
@@ -56,7 +56,7 @@ const enemyTypes = [
         "damage": 10,
         "damageInterval": 1000,
         "velocity": 80,
-        "appearence": resource + "enemy.svg",
+        "appearence": resource + "enemy_yellow.svg",
         "size": 80,
         "reward": 151
     }

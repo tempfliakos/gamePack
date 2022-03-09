@@ -107,10 +107,8 @@ function upgrade() {
 			buttonParent.id = 'buttonParent';
 			let plus = document.createElement('button');
 			plus.innerText = '+';
-			plus.onClick = ()=>{
-				
-			};
-			if(hero.attributePoints < 1){
+			plus.onClick = () => { };
+			if (hero.attributePoints < 1) {
 				plus.disabled = 'disabled';
 			}
 
