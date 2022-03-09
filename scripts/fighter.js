@@ -15,12 +15,11 @@ function initCanvasSize() {
 	$('#options').css('left', - 310);
 	$('#options').css('top', 0);
 	$('#options').css('height', canvas.height);
-	$(window).blur(function() {
+	$(window).blur(function () {
 		paused = true;
 		stop();
 	});
 }
-
 
 
 let shots = 0;
@@ -78,53 +77,32 @@ let projectiles = [];
 let enemies = [];
 let actualLevel = levels[0];
 
+let hudElements = [];
 function drawHud() {
-	let hpPercentage = Math.round(((hero.actualHp / hero.maxHp) * 100));
+	hudElements = [
+		{ id: 'hpPercentageText', text: 'HP: ', data: Math.round(((hero.actualHp / hero.maxHp) * 100)) },
+		{ id: 'heroLevelText', text: 'Lvl: ', data: hero.level },
+		{ id: 'heroXp', text: 'XP: ', data: hero.xp },
+		{ id: 'shotsText', text: 'Shots: ', data: shots },
+		{ id: 'heroWeaponText', text: 'Weapon: ', data: hero.weapon.type },
+		{ id: 'deadEnemiesText', text: 'Kills: ', data: deadEnemies }
+	];
 
-	const hudPanel = document.createElement('div');
-	hudPanel.id = 'hudPanel';
-	hudPanel.className = 'hudPanel';
-	hudPanel.style.left = '10px';
-	hudPanel.style.top = document.documentElement.clientHeight - 50 + 'px';
-	document.getElementsByTagName('html')[0].appendChild(hudPanel);
-	const hpParentDiv = document.createElement('div');
-	hpParentDiv.id = 'hpParentDiv';
-	hpParentDiv.style.width = '150px';
-	hpParentDiv.style.display = 'flex';
-	hpParentDiv.style.alignItems = 'center';
-	hpParentDiv.innerText = 'HP: ';
-	const hpPercentageText = document.createElement('div');
-	hpPercentageText.id = 'hpPercentageText';
-	hpPercentageText.style.width = hpPercentage / 10 + 'px';
-	hpPercentageText.style.height = '10px';
-	hpPercentageText.style.backgroundColor = 'black';
-	hpPercentageText.style.margin = '0 5px';
-	hpParentDiv.appendChild(hpPercentageText);
-	const heroLevelText = document.createElement('span');
-	heroLevelText.id = 'heroLevelText';
-	heroLevelText.innerText = 'Lvl: ' + hero.level;
-	const shotsText = document.createElement('span');
-	shotsText.id = 'shotsText';
-	shotsText.innerText = 'Shots: ' + shots;
-	const heroWeaponText = document.createElement('span');
-	heroWeaponText.id = 'heroWeaponText';
-	heroWeaponText.innerText = 'Weapon: ' + hero.weapon.type;
-	const deadEnemiesText = document.createElement('span');
-	deadEnemiesText.id = 'deadEnemiesText';
-	deadEnemiesText.innerText = 'Kills: ' + deadEnemies;
-	hudPanel.appendChild(hpParentDiv);
-	hudPanel.appendChild(heroLevelText);
-	hudPanel.appendChild(shotsText);
-	hudPanel.appendChild(heroWeaponText);
-	hudPanel.appendChild(deadEnemiesText);
-}
+	for (let i = 0; i < hudElements.length; i++) {
+		if ($('#' + hudElements[i].id).length > 0) {
+			document.getElementById(hudElements[i].id).innerText = hudElements[i].text + hudElements[i].data;
+		} else {
+			const element = document.createElement('span');
+			element.id = hudElements[i].id;
+			element.innerText = hudElements[i].text + hudElements[i].data;
+			document.getElementById('hudPanel').appendChild(element);
+		}
+	}
 
-function updateHud() {
-	document.getElementById('hpPercentageText').style.width = Math.round(((hero.actualHp / hero.maxHp) * 100)) + 'px';
-	document.getElementById('heroLevelText').innerText = 'Lvl: ' + hero.level;
-	document.getElementById('shotsText').innerText = 'Shots: ' + shots;
-	document.getElementById('heroWeaponText').innerText = 'Weapon: ' + hero.weapon.type;
-	document.getElementById('deadEnemiesText').innerText = 'Kills: ' + deadEnemies;
+	if (document.getElementById('hudPanel').style.top == "") {
+		document.getElementById('hudPanel').style.top = document.documentElement.clientHeight -
+			document.getElementById('hudPanel').getBoundingClientRect().height + 'px';
+	}
 }
 
 let hps = [];
@@ -170,6 +148,8 @@ function drawHp() {
 
 function drawObjects(delta) {
 	//drawMap(Mcanvas, Mcontext);
+
+	drawHud();
 	if (randomInterval(0, 1000) == 5) {
 		hps = []
 		healed = false;
@@ -278,6 +258,7 @@ let animId;
 let deadEnemies = 0;
 let gameOver = false;
 let paused = undefined;
+
 const main = function () {
 	try {
 		if (!paused) {
@@ -290,7 +271,6 @@ const main = function () {
 			enemies = enemies.filter(e => e.hp > 0);
 			drawObjects(delta);
 			generateEnemies();
-			updateHud();
 			if (gameOver) {
 				stop();
 			} else {
@@ -314,5 +294,4 @@ const main = function () {
 
 }
 
-drawHud();
 main();
