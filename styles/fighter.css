@@ -123,3 +123,15 @@ canvas {
   align-items: center;
   font-family: auto;
 }
+
+#weaponDiv {
+  position: absolute;
+  top: 10px;
+  left: 1000px;
+  z-index: 2;
+}
+
+#weaponDiv img {
+  width: 50px;
+  height: auto;
+}

@@ -24,19 +24,27 @@ function initCanvasSize() {
 
 let shots = 0;
 function generateProjectile() {
-	const angle = Math.atan2(mouse.y - hero.positionY, mouse.x - hero.positionX);
-	const shootDestination = {
-		x: Math.cos(angle),
-		y: Math.sin(angle)
+	if (hero.weapon.ammo > 0) {
+		const angle = Math.atan2(mouse.y - hero.positionY, mouse.x - hero.positionX);
+		const shootDestination = {
+			x: Math.cos(angle),
+			y: Math.sin(angle)
+		}
+		projectiles.push(new Projectile(hero.positionX + hero.width / 2, hero.positionY + hero.height / 2, shootDestination));
+		shots++;
+		hero.weapon.ammo--;
+		updateWeaponAmmo();
+	} else {
+		shooting = false;
 	}
-	projectiles.push(new Projectile(hero.positionX + hero.width / 2, hero.positionY + hero.height / 2, shootDestination));
-	shots++;
 }
 
 let shooting = false;
 canvas.onmousedown = function (e) {
-	generateProjectile(e)
-	shooting = true;
+	generateProjectile(e);
+	if (hero.weapon.ammo > 0) {
+		shooting = true;
+	}
 }
 
 addEventListener('keydown', e => {
@@ -81,6 +89,7 @@ canvas.addEventListener("mousewheel", e => {
 		actualWeaponIndex = actualWeaponIndex == weaponsMapMaxIndex ? 0 : ++actualWeaponIndex;
 	}
 	hero.weapon = weapons[actualWeaponIndex];
+	drawWeapon();
 });
 
 addEventListener('resize', initCanvasSize);
@@ -207,6 +216,16 @@ function drawHp() {
 	if (healed) { hps = [] };
 }
 
+function drawWeapon() {
+	document.getElementById('weaponImg').src = hero.weapon.src;
+	document.getElementById('weaponAmmo').innerText = hero.weapon.ammo + '/' + hero.weapon.maxAmmo;
+	document.getElementById('weaponDiv').style.left = document.documentElement.clientWidth - document.getElementById('weaponImg').getBoundingClientRect().width - 10 + 'px';
+}
+
+function updateWeaponAmmo() {
+	document.getElementById('weaponAmmo').innerText = hero.weapon.ammo + '/' + hero.weapon.maxAmmo;
+}
+
 function drawObjects(delta) {
 	//drawMap(Mcanvas, Mcontext);
 
@@ -233,7 +252,7 @@ function drawObjects(delta) {
 		}
 	}
 	drawHud();
-	if ((hero.actualHp / hero.maxHp) < 0.3  && hps.length < 1) {
+	if ((hero.actualHp / hero.maxHp) < 0.3 && hps.length < 1) {
 		hps = []
 		healed = false;
 		hps.push(
@@ -393,4 +412,5 @@ const main = function () {
 
 }
 
+drawWeapon();
 main();
