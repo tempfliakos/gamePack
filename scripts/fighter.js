@@ -51,7 +51,11 @@ addEventListener('keydown', e => {
 				document.getElementById('upgradeDiv').style.visibility = 'hidden';
 			}
 		};
-
+	}
+	//teleport
+	if ('KeyT' in keysDown) {
+		hero.positionX = randomInterval(0, document.documentElement.clientWidth);
+		hero.positionY = randomInterval(0, document.documentElement.clientHeight);
 	}
 })
 let interval;
@@ -71,7 +75,7 @@ canvas.addEventListener("mouseup", e => {
 canvas.addEventListener("mousewheel", e => {
 	let actualWeaponIndex = weaponsMap[hero.weapon.ref];
 	const weaponsMapMaxIndex = Object.keys(weaponsMap).length - 1;
-	if(e.deltaY > 0) {
+	if (e.deltaY > 0) {
 		actualWeaponIndex = actualWeaponIndex == 0 ? weaponsMapMaxIndex : --actualWeaponIndex;
 	} else {
 		actualWeaponIndex = actualWeaponIndex == weaponsMapMaxIndex ? 0 : ++actualWeaponIndex;
@@ -119,9 +123,9 @@ function upgrade() {
 			let plus = document.createElement('button');
 			plus.innerText = '+';
 			plus.onclick = () => {
-				if(i == 0) {
+				if (i == 0) {
 					hero.upgrade(key);
-				} else if(i == 1) {
+				} else if (i == 1) {
 
 				}
 				upgrade();
@@ -174,47 +178,30 @@ function drawHud() {
 
 let hps = [];
 let healed = false;
+let hpImage = new Image();
+hpImage.src = '../resources/hp.svg';
 function drawHp() {
 	if (hps.length > 0) {
-		context.beginPath();
-		context.arc(hps[0].x, hps[0].y, hps[0].rad, 0, 10);
-		context.fillStyle = 'white';
-		context.fill();
-		context.closePath();
-		context.fillStyle = 'black';
+		if (hps[0].timeout > new Date()) {
+			context.beginPath();
+			context.drawImage(hpImage, hps[0].x, hps[0].y, hps[0].width, hps[0].height);
+			let date = hps[0].timeout - new Date();
+			context.fillStyle = 'black';
+			context.fillText(date / 1000, hps[0].x, hps[0].y - 10);
+			context.closePath();
 
-		context.beginPath();
-		context.arc(hps[0].x, hps[0].y, hps[0].rad, 0, 10);
-		context.strokeStyle = 'black';
-		context.stroke();
-		context.closePath();
-
-		context.beginPath();
-		context.lineWidth = 1;
-		context.strokeStyle = 'red';
-		context.stroke();
-		context.closePath();
-
-		context.beginPath();
-		context.moveTo(hps[0].x - hps[0].rad, hps[0].y);
-		context.lineTo(hps[0].x + hps[0].rad, hps[0].y);
-		context.moveTo(hps[0].x, hps[0].y - hps[0].rad);
-		context.lineTo(hps[0].x, hps[0].y + hps[0].rad);
-		context.lineWidth = Math.round(hps[0].rad / 2);
-		context.stroke();
-		context.lineWidth = 1;
-		context.closePath();
-		context.strokeStyle = 'black';
-
-		let dx = (hps[0].x + 25) - (hero.positionX + hero.width / 2);
-		let dy = (hps[0].y + 25) - (hero.positionY + hero.height / 2);
-		let rSum = 25 + hero.width / 2;
-		if (dx * dx + dy * dy <= rSum * rSum) {
-			hero.actualHp = hero.actualHp + 5;
-			if (hero.actualHp > hero.maxHp) {
-				hero.actualHp = hero.maxHp;
+			let dx = (hps[0].x + 25) - (hero.positionX + hero.width / 2);
+			let dy = (hps[0].y + 25) - (hero.positionY + hero.height / 2);
+			let rSum = 25 + hero.width / 2;
+			if (dx * dx + dy * dy <= rSum * rSum) {
+				hero.actualHp = hero.actualHp + hps[0].healPoint;
+				if (hero.actualHp > hero.maxHp) {
+					hero.actualHp = hero.maxHp;
+				}
+				healed = true;
 			}
-			healed = true;
+		} else {
+			hps = [];
 		}
 	}
 	if (healed) { hps = [] };
@@ -246,14 +233,17 @@ function drawObjects(delta) {
 		}
 	}
 	drawHud();
-	if (randomInterval(0, 1000) == 5) {
+	if ((hero.actualHp / hero.maxHp) < 0.3  && hps.length < 1) {
 		hps = []
 		healed = false;
 		hps.push(
 			{
 				x: randomInterval(0, canvas.width),
 				y: randomInterval(0, canvas.height),
-				rad: 15
+				width: 25,
+				height: 30,
+				timeout: addSeconds(20),
+				healPoint: 10
 			})
 	};
 	drawHp();
