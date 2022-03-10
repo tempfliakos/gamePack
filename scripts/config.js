@@ -32,33 +32,33 @@ const levels = [
 const enemyTypes = [
     {
         "type": "low",
-        "hp": 10,
+        "hp": 15,
         "damage": 1,
         "damageInterval": 1000,
         "velocity": 100,
         "appearence": resource + "enemy_red.svg",
         "size": 20,
-        "reward": 1,
+        "reward": 1
     },
     {
         "type": "normal",
-        "hp": 20,
+        "hp": 30,
         "damage": 5,
         "damageInterval": 1000,
-        "velocity": 90,
+        "velocity": 80,
         "appearence": resource + "enemy_blue.svg",
         "size": 40,
         "reward": 5
     },
     {
         "type": "huge",
-        "hp": 30,
+        "hp": 60,
         "damage": 10,
         "damageInterval": 1000,
-        "velocity": 80,
+        "velocity": 60,
         "appearence": resource + "enemy_yellow.svg",
         "size": 80,
-        "reward": 151
+        "reward": 10
     }
 ];
 
@@ -73,24 +73,37 @@ const weapons = [
         "type": "Sling-shot",
         "ref": "sling",
         "damage": 1,
-        "velocity": 500,
+        "velocity": 100,
         "color": "black",
         "radius": 4,
         "upgrades": {
             "damage": 0,
             "velocity": 0
         }
-    }
+    },
+    {
+        "type": "Rocket launcher",
+        "ref": "rocket",
+        "damage": 10,
+        "velocity": 50,
+        "color": "green",
+        "radius": 8,
+        "upgrades": {
+            "damage": 0,
+            "velocity": 0
+        }
+    },
 ];
 
 const weaponsMap = {
         "sling": 0,
+        "rocket": 1,
 };
 
 const defaultHero = {
     "name": "Hero",
     "hp": 100,
-    "velocity": 100,
+    "velocity": 50,
     "appearence": resource + "hero.svg",
     "size": 40,
     "level": 1,
@@ -101,23 +114,28 @@ const defaultHero = {
         "hp": 0,
         "damage": 0,
         "velocity": 0
-    }
+    },
+    "steps": {
+        "hp": 10,
+        "damage": 5,
+        "velocity": 10
+    },
 };
 
 const heroLevels = [
     {
         "level": 1,
-        "required": 50,
+        "required": 25,
         "reward": 1
     },
     {
         "level": 2,
-        "required": 100,
+        "required": 50,
         "reward": 1
     },
     {
         "level": 3,
-        "required": 150,
+        "required": 75,
         "reward": 1
     }
 ];

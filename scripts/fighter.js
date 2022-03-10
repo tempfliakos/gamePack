@@ -68,6 +68,17 @@ canvas.addEventListener("mouseup", e => {
 	shooting = false;
 });
 
+canvas.addEventListener("mousewheel", e => {
+	let actualWeaponIndex = weaponsMap[hero.weapon.ref];
+	const weaponsMapMaxIndex = Object.keys(weaponsMap).length - 1;
+	if(e.deltaY > 0) {
+		actualWeaponIndex = actualWeaponIndex == 0 ? weaponsMapMaxIndex : --actualWeaponIndex;
+	} else {
+		actualWeaponIndex = actualWeaponIndex == weaponsMapMaxIndex ? 0 : ++actualWeaponIndex;
+	}
+	hero.weapon = weapons[actualWeaponIndex];
+});
+
 addEventListener('resize', initCanvasSize);
 
 initCanvasSize();
@@ -107,7 +118,14 @@ function upgrade() {
 			buttonParent.id = 'buttonParent';
 			let plus = document.createElement('button');
 			plus.innerText = '+';
-			plus.onClick = () => { };
+			plus.onclick = () => {
+				if(i == 0) {
+					hero.upgrade(key);
+				} else if(i == 1) {
+
+				}
+				upgrade();
+			};
 			if (hero.attributePoints < 1) {
 				plus.disabled = 'disabled';
 			}

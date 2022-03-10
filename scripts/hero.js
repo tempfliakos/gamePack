@@ -151,6 +151,15 @@ class Hero {
 			this.gainExp(numberOfExp);
 		}
 	}
+
+	upgrade(type) {
+		hero.attributePoints--;
+		this.upgrades[type]++;
+
+		this.maxHp = defaultHero.hp + this.upgrades.hp * defaultHero.steps.hp;
+		this.velocity = defaultHero.velocity + this.upgrades.velocity * defaultHero.steps.velocity;
+		this.damage = this.upgrades.damage * defaultHero.steps.damage;
+	}
 }
 
 function isEnemyHit(enemy, hero) {

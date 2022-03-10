@@ -21,7 +21,7 @@ class Projectile {
 		for (let enemy of enemies) {
 			if (isProjectileHit(this, enemy)) {
 				this.hit = true;
-				enemy.hp -= this.type.damage;
+				enemy.hp -= this.type.damage + hero.damage;
 				if (enemy.hp <= 0) {
 					deadEnemies++;
 					hero.gainExp(enemy.reward);
@@ -39,7 +39,7 @@ class Projectile {
 			}
 		}
 		const velocity = this.type.velocity * modifier;
-		this.positionX += (this.destination.x * velocity);
+		this.positionX += this.destination.x * velocity;
 		this.positionY += this.destination.y * velocity;
 		this.draw();
 	}
