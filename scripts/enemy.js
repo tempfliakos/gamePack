@@ -21,6 +21,10 @@ class Enemy {
 
 	draw() {
 		rotate = Math.atan2(hero.positionY - this.positionY, hero.positionX - this.positionX) + Math.PI / 2;
+		let bad = "rgba(168, 55, 55, 1)";
+		let normal = "rgba(211, 224, 46, 1)";
+		let good = "rgba(101, 165, 90, 1)";
+		let hpPercentage = (this.hp / this.maxHp) * 100;
 
 		context.save();
 
@@ -28,17 +32,8 @@ class Enemy {
 		context.rotate(rotate);
 		context.translate(-this.positionX + -this.width / 2, -this.positionY + -this.height / 2);
 		context.drawImage(this.image, this.positionX, this.positionY, this.width, this.height);
-		context.beginPath();
-		context.arc(this.positionX + this.width / 2, this.positionY + this.height / 2, this.width / 2, 0, 2 * Math.PI, false);
-		context.stroke();
-		context.clip();
-		context.closePath();
-		context.restore();
 
-		let bad = "rgba(168, 55, 55, 1)";
-		let normal = "rgba(211, 224, 46, 1)";
-		let good = "rgba(101, 165, 90, 1)";
-		let hpPercentage = (this.hp / this.maxHp) * 100;
+		//hpLine
 		context.beginPath();
 		context.lineWidth = 5;
 		context.strokeStyle = (hpPercentage >= 66) ? good : (33 <= hpPercentage && hpPercentage <= 66) ? normal : (hpPercentage <= 33) ? bad : "#000000";
@@ -47,6 +42,14 @@ class Enemy {
 		context.stroke();
 		context.lineWidth = 1;
 		context.strokeStyle = 'black';
+
+		context.beginPath();
+		context.arc(this.positionX + this.width / 2, this.positionY + this.height / 2, this.width / 2, 0, 2 * Math.PI, false);
+		context.stroke();
+		context.clip();
+		context.closePath();
+
+		context.restore();
 	}
 
 	step(modifier, hero, enemies) {

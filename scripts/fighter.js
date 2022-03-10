@@ -249,6 +249,15 @@ function mapLevelUp() {
 
 function drawObjects(delta) {
 	//drawMap(Mcanvas, Mcontext);
+	if (shadow) {
+		context.beginPath();
+		context.shadowColor = 'black';
+		context.shadowBlur = 10;
+		context.shadowOffsetX = 5;
+		context.shadowOffsetY = 5;
+		context.fill();
+		context.closePath();
+	}
 
 	for (let i = 0; i < enemyHits.length; i++) {
 		if (bloodDisapear && enemyHits[i].timeout < new Date()) {

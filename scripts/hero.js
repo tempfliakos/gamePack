@@ -39,6 +39,10 @@ class Hero {
 
 	draw() {
 		rotate = Math.atan2(mouse.y - this.positionY, mouse.x - this.positionX) + Math.PI / 2;
+		let bad = "rgba(168, 55, 55, 1)";
+		let normal = "rgba(211, 224, 46, 1)";
+		let good = "rgba(101, 165, 90, 1)";
+		let hpPercentage = (this.actualHp / this.maxHp) * 100;
 
 		context.save();
 
@@ -46,6 +50,16 @@ class Hero {
 		context.rotate(rotate);
 		context.translate(-this.positionX + -this.width / 2, -this.positionY + -this.height / 2);
 		context.drawImage(this.image, this.positionX, this.positionY, this.width, this.height);
+
+		//hpLine
+		context.beginPath();
+		context.lineWidth = 5;
+		context.strokeStyle = (hpPercentage >= 66) ? good : (33 <= hpPercentage && hpPercentage <= 66) ? normal : (hpPercentage <= 33) ? bad : "#000000";
+		let hpLine = this.actualHp / this.maxHp * 2;
+		context.arc(this.positionX + this.width / 2, this.positionY + this.height / 2, this.width / 2 + 5, 0, hpLine * Math.PI, false);
+		context.stroke();
+		context.lineWidth = 1;
+		context.strokeStyle = 'black';
 
 		//weapon
 		context.beginPath();
@@ -74,16 +88,6 @@ class Hero {
 		context.closePath();
 
 		context.restore();
-
-		if (shadow) {
-			context.beginPath();
-			context.shadowColor = 'black';
-			context.shadowBlur = 10;
-			context.shadowOffsetX = 5;
-			context.shadowOffsetY = 5;
-			context.fill();
-			context.closePath();
-		}
 	}
 
 	step(modifier, enemies) {
