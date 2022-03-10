@@ -34,7 +34,7 @@ class Projectile {
 					y: randomInterval(enemy.positionY - 5, enemy.positionY + 5),
 					rad: (1 - (enemy.hp / enemy.maxHp)) * randomInterval((enemy.width / 4) - 5, (enemy.width / 4) + 5),
 					bloodColor: '#ff0000' + Math.round((1 - (enemy.hp / enemy.maxHp)) * 9) + Math.round((1 - (enemy.hp / enemy.maxHp)) * 9),
-					timeout: addSeconds(10)
+					timeout: addSeconds(5)
 				});
 			}
 		}

@@ -257,6 +257,8 @@ function drawObjects(delta) {
 		context.shadowOffsetY = 5;
 		context.fill();
 		context.closePath();
+	} else {
+		context.shadowColor = "transparent";
 	}
 
 	for (let i = 0; i < enemyHits.length; i++) {
@@ -405,8 +407,16 @@ function addSeconds(sec, date = new Date()) {
 	return date;
 }
 
-let bloodDisapear = false;
-let shadow = false;
+function setShadow(){
+	shadow = shadow ? false : true;
+}
+
+function setBloodDisapear(){
+	bloodDisapear = bloodDisapear ? false : true;
+}
+
+let bloodDisapear = true;
+let shadow = true;
 let animId;
 let deadEnemies = 0;
 let gameOver = false;
