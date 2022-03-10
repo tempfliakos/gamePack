@@ -7,8 +7,8 @@ const levels = [
 		"groundType": 1,
 		"enemies": {
 			"low": 10,
-			"normal": 5,
-			"huge": 2,
+			"normal": 7,
+			"huge": 3,
 			"boss": 1
 		},
 		"minEnemyOnScreen": 3,
@@ -95,8 +95,8 @@ const weapons = [
 			"maxAmmo": 0
 		},
 		"src": "../resources/weapon_sling_shot.svg",
-		"maxAmmo": 100,
-		"ammo": 100
+		"maxAmmo": 10000,
+		"ammo": 10000
 	},
 	{
 		"type": "Rocket launcher",
@@ -111,8 +111,8 @@ const weapons = [
 			"maxAmmo": 0
 		},
 		"src": "../resources/weapon_rocket_launcher.svg",
-		"maxAmmo": 5,
-		"ammo": 5
+		"maxAmmo": 500,
+		"ammo": 500
 	},
 ];
 

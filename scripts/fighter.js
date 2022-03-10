@@ -226,6 +226,27 @@ function updateWeaponAmmo() {
 	document.getElementById('weaponAmmo').innerText = hero.weapon.ammo + '/' + hero.weapon.maxAmmo;
 }
 
+function mapLevelUp() {
+	let mapLevelUp = document.createElement('label');
+	mapLevelUp.id = 'mapLevelUp';
+	mapLevelUp.style.opacity = 0;
+	mapLevelUp.style.zIndex = 2;
+	mapLevelUp.style.transition = '2s';
+	mapLevelUp.style.position = 'absolute';
+	mapLevelUp.innerText = actualLevel.name;
+	mapLevelUp.style.fontSize = '8em';
+	document.getElementsByTagName('body')[0].appendChild(mapLevelUp);
+	document.getElementById('mapLevelUp').style.left = document.documentElement.clientWidth / 2 - document.getElementById('mapLevelUp').getBoundingClientRect().width / 2 + 'px';
+	document.getElementById('mapLevelUp').style.top = document.documentElement.clientHeight / 2 - document.getElementById('mapLevelUp').getBoundingClientRect().height / 2 + 'px';
+	document.getElementById('mapLevelUp').style.opacity = 0.6;
+	setTimeout(() => {
+		document.getElementById('mapLevelUp').style.opacity = 0;
+	}, 5000);
+	setTimeout(() => {
+		document.getElementById('mapLevelUp').remove();
+	}, 7000);
+}
+
 function drawObjects(delta) {
 	//drawMap(Mcanvas, Mcontext);
 
@@ -281,23 +302,27 @@ function generateEnemies() {
 	let availableEnemiesArray = availableEnemies();
 	if (enemies.length <= actualLevel.minEnemyOnScreen && availableEnemiesArray.length > 0) {
 		for (let i = 0; i < randomInterval(0, actualLevel.maxEnemyOnScreen); i++) {
-			let sideRandom = Math.random();
-			let enemy;
-			let enemyType = randomEnemy();
-			actualLevel.enemies[enemyType] -= 1;
-			if (sideRandom > 0 && sideRandom <= 0.25) {
-				enemy = new Enemy(randomInterval(0, canvas.width), 0, enemyTypesMap[enemyType]);
-			} else if (sideRandom > 0.25 && sideRandom <= 0.5) {
-				enemy = new Enemy(canvas.width, randomInterval(0, canvas.height), enemyTypesMap[enemyType]);
-			} else if (sideRandom > 0.5 && sideRandom <= 0.75) {
-				enemy = new Enemy(randomInterval(0, canvas.width), canvas.height, enemyTypesMap[enemyType]);
-			} else if (sideRandom > 0.75 && sideRandom <= 1) {
-				enemy = new Enemy(0, randomInterval(0, canvas.height), enemyTypesMap[enemyType]);
+			if (availableEnemiesArray.length > 0) {
+				let sideRandom = Math.random();
+				let enemy;
+				let enemyType = randomEnemy(availableEnemiesArray);
+				actualLevel.enemies[enemyType] -= 1;
+				if (sideRandom > 0 && sideRandom <= 0.25) {
+					enemy = new Enemy(randomInterval(0, canvas.width), 0, enemyTypesMap[enemyType]);
+				} else if (sideRandom > 0.25 && sideRandom <= 0.5) {
+					enemy = new Enemy(canvas.width, randomInterval(0, canvas.height), enemyTypesMap[enemyType]);
+				} else if (sideRandom > 0.5 && sideRandom <= 0.75) {
+					enemy = new Enemy(randomInterval(0, canvas.width), canvas.height, enemyTypesMap[enemyType]);
+				} else if (sideRandom > 0.75 && sideRandom <= 1) {
+					enemy = new Enemy(0, randomInterval(0, canvas.height), enemyTypesMap[enemyType]);
+				}
+				enemies.push(enemy);
+				availableEnemiesArray = availableEnemies();
 			}
-			enemies.push(enemy);
 		}
 	} else if (enemies.length == 0 && availableEnemiesArray == 0) {
 		actualLevel = levels[actualLevel.id];
+		mapLevelUp();
 	}
 }
 
@@ -308,15 +333,17 @@ function randomInterval(min, max) {
 function availableEnemies() {
 	let available = [];
 	Object.keys(actualLevel.enemies).forEach(function (key) {
-		if (actualLevel.enemies[key] > 0) {
+		if (actualLevel.enemies[key] > 0 && key !== "boss") {
 			available.push(key);
 		}
 	})
+	if (available.length == 0 && enemies.length == 0 && actualLevel.enemies.boss > 0) {
+		available.push("boss");
+	}
 	return available;
 }
 
-function randomEnemy() {
-	let available = availableEnemies();
+function randomEnemy(available) {
 	return available[randomInterval(0, available.length - 1)];
 }
 
