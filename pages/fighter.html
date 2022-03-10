@@ -17,14 +17,20 @@
 	<div id="options" class="options">
 		<span id="state"></span>
 		<button id="newGameBtn" onclick="location.reload()">New Game</button>
-		<button id="saveBtn" disabled="disabled">Save</button>
-		<button id="loadBtn" disabled="disabled">Load</button>
-		<button id="upgradeBtn" onclick="upgrade();">Upgrade</button>
+		<button id="saveBtn" onclick="optionsPopup(this.id)">Save</button>
+		<button id="loadBtn" onclick="optionsPopup(this.id);">Load</button>
+		<button id="upgradeBtn" onclick="optionsPopup(this.id);">Upgrade</button>
 		<button id="mainScreenBtn" onclick="location.href = 'index_fighter.html';">Main Screen</button>
-		<button id="shadowBtn" onclick="setShadow();">Shadow</button>
-		<button id="bloodBtn" onclick="setBloodDisapear();">BloodDisapear</button>
+		<div class="checkBoxHolder">
+			<label for="bloodChck">BloodDisapear</label>
+			<input id="bloodChck" type="checkbox" onchange="setBloodDisapear();" />
+		</div>
+		<div class="checkBoxHolder">
+			<label for="shadowChck">Shadow</label>
+			<input id="shadowChck" type="checkbox" onchange="setShadow();" />
+		</div>
 	</div>
-	<div id="upgradeDiv" class="upgradeDiv"></div>
+	<div id="optionsPopup" class="optionsPopup"></div>
 	<div id="weaponDiv">
 		<img id="weaponImg" />
 		<label id="weaponAmmo"></label>

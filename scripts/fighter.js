@@ -55,8 +55,8 @@ addEventListener('keydown', e => {
 		} else {
 			start();
 			document.getElementById('options').style.left = '-310px';
-			if (document.getElementById('upgradeDiv').style.visibility = 'visible') {
-				document.getElementById('upgradeDiv').style.visibility = 'hidden';
+			if (document.getElementById('optionsPopup').style.visibility = 'visible') {
+				document.getElementById('optionsPopup').style.visibility = 'hidden';
 			}
 		};
 	}
@@ -104,20 +104,67 @@ let projectiles = [];
 let enemies = [];
 let actualLevel = levels[0];
 
-function upgrade() {
-	if ($('#holderDiv').length > 0) {
-		document.getElementById('upgradeDiv').innerHTML = "";
+function optionsPopup(buttonid) {
+	document.getElementById('optionsPopup').innerHTML = "";
+	document.getElementById('optionsPopup').style.visibility = 'visible';
+
+	switch (buttonid) {
+		case 'upgradeBtn':
+			upgrade();
+			break;
+		case 'saveBtn':
+			save();
+			break;
+		case 'loadBtn':
+			load();
+			break;
 	}
 
-	document.getElementById('upgradeDiv').style.visibility = 'visible';
+	document.getElementById('optionsPopup').style.left = (document.documentElement.clientWidth / 2) - (document.getElementById('optionsPopup').getBoundingClientRect().width / 2) + 'px';
+	document.getElementById('optionsPopup').style.top = (document.documentElement.clientHeight / 2) - (document.getElementById('optionsPopup').getBoundingClientRect().height / 2) + 'px';
+}
+
+function loadGame() {
+	let loadData = document.getElementById('loadInput').value;
+	if (loadData.length > 0) {
+		document.location.reload();
+		console.log(loadData);
+		//TODO betolteni az adatokat a loadData stringbol
+	}
+}
+
+function load() {
+	let loadLabel = document.createElement('label');
+	loadLabel.innerText = 'Saved game hash: ';
+	loadLabel.id = 'loadLabel';
+	loadLabel.for = 'loadInput';
+	let loadInput = document.createElement('input');
+	loadInput.id = 'loadInput';
+	let loadGameBtn = document.createElement('button');
+	loadGameBtn.id = 'loadGameBtn';
+	loadGameBtn.innerText = 'Load Game';
+	loadGameBtn.onclick = loadGame;
+	document.getElementById('optionsPopup').appendChild(loadLabel);
+	document.getElementById('optionsPopup').appendChild(loadInput);
+	document.getElementById('optionsPopup').appendChild(loadGameBtn);
+}
+
+function save() {
+	let saveString = document.createElement('label');
+	saveString.innerText = 'Your saved game hash is: \n' + '764534thzufk87u6z5rgdfhmi876ergsrfdhk7e6r5gefrgzjkk7j6hg5efrefv';
+	saveString.id = 'saveString';
+	document.getElementById('optionsPopup').appendChild(saveString);
+}
+
+function upgrade() {
 	let heroxp = document.createElement('label');
 	heroxp.innerText = 'Attribute Points: ' + hero.attributePoints;
 	heroxp.style.fontWeight = 'bold';
 	heroxp.id = 'heroXP';
-	document.getElementById('upgradeDiv').appendChild(heroxp);
+	document.getElementById('optionsPopup').appendChild(heroxp);
 	let holderDiv = document.createElement('div');
 	holderDiv.id = 'holderDiv';
-	document.getElementById('upgradeDiv').appendChild(holderDiv);
+	document.getElementById('optionsPopup').appendChild(holderDiv);
 
 	let upgradesList = [hero.upgrades, hero.weapon.upgrades];
 	for (let i = 0; i < upgradesList.length; i++) {
@@ -150,10 +197,6 @@ function upgrade() {
 			document.getElementById('holderDiv').appendChild(parent);
 		}
 	}
-
-
-	document.getElementById('upgradeDiv').style.left = (document.documentElement.clientWidth / 2) - (document.getElementById('upgradeDiv').getBoundingClientRect().width / 2) + 'px';
-	document.getElementById('upgradeDiv').style.top = (document.documentElement.clientHeight / 2) - (document.getElementById('upgradeDiv').getBoundingClientRect().height / 2) + 'px';
 }
 
 let hudElements = [];
@@ -407,16 +450,16 @@ function addSeconds(sec, date = new Date()) {
 	return date;
 }
 
-function setShadow(){
-	shadow = shadow ? false : true;
+function setShadow() {
+	shadow = document.getElementById('shadowChck').checked;
 }
 
-function setBloodDisapear(){
-	bloodDisapear = bloodDisapear ? false : true;
+function setBloodDisapear() {
+	bloodDisapear = document.getElementById('bloodChck').checked;
 }
 
 let bloodDisapear = true;
-let shadow = true;
+let shadow = false;
 let animId;
 let deadEnemies = 0;
 let gameOver = false;

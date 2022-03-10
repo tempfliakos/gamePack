@@ -67,7 +67,24 @@ canvas {
   cursor: not-allowed;
 }
 
-.upgradeDiv {
+.options .checkBoxHolder {
+  margin: 0.2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.options .checkBoxHolder input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}
+
+.options .checkBoxHolder label {
+  font-size: 20px;
+}
+
+.optionsPopup {
   position: absolute;
   left: 0px;
   top: 0px;
@@ -81,13 +98,19 @@ canvas {
   text-align: center;
   visibility: hidden;
   padding: 0.5em;
+  max-width: 60%;
+  word-break: break-all;
 }
 
-.upgradeDiv #holderDiv div {
+.optionsPopup #holderDiv div {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0.5em;
+}
+
+.optionsPopup #saveString {
+  user-select: text;
 }
 
 #fps {
