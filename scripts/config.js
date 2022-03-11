@@ -86,8 +86,8 @@ const weapons = [
 		"type": "Sling-shot",
 		"ref": "sling",
 		"damage": 1,
-		"velocity": 400,
-		"color": "black",
+		"velocity": 150,
+		"color": "brown",
 		"radius": 4,
 		"upgrades": {
 			"damage": 0,
@@ -97,6 +97,38 @@ const weapons = [
 		"src": "../resources/weapon_sling_shot.svg",
 		"maxAmmo": 10000,
 		"ammo": 10000
+	},
+	{
+		"type": "Pistol",
+		"ref": "pistol",
+		"damage": 3,
+		"velocity": 500,
+		"color": "grey",
+		"radius": 2,
+		"upgrades": {
+			"damage": 0,
+			"velocity": 0,
+			"maxAmmo": 0
+		},
+		"src": "../resources/weapon_pistol.svg",
+		"maxAmmo": 500,
+		"ammo": 500
+	},
+	{
+		"type": "Ak",
+		"ref": "ak",
+		"damage": 6,
+		"velocity": 600,
+		"color": "black",
+		"radius": 3,
+		"upgrades": {
+			"damage": 0,
+			"velocity": 0,
+			"maxAmmo": 0
+		},
+		"src": "../resources/weapon_ak.svg",
+		"maxAmmo": 500,
+		"ammo": 500
 	},
 	{
 		"type": "Rocket launcher",
@@ -113,12 +145,14 @@ const weapons = [
 		"src": "../resources/weapon_rocket_launcher.svg",
 		"maxAmmo": 500,
 		"ammo": 500
-	},
+	}
 ];
 
 const weaponsMap = {
 	"sling": 0,
-	"rocket": 1,
+	"pistol": 1,
+	"ak": 2,
+	"rocket": 3
 };
 
 const defaultHero = {

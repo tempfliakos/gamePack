@@ -152,9 +152,33 @@ canvas {
   top: 10px;
   left: 1000px;
   z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 #weaponDiv img {
-  width: 50px;
-  height: auto;
+  transition: 1s;
+  width: auto;
+  height: 50px;
+}
+
+#todo {
+  position: absolute;
+  left: 100px;
+  top: 10px;
+  font-size: 1em;
+  z-index: 2;
+  color: red;
+  font-style: italic;
+}
+
+.infoLabel {
+  position: absolute;
+  opacity: 0;
+  z-index: 2;
+  transition: 2s;
+  font-size: 3em;
+  text-align: center;
 }

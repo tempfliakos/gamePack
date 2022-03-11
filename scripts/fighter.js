@@ -21,6 +21,15 @@ function initCanvasSize() {
 	});
 }
 
+initCanvasSize();
+
+let hero = new Hero((canvas.width / 2) - 20, (canvas.height / 2) - 20);
+let then = Date.now();
+let rotate;
+
+let projectiles = [];
+let enemies = [];
+let actualLevel = levels[0];
 
 let shots = 0;
 function generateProjectile() {
@@ -94,15 +103,7 @@ canvas.addEventListener("mousewheel", e => {
 
 addEventListener('resize', initCanvasSize);
 
-initCanvasSize();
 
-let hero = new Hero((canvas.width / 2) - 20, (canvas.height / 2) - 20);
-let then = Date.now();
-let rotate;
-
-let projectiles = [];
-let enemies = [];
-let actualLevel = levels[0];
 
 function optionsPopup(buttonid) {
 	document.getElementById('optionsPopup').innerHTML = "";
@@ -118,10 +119,30 @@ function optionsPopup(buttonid) {
 		case 'loadBtn':
 			load();
 			break;
+		case 'storeBtn':
+			(async () => {
+				store();
+				await waitForImage(document.getElementById('weapon3'));
+				document.getElementById('optionsPopup').style.left = (document.documentElement.clientWidth / 2) - (document.getElementById('optionsPopup').getBoundingClientRect().width / 2) + 'px';
+				document.getElementById('optionsPopup').style.top = (document.documentElement.clientHeight / 2) - (document.getElementById('optionsPopup').getBoundingClientRect().height / 2) + 'px';
+			})();
+			break;
 	}
 
 	document.getElementById('optionsPopup').style.left = (document.documentElement.clientWidth / 2) - (document.getElementById('optionsPopup').getBoundingClientRect().width / 2) + 'px';
 	document.getElementById('optionsPopup').style.top = (document.documentElement.clientHeight / 2) - (document.getElementById('optionsPopup').getBoundingClientRect().height / 2) + 'px';
+}
+
+function store() {
+	for (const [key, value] of Object.entries(weaponsMap)) {
+		let weaponImg = document.createElement('img');
+		weaponImg.id = 'weapon' + value;
+		weaponImg.src = weapons[value].src;
+		weaponImg.style.width = 'auto';
+		weaponImg.style.height = '50px';
+		weaponImg.style.margin = '0.5em';
+		document.getElementById('optionsPopup').appendChild(weaponImg);
+	}
 }
 
 function loadGame() {
@@ -157,6 +178,7 @@ function save() {
 }
 
 function upgrade() {
+	document.getElementById('optionsPopup').innerHTML = "";
 	let heroxp = document.createElement('label');
 	heroxp.innerText = 'Attribute Points: ' + hero.attributePoints;
 	heroxp.style.fontWeight = 'bold';
@@ -259,34 +281,45 @@ function drawHp() {
 	if (healed) { hps = [] };
 }
 
+function waitForImage(imgElem) {
+	return new Promise(res => {
+		if (imgElem.complete) {
+			return res();
+		}
+		imgElem.onload = () => res();
+		imgElem.onerror = () => res();
+	});
+}
+
+
 function drawWeapon() {
-	document.getElementById('weaponImg').src = hero.weapon.src;
-	document.getElementById('weaponAmmo').innerText = hero.weapon.ammo + '/' + hero.weapon.maxAmmo;
-	document.getElementById('weaponDiv').style.left = document.documentElement.clientWidth - document.getElementById('weaponImg').getBoundingClientRect().width - 10 + 'px';
+	(async () => {
+		document.getElementById('weaponImg').src = '';
+		document.getElementById('weaponImg').src = hero.weapon.src;
+		document.getElementById('weaponAmmo').innerText = hero.weapon.ammo + '/' + hero.weapon.maxAmmo;
+		await waitForImage(document.getElementById('weaponImg'));
+		document.getElementById('weaponDiv').style.left = document.documentElement.clientWidth - document.getElementById('weaponDiv').getBoundingClientRect().width - 10 + 'px';
+	})();
 }
 
 function updateWeaponAmmo() {
 	document.getElementById('weaponAmmo').innerText = hero.weapon.ammo + '/' + hero.weapon.maxAmmo;
 }
 
-function mapLevelUp() {
-	let mapLevelUp = document.createElement('label');
-	mapLevelUp.id = 'mapLevelUp';
-	mapLevelUp.style.opacity = 0;
-	mapLevelUp.style.zIndex = 2;
-	mapLevelUp.style.transition = '2s';
-	mapLevelUp.style.position = 'absolute';
-	mapLevelUp.innerText = actualLevel.name;
-	mapLevelUp.style.fontSize = '8em';
-	document.getElementsByTagName('body')[0].appendChild(mapLevelUp);
-	document.getElementById('mapLevelUp').style.left = document.documentElement.clientWidth / 2 - document.getElementById('mapLevelUp').getBoundingClientRect().width / 2 + 'px';
-	document.getElementById('mapLevelUp').style.top = document.documentElement.clientHeight / 2 - document.getElementById('mapLevelUp').getBoundingClientRect().height / 2 + 'px';
-	document.getElementById('mapLevelUp').style.opacity = 0.6;
+function showInfoLabel(infoText) {
+	let infoLabel = document.createElement('label');
+	infoLabel.id = 'infoLabel';
+	infoLabel.className = 'infoLabel';
+	infoLabel.innerText = infoText;
+	document.getElementsByTagName('body')[0].appendChild(infoLabel);
+	document.getElementById('infoLabel').style.left = document.documentElement.clientWidth / 2 - document.getElementById('infoLabel').getBoundingClientRect().width / 2 + 'px';
+	document.getElementById('infoLabel').style.top = document.documentElement.clientHeight / 2 - document.getElementById('infoLabel').getBoundingClientRect().height / 2 + 'px';
+	document.getElementById('infoLabel').style.opacity = 0.6;
 	setTimeout(() => {
-		document.getElementById('mapLevelUp').style.opacity = 0;
+		document.getElementById('infoLabel').style.opacity = 0;
 	}, 5000);
 	setTimeout(() => {
-		document.getElementById('mapLevelUp').remove();
+		document.getElementById('infoLabel').remove();
 	}, 7000);
 }
 
@@ -376,7 +409,7 @@ function generateEnemies() {
 		}
 	} else if (enemies.length == 0 && availableEnemiesArray == 0) {
 		actualLevel = levels[actualLevel.id];
-		mapLevelUp();
+		showInfoLabel(actualLevel.name);
 	}
 }
 

@@ -14,12 +14,14 @@
 	<script src="../scripts/config.js"></script>
 	<canvas id="gameCanvas" style="z-index: 1;" oncontextmenu="return false;"></canvas>
 	<canvas id="mapCanvas" style="z-index: 0;" oncontextmenu="return false;"></canvas>
+	<label id="todo">TODO: rakéta gyorsulás, fegyver store kód, fegyver fire interval, lövedék forma hegyes, dinamikus szintek</label>
 	<div id="options" class="options">
 		<span id="state"></span>
 		<button id="newGameBtn" onclick="location.reload()">New Game</button>
 		<button id="saveBtn" onclick="optionsPopup(this.id)">Save</button>
 		<button id="loadBtn" onclick="optionsPopup(this.id);">Load</button>
 		<button id="upgradeBtn" onclick="optionsPopup(this.id);">Upgrade</button>
+		<button id="storeBtn" onclick="optionsPopup(this.id);">Store</button>
 		<button id="mainScreenBtn" onclick="location.href = 'index_fighter.html';">Main Screen</button>
 		<div class="checkBoxHolder">
 			<label for="bloodChck">BloodDisapear</label>

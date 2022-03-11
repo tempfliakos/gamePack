@@ -150,6 +150,7 @@ class Hero {
 		if (heroLevel && this.xp >= heroLevel.required) {
 			hero.level += 1;
 			hero.attributePoints += heroLevel.reward;
+			showInfoLabel('Hero level: ' + hero.level + '\n Hero attribute points: ' + hero.attributePoints);
 			numberOfExp = this.xp - heroLevel.required;
 			this.xp = 0;
 			this.gainExp(numberOfExp);
