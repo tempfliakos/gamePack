@@ -148,9 +148,8 @@ function store() {
 function loadGame() {
 	let loadData = document.getElementById('loadInput').value;
 	if (loadData.length > 0) {
-		document.location.reload();
-		console.log(loadData);
-		//TODO betolteni az adatokat a loadData stringbol
+		const heroJSON = JSON.parse(decryption(loadData));
+		hero = new Hero(heroJSON.positionX, heroJSON.positionY, heroJSON.name, heroJSON.width, heroJSON.height,  heroJSON.hp,  heroJSON.upgrades,  heroJSON.appearence,  heroJSON.level, heroJSON.weapon,  heroJSON.xp,  heroJSON.attributePoints);
 	}
 }
 
@@ -172,9 +171,20 @@ function load() {
 
 function save() {
 	let saveString = document.createElement('label');
-	saveString.innerText = 'Your saved game hash is: \n' + '764534thzufk87u6z5rgdfhmi876ergsrfdhk7e6r5gefrgzjkk7j6hg5efrefv';
+	let heroJSON = encryption(JSON.stringify(hero));
+	saveString.innerText = 'Your saved game hash is: \n' + heroJSON;
 	saveString.id = 'saveString';
 	document.getElementById('optionsPopup').appendChild(saveString);
+}
+
+const secret = 'ShootThemAll';
+function encryption(str) {
+	return CryptoJS.AES.encrypt(str, secret)
+}
+
+function decryption(str) {
+	let decrypted = CryptoJS.AES.decrypt(str, secret);
+	return decrypted.toString(CryptoJS.enc.Utf8)
 }
 
 function upgrade() {
