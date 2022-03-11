@@ -15,7 +15,24 @@
 	<script src="../scripts/config.js"></script>
 	<canvas id="gameCanvas" style="z-index: 1;" oncontextmenu="return false;"></canvas>
 	<canvas id="mapCanvas" style="z-index: 0;" oncontextmenu="return false;"></canvas>
-	<label id="todo">TODO: rakéta gyorsulás, fegyver store kód, fegyver fire interval, lövedék forma hegyes, dinamikus szintek</label>
+	<label id="todo">TODO:
+		<ul>
+			<li>rakéta gyorsulás</li>
+			<li>fegyver store kód</li>
+			<li>fegyver fire interval</li>
+			<li>lövedék forma hegyes</li>
+			<li>dinamikus szintek</li>
+			<li>info box: irányítás, lövés, fegyver csere, mentés, betöltés, fejlesztések</li>
+			<li>szám billentyűkre fegyver váltás</li>
+			<li>localStorage -> lokális mentés/betöltés</li>
+			<li>pálya design: füves,földes, köves</li>
+			<li>enemy hit-nél az enemy filterrel játszás</li>
+			<li>fegyver kiemelése hogy abból jöjjön a lövés</li>
+			<li>100 pálya definíció</li>
+			<li>mentéskor a pálya is bekerüljön a mentésbe -> a new game legyen a teljes reszet ne az oldal újratöltés (ha van localstoragebe valami)</li>
+			<li>Halálkor nem lehet betölteni a mentést</li>
+		</ul>
+	</label>
 	<div id="options" class="options">
 		<span id="state"></span>
 		<button id="newGameBtn" onclick="location.reload()">New Game</button>
