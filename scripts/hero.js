@@ -17,7 +17,7 @@ addEventListener("mousemove", e => {
 });
 
 class Hero {
-	constructor(positionX, positionY, name = defaultHero.name, width = defaultHero.size, height = defaultHero.size, actualHp = defaultHero.hp, upgrades = defaultHero.upgrades, appearence = defaultHero.appearence, level = defaultHero.level, weapon = defaultHero.weapon, xp = defaultHero.xp, attributePoints = defaultHero.attributePoints) {
+	constructor(positionX, positionY, name = defaultHero.name, width = defaultHero.size, height = defaultHero.size, actualHp = defaultHero.hp, upgrades = defaultHero.upgrades, appearence = defaultHero.appearence, level = defaultHero.level, weapon = defaultHero.weapon, xp = defaultHero.xp, attributePoints = defaultHero.attributePoints, ownedWeapons = defaultHero.ownedWeapons) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.width = width;
@@ -35,6 +35,7 @@ class Hero {
 		this.xp = xp;
 		this.attributePoints = attributePoints;
 		this.damage = this.upgrades.damage;
+		this.ownedWeapons = ownedWeapons;
 	}
 
 	draw() {

@@ -33,7 +33,7 @@ let actualLevel = levels[0];
 
 let shots = 0;
 function generateProjectile() {
-	if (hero.weapon.ammo > 0) {
+	if (hero.weapon.ammo > 0 && !paused) {
 		const angle = Math.atan2(mouse.y - hero.positionY, mouse.x - hero.positionX);
 		const shootDestination = {
 			x: Math.cos(angle),
@@ -90,15 +90,17 @@ canvas.addEventListener("mouseup", e => {
 });
 
 canvas.addEventListener("mousewheel", e => {
-	let actualWeaponIndex = weaponsMap[hero.weapon.ref];
-	const weaponsMapMaxIndex = Object.keys(weaponsMap).length - 1;
-	if (e.deltaY > 0) {
-		actualWeaponIndex = actualWeaponIndex == 0 ? weaponsMapMaxIndex : --actualWeaponIndex;
-	} else {
-		actualWeaponIndex = actualWeaponIndex == weaponsMapMaxIndex ? 0 : ++actualWeaponIndex;
+	if (!paused) {
+		let actualWeaponIndex = hero.ownedWeapons.findIndex((weaponRef) => weaponRef === hero.weapon.ref);
+		const weaponsMapMaxIndex = hero.ownedWeapons.length - 1;
+		if (e.deltaY > 0) {
+			actualWeaponIndex = actualWeaponIndex == 0 ? weaponsMapMaxIndex : --actualWeaponIndex;
+		} else {
+			actualWeaponIndex = actualWeaponIndex == weaponsMapMaxIndex ? 0 : ++actualWeaponIndex;
+		}
+		hero.weapon = weapons[weaponsMap[hero.ownedWeapons[actualWeaponIndex]]];
+		drawWeapon();
 	}
-	hero.weapon = weapons[actualWeaponIndex];
-	drawWeapon();
 });
 
 addEventListener('resize', initCanvasSize);
@@ -122,7 +124,7 @@ function optionsPopup(buttonid) {
 		case 'storeBtn':
 			(async () => {
 				store();
-				await waitForImage(document.getElementById('weapon3'));
+				await waitForImage(document.getElementById('weaponStoreImg3'));
 				document.getElementById('optionsPopup').style.left = (document.documentElement.clientWidth / 2) - (document.getElementById('optionsPopup').getBoundingClientRect().width / 2) + 'px';
 				document.getElementById('optionsPopup').style.top = (document.documentElement.clientHeight / 2) - (document.getElementById('optionsPopup').getBoundingClientRect().height / 2) + 'px';
 			})();
@@ -134,14 +136,33 @@ function optionsPopup(buttonid) {
 }
 
 function store() {
+	let attributePoints = document.createElement('label');
+	attributePoints.innerText = 'Attribute Points: ' + hero.attributePoints;
+	attributePoints.style.fontWeight = 'bold';
+	attributePoints.id = 'StoreAttributePoints';
+	document.getElementById('optionsPopup').appendChild(attributePoints);
+
 	for (const [key, value] of Object.entries(weaponsMap)) {
-		let weaponImg = document.createElement('img');
-		weaponImg.id = 'weapon' + value;
-		weaponImg.src = weapons[value].src;
-		weaponImg.style.width = 'auto';
-		weaponImg.style.height = '50px';
-		weaponImg.style.margin = '0.5em';
-		document.getElementById('optionsPopup').appendChild(weaponImg);
+		let weaponStoreImg = document.createElement('img');
+		weaponStoreImg.classList.add('weaponStoreImg');
+		if (weapons[value].price <= hero.attributePoints) {
+			if (!hero.ownedWeapons.includes(key)) {
+				weaponStoreImg.classList.add('buyableWeapon');
+				weaponStoreImg.onclick = () => {
+					hero.attributePoints -= weapons[value].price;
+					hero.ownedWeapons.push(key);
+					optionsPopup('storeBtn');
+				};
+			}
+		} else {
+			if (!hero.ownedWeapons.includes(key)) {
+				weaponStoreImg.classList.add('lockedWeapon');
+			}
+		}
+		weaponStoreImg.id = 'weaponStoreImg' + value;
+		weaponStoreImg.src = weapons[value].src;
+		weaponStoreImg.title = weapons[value].price + ' Attr. point';
+		document.getElementById('optionsPopup').appendChild(weaponStoreImg);
 	}
 }
 
@@ -149,7 +170,7 @@ function loadGame() {
 	let loadData = document.getElementById('loadInput').value;
 	if (loadData.length > 0) {
 		const heroJSON = JSON.parse(decryption(loadData));
-		hero = new Hero(heroJSON.positionX, heroJSON.positionY, heroJSON.name, heroJSON.width, heroJSON.height,  heroJSON.hp,  heroJSON.upgrades,  heroJSON.appearence,  heroJSON.level, heroJSON.weapon,  heroJSON.xp,  heroJSON.attributePoints);
+		hero = new Hero(heroJSON.positionX, heroJSON.positionY, heroJSON.name, heroJSON.width, heroJSON.height, heroJSON.hp, heroJSON.upgrades, heroJSON.appearence, heroJSON.level, heroJSON.weapon, heroJSON.xp, heroJSON.attributePoints, heroJSON.ownedWeapons);
 	}
 }
 

@@ -96,7 +96,8 @@ const weapons = [
 		},
 		"src": "../resources/weapon_sling_shot.svg",
 		"maxAmmo": 10000,
-		"ammo": 10000
+		"ammo": 10000,
+		"price": 0
 	},
 	{
 		"type": "Pistol",
@@ -112,7 +113,8 @@ const weapons = [
 		},
 		"src": "../resources/weapon_pistol.svg",
 		"maxAmmo": 500,
-		"ammo": 500
+		"ammo": 500,
+		"price": 1
 	},
 	{
 		"type": "Ak",
@@ -128,7 +130,8 @@ const weapons = [
 		},
 		"src": "../resources/weapon_ak.svg",
 		"maxAmmo": 500,
-		"ammo": 500
+		"ammo": 500,
+		"price": 2
 	},
 	{
 		"type": "Rocket launcher",
@@ -144,7 +147,8 @@ const weapons = [
 		},
 		"src": "../resources/weapon_rocket_launcher.svg",
 		"maxAmmo": 500,
-		"ammo": 500
+		"ammo": 500,
+		"price": 3
 	}
 ];
 
@@ -163,8 +167,9 @@ const defaultHero = {
 	"size": 40,
 	"level": 1,
 	"weapon": weapons[weaponsMap.sling],
+	"ownedWeapons": [weapons[weaponsMap.sling].ref],
 	"xp": 0,
-	"attributePoints": 0,
+	"attributePoints": 10,
 	"upgrades": {
 		"hp": 0,
 		"damage": 0,
