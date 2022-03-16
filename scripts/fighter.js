@@ -105,8 +105,6 @@ canvas.addEventListener("mousewheel", e => {
 
 addEventListener('resize', initCanvasSize);
 
-
-
 function optionsPopup(buttonid) {
 	document.getElementById('optionsPopup').innerHTML = "";
 	document.getElementById('optionsPopup').style.visibility = 'visible';
@@ -250,6 +248,37 @@ function upgrade() {
 			document.getElementById('holderDiv').appendChild(parent);
 		}
 	}
+}
+
+function drawExplosion(x, y, width) {
+	let explosionRad = width + 20;
+	let expl = document.createElement('img');
+	expl.src = '../resources/explosion.svg';
+	expl.style.position = 'absolute';
+	expl.style.width = 0;
+	expl.style.height = 0;
+	expl.style.left = x + (explosionRad / 2) + 'px';
+	expl.style.top = y + (explosionRad / 2) + 'px';
+	expl.style.zIndex = '3';
+	expl.style.transition = '0.3s';
+	expl.style.opacity = 0;
+	expl.id = 'expl' + new Date().getTime();
+	document.getElementsByTagName('body')[0].appendChild(expl);
+	setTimeout(() => {
+		document.getElementById(expl.id).style.opacity = 1;
+		document.getElementById(expl.id).style.top = document.getElementById(expl.id).getBoundingClientRect().top - (explosionRad / 2) + 'px';
+		document.getElementById(expl.id).style.left = document.getElementById(expl.id).getBoundingClientRect().left - (explosionRad / 2) + 'px';
+		document.getElementById(expl.id).style.width = explosionRad + 'px';
+		document.getElementById(expl.id).style.height = explosionRad + 'px';
+	}, 1);
+	setTimeout(() => {
+		document.getElementById(expl.id).style.opacity = 1;
+		document.getElementById(expl.id).style.top = document.getElementById(expl.id).getBoundingClientRect().top + (explosionRad / 2) + 'px';
+		document.getElementById(expl.id).style.left = document.getElementById(expl.id).getBoundingClientRect().left + (explosionRad / 2) + 'px';
+		document.getElementById(expl.id).style.width = 0;
+		document.getElementById(expl.id).style.height = 0;
+	}, 300);
+	setTimeout(() => { document.getElementById(expl.id).remove() }, 1000);
 }
 
 let hudElements = [];

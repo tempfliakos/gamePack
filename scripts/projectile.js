@@ -25,6 +25,7 @@ class Projectile {
 				if (enemy.hp <= 0) {
 					deadEnemies++;
 					hero.gainExp(enemy.reward);
+					drawExplosion(enemy.positionX, enemy.positionY, enemy.width)
 				}
 				//blood
 				enemyHits.push({
