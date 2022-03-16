@@ -19,9 +19,9 @@
 		<ul>
 			<li>rakéta gyorsulás</li>
 			<li>fegyver fire interval</li>
+			<li>fegyver fejlesztés</li>
 			<li>lövedék forma hegyes</li>
 			<li>dinamikus szintek</li>
-			<li>info box: irányítás, lövés, fegyver csere, mentés, betöltés, fejlesztések</li>
 			<li>szám billentyűkre fegyver váltás</li>
 			<li>localStorage -> lokális mentés/betöltés</li>
 			<li>pálya design: füves,földes, köves</li>
@@ -39,10 +39,11 @@
 		<button id="loadBtn" onclick="optionsPopup(this.id);">Load</button>
 		<button id="upgradeBtn" onclick="optionsPopup(this.id);">Upgrade</button>
 		<button id="storeBtn" onclick="optionsPopup(this.id);">Store</button>
+		<button id="infoBtn" onclick="optionsPopup(this.id);">Info</button>
 		<button id="mainScreenBtn" onclick="location.href = 'index_fighter.html';">Main Screen</button>
 		<div class="checkBoxHolder">
 			<label for="bloodChck">BloodDisapear</label>
-			<input id="bloodChck" type="checkbox" onchange="setBloodDisapear();" />
+			<input id="bloodChck" checked="checked" type="checkbox" onchange="setBloodDisapear();" />
 		</div>
 		<div class="checkBoxHolder">
 			<label for="shadowChck">Shadow</label>

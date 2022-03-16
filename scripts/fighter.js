@@ -23,6 +23,7 @@ function initCanvasSize() {
 
 initCanvasSize();
 
+
 let hero = new Hero((canvas.width / 2) - 20, (canvas.height / 2) - 20);
 let then = Date.now();
 let rotate;
@@ -119,6 +120,9 @@ function optionsPopup(buttonid) {
 		case 'loadBtn':
 			load();
 			break;
+		case 'infoBtn':
+			info();
+			break;
 		case 'storeBtn':
 			(async () => {
 				store();
@@ -131,6 +135,29 @@ function optionsPopup(buttonid) {
 
 	document.getElementById('optionsPopup').style.left = (document.documentElement.clientWidth / 2) - (document.getElementById('optionsPopup').getBoundingClientRect().width / 2) + 'px';
 	document.getElementById('optionsPopup').style.top = (document.documentElement.clientHeight / 2) - (document.getElementById('optionsPopup').getBoundingClientRect().height / 2) + 'px';
+}
+
+let gameInfo = [
+	{ key: 'Save', text: 'Copy the given string from the Save popup' },
+	{ key: 'Load', text: 'Paste the copied save string and click to the Load Game button' },
+	{ key: 'Upgrades', text: 'Get attribute points by leveling and and spend it on developing your hero' },
+	{ key: 'W', text: 'Move forward' },
+	{ key: 'A', text: 'Move left' },
+	{ key: 'S', text: 'Move backward' },
+	{ key: 'D', text: 'Move right' },
+	{ key: 'T', text: 'Teleport' },
+	{ key: 'ESCAPE', text: 'Options' },
+	{ key: 'SPACE', text: 'Jump' },
+	{ key: 'LEFT CLICK', text: 'Shoot' },
+	{ key: 'MOUSE WHEEL', text: 'Switch weapon' }
+];
+function info() {
+	for (const i of gameInfo) {
+		let info = document.createElement('label');
+		info.innerText = i.key + ' -> ' + i.text;
+		info.id = 'info' + i.text;
+		document.getElementById('optionsPopup').appendChild(info);
+	}
 }
 
 function store() {
@@ -169,6 +196,12 @@ function loadGame() {
 	if (loadData.length > 0) {
 		const heroJSON = JSON.parse(decryption(loadData));
 		hero = new Hero(heroJSON.positionX, heroJSON.positionY, heroJSON.name, heroJSON.width, heroJSON.height, heroJSON.hp, heroJSON.upgrades, heroJSON.appearence, heroJSON.level, heroJSON.weapon, heroJSON.xp, heroJSON.attributePoints, heroJSON.ownedWeapons);
+	}
+	paused = !paused;
+	start();
+	document.getElementById('options').style.left = '-310px';
+	if (document.getElementById('optionsPopup').style.visibility = 'visible') {
+		document.getElementById('optionsPopup').style.visibility = 'hidden';
 	}
 }
 
@@ -290,7 +323,8 @@ function drawHud() {
 		{ id: 'shotsText', text: 'Shots: ', data: shots },
 		{ id: 'heroWeaponText', text: 'Weapon: ', data: hero.weapon.type },
 		{ id: 'deadEnemiesText', text: 'Kills: ', data: deadEnemies },
-		{ id: 'actualLevel', text: 'Map: ', data: actualLevel.name }
+		{ id: 'actualLevel', text: 'Map: ', data: actualLevel.name },
+		{ id: 'attrPoints', text: 'Attribute points: ', data: hero.attributePoints }
 	];
 
 	for (let i = 0; i < hudElements.length; i++) {
@@ -553,6 +587,9 @@ function setBloodDisapear() {
 
 let bloodDisapear = true;
 let shadow = false;
+document.getElementById('bloodChck').checked = bloodDisapear;
+document.getElementById('shadowChck').checked = shadow;
+
 let animId;
 let deadEnemies = 0;
 let gameOver = false;

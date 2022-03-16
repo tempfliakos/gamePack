@@ -59,7 +59,7 @@ canvas {
   font-size: 0.3em;
   font-weight: bold;
   font-family: monospace;
-  height: 5em;
+  height: 4em;
   cursor: pointer;
 }
 
@@ -99,7 +99,7 @@ canvas {
   visibility: hidden;
   padding: 0.5em;
   max-width: 60%;
-  word-break: break-all;
+  word-break: break-word;
 }
 
 .optionsPopup #holderDiv div {
