@@ -133,14 +133,22 @@ function optionsPopup(buttonid) {
 			break;
 	}
 
+	let close = document.createElement('button');
+	close.id = 'closeBtn';
+	close.innerText = 'Close';
+	close.style.width = 'auto';
+	close.style.margin = 'auto';
+	close.style.marginTop = '10px';
+	close.onclick = ()=> {document.getElementById('optionsPopup').style.visibility = 'hidden'};
+	document.getElementById('optionsPopup').appendChild(close);
 	document.getElementById('optionsPopup').style.left = (document.documentElement.clientWidth / 2) - (document.getElementById('optionsPopup').getBoundingClientRect().width / 2) + 'px';
 	document.getElementById('optionsPopup').style.top = (document.documentElement.clientHeight / 2) - (document.getElementById('optionsPopup').getBoundingClientRect().height / 2) + 'px';
 }
 
 let gameInfo = [
-	{ key: 'Save', text: 'Copy the given string from the Save popup' },
-	{ key: 'Load', text: 'Paste the copied save string and click to the Load Game button' },
-	{ key: 'Upgrades', text: 'Get attribute points by leveling and and spend it on developing your hero' },
+	{ key: 'Save', text: 'Copy the given text from the Save popup' },
+	{ key: 'Load', text: 'Paste the copied save text and click to the Load Game button' },
+	{ key: 'Upgrades', text: 'Get attribute points by leveling and spend it on developing your hero' },
 	{ key: 'W', text: 'Move forward' },
 	{ key: 'A', text: 'Move left' },
 	{ key: 'S', text: 'Move backward' },
