@@ -51,6 +51,7 @@ class Hero {
 		context.rotate(rotate);
 		context.translate(-this.positionX + -this.width / 2, -this.positionY + -this.height / 2);
 		context.drawImage(this.image, this.positionX, this.positionY, this.width, this.height);
+		
 
 		//hpLine
 		context.beginPath();

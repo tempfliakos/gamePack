@@ -87,7 +87,7 @@ const weapons = [
 		"ref": "sling",
 		"damage": 1,
 		"velocity": 150,
-		"color": "brown",
+		"color": "#442d0e",
 		"radius": 4,
 		"upgrades": {
 			"damage": 0,

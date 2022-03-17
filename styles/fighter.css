@@ -20,7 +20,8 @@ canvas {
 }
 
 #mapCanvas {
-  background-color: #cceecc;
+  background-color: white;
+  opacity: 0.85;
 }
 
 .hudPanel {
@@ -188,7 +189,7 @@ canvas {
   left: 100px;
   top: 10px;
   font-size: 1em;
-  color: red;
+  color: white;
   font-style: italic;
 }
 

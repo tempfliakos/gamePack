@@ -25,6 +25,7 @@ let tileW = 0;
 let mapW = 20;
 let mapH = 20;
 let image = new Image();
+let backgroundIndex = 1;
 image.src = "../resources/tilemap_ground.png";
 
 
@@ -37,10 +38,10 @@ function drawMap(canvas, context) {
 		for (var x = 0; x < mapW; ++x) {
 			switch (gameMap[((y * mapW) + x)]) {
 				case 0:
-					context.drawImage(image, 1 * 100 - 100, 0, 100, 100, x * tileW, y * tileH, tileW, tileH);
+					context.drawImage(image, backgroundIndex * 100 - 100, 0, 100, 100, x * tileW, y * tileH, tileW, tileH);
 					break;
 				default:
-					context.drawImage(image, 1 * 100 - 100, 0, 100, 100, x * tileW, y * tileH, tileW, tileH);
+					context.drawImage(image, backgroundIndex * 100 - 100, 0, 100, 100, x * tileW, y * tileH, tileW, tileH);
 			}
 		}
 	}

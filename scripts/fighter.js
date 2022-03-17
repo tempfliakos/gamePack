@@ -23,7 +23,6 @@ function initCanvasSize() {
 
 initCanvasSize();
 
-
 let hero = new Hero((canvas.width / 2) - 20, (canvas.height / 2) - 20);
 let then = Date.now();
 let rotate;
@@ -139,7 +138,7 @@ function optionsPopup(buttonid) {
 	close.style.width = 'auto';
 	close.style.margin = 'auto';
 	close.style.marginTop = '10px';
-	close.onclick = ()=> {document.getElementById('optionsPopup').style.visibility = 'hidden'};
+	close.onclick = () => { document.getElementById('optionsPopup').style.visibility = 'hidden' };
 	document.getElementById('optionsPopup').appendChild(close);
 	document.getElementById('optionsPopup').style.left = (document.documentElement.clientWidth / 2) - (document.getElementById('optionsPopup').getBoundingClientRect().width / 2) + 'px';
 	document.getElementById('optionsPopup').style.top = (document.documentElement.clientHeight / 2) - (document.getElementById('optionsPopup').getBoundingClientRect().height / 2) + 'px';
@@ -291,6 +290,37 @@ function upgrade() {
 	}
 }
 
+function waitForImage(imgElem) {
+	return new Promise(res => {
+		if (imgElem.complete) {
+			return res();
+		}
+		imgElem.onload = () => res();
+		imgElem.onerror = () => res();
+	});
+}
+
+function updateWeaponAmmo() {
+	document.getElementById('weaponAmmo').innerText = hero.weapon.ammo + '/' + hero.weapon.maxAmmo;
+}
+
+function showInfoLabel(infoText) {
+	let infoLabel = document.createElement('label');
+	infoLabel.id = 'infoLabel';
+	infoLabel.className = 'infoLabel';
+	infoLabel.innerText = infoText;
+	document.getElementsByTagName('body')[0].appendChild(infoLabel);
+	document.getElementById('infoLabel').style.left = document.documentElement.clientWidth / 2 - document.getElementById('infoLabel').getBoundingClientRect().width / 2 + 'px';
+	document.getElementById('infoLabel').style.top = document.documentElement.clientHeight / 2 - document.getElementById('infoLabel').getBoundingClientRect().height / 2 + 'px';
+	document.getElementById('infoLabel').style.opacity = 0.6;
+	setTimeout(() => {
+		document.getElementById('infoLabel').style.opacity = 0;
+	}, 5000);
+	setTimeout(() => {
+		document.getElementById('infoLabel').remove();
+	}, 7000);
+}
+
 function drawExplosion(x, y, width) {
 	let explosionRad = width + 20;
 	let expl = document.createElement('img');
@@ -357,6 +387,19 @@ let healed = false;
 let hpImage = new Image();
 hpImage.src = '../resources/hp.svg';
 function drawHp() {
+	if ((hero.actualHp / hero.maxHp) < 0.3 && hps.length < 1) {
+		hps = []
+		healed = false;
+		hps.push(
+			{
+				x: randomInterval(0, canvas.width),
+				y: randomInterval(0, canvas.height),
+				width: 25,
+				height: 30,
+				timeout: addSeconds(20),
+				healPoint: 10
+			})
+	};
 	if (hps.length > 0) {
 		if (hps[0].timeout > new Date()) {
 			context.beginPath();
@@ -383,17 +426,6 @@ function drawHp() {
 	if (healed) { hps = [] };
 }
 
-function waitForImage(imgElem) {
-	return new Promise(res => {
-		if (imgElem.complete) {
-			return res();
-		}
-		imgElem.onload = () => res();
-		imgElem.onerror = () => res();
-	});
-}
-
-
 function drawWeapon() {
 	(async () => {
 		document.getElementById('weaponImg').src = '';
@@ -404,50 +436,12 @@ function drawWeapon() {
 	})();
 }
 
-function updateWeaponAmmo() {
-	document.getElementById('weaponAmmo').innerText = hero.weapon.ammo + '/' + hero.weapon.maxAmmo;
-}
-
-function showInfoLabel(infoText) {
-	let infoLabel = document.createElement('label');
-	infoLabel.id = 'infoLabel';
-	infoLabel.className = 'infoLabel';
-	infoLabel.innerText = infoText;
-	document.getElementsByTagName('body')[0].appendChild(infoLabel);
-	document.getElementById('infoLabel').style.left = document.documentElement.clientWidth / 2 - document.getElementById('infoLabel').getBoundingClientRect().width / 2 + 'px';
-	document.getElementById('infoLabel').style.top = document.documentElement.clientHeight / 2 - document.getElementById('infoLabel').getBoundingClientRect().height / 2 + 'px';
-	document.getElementById('infoLabel').style.opacity = 0.6;
-	setTimeout(() => {
-		document.getElementById('infoLabel').style.opacity = 0;
-	}, 5000);
-	setTimeout(() => {
-		document.getElementById('infoLabel').remove();
-	}, 7000);
-}
-
-function drawObjects(delta) {
-	//drawMap(Mcanvas, Mcontext);
-	if (shadow) {
-		context.beginPath();
-		context.shadowColor = 'black';
-		context.shadowBlur = 10;
-		context.shadowOffsetX = 5;
-		context.shadowOffsetY = 5;
-		context.fill();
-		context.closePath();
-	} else {
-		context.shadowColor = "transparent";
-	}
-
+function drawBlood() {
 	for (let i = 0; i < enemyHits.length; i++) {
 		if (bloodDisapear && enemyHits[i].timeout < new Date()) {
 			enemyHits.splice(i, 1);
 		} else {
 			context.beginPath();
-
-			//sebzes
-			//context.font = "20px Arial";
-			//context.fillText(enemyHits[i].damage, enemyHits[i].x + (enemyHits[i].enemyProt.width / 2), enemyHits[i].y - 10);
 
 			//blood
 			context.fillStyle = enemyHits[i].bloodColor;
@@ -461,26 +455,31 @@ function drawObjects(delta) {
 			context.closePath();
 		}
 	}
-	drawHud();
-	if ((hero.actualHp / hero.maxHp) < 0.3 && hps.length < 1) {
-		hps = []
-		healed = false;
-		hps.push(
-			{
-				x: randomInterval(0, canvas.width),
-				y: randomInterval(0, canvas.height),
-				width: 25,
-				height: 30,
-				timeout: addSeconds(20),
-				healPoint: 10
-			})
-	};
-	drawHp();
+}
 
+function drawShadow() {
+	if (shadow) {
+		context.beginPath();
+		context.shadowColor = 'black';
+		context.shadowBlur = 10;
+		context.shadowOffsetX = 5;
+		context.shadowOffsetY = 5;
+		context.fill();
+		context.closePath();
+	} else {
+		context.shadowColor = "transparent";
+	}
+}
+
+function drawObjects(delta) {
+	drawMap(Mcanvas, Mcontext);
+	drawShadow();
+	drawBlood();
+	drawHud();
+	drawHp();
 	for (let projectile of projectiles) {
 		projectile.step(delta / 1000, enemies);
 	}
-
 	for (let enemy of enemies) {
 		enemy.step(delta / 1000, hero, enemies);
 	}
@@ -512,6 +511,9 @@ function generateEnemies() {
 	} else if (enemies.length == 0 && availableEnemiesArray == 0) {
 		actualLevel = levels[actualLevel.id];
 		showInfoLabel(actualLevel.name);
+
+		//hatter valtozas szintlepessel - figyelni kell majd IndexOutOfBounds-ra - kesobb palya levelbe bele lehetn tenni
+		++backgroundIndex;
 	}
 }
 
