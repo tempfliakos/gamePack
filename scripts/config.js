@@ -11,13 +11,13 @@ let shadow = false;
 const levels = [
 	{
 		"id": 1,
-		"name": "Level - 1",
+		"name": "Luhansk",
 		"groundType": 1,
 		"enemies": {
-			"low": 10,
-			"normal": 7,
-			"huge": 3,
-			"boss": 1
+			"low": 25,
+			"normal": 0,
+			"huge": 0,
+			"boss": 0
 		},
 		"minEnemyOnScreen": 3,
 		"maxEnemyOnScreen": 5,
@@ -25,13 +25,69 @@ const levels = [
 	},
 	{
 		"id": 2,
-		"name": "Level - 2",
+		"name": "Kharkiv",
+		"groundType": 2,
+		"enemies": {
+			"low": 30,
+			"normal": 1,
+			"huge": 0,
+			"boss": 0
+		},
+		"minEnemyOnScreen": 3,
+		"maxEnemyOnScreen": 10,
+		"reward": 10
+	},
+	{
+		"id": 3,
+		"name": "Mariupol",
+		"groundType": 2,
+		"enemies": {
+			"low": 35,
+			"normal": 2,
+			"huge": 1,
+			"boss": 0
+		},
+		"minEnemyOnScreen": 3,
+		"maxEnemyOnScreen": 10,
+		"reward": 10
+	},
+	{
+		"id": 4,
+		"name": "Donetsk",
+		"groundType": 2,
+		"enemies": {
+			"low": 40,
+			"normal": 3,
+			"huge": 3,
+			"boss": 0
+		},
+		"minEnemyOnScreen": 3,
+		"maxEnemyOnScreen": 10,
+		"reward": 10
+	},
+	{
+		"id": 5,
+		"name": "Crimea",
+		"groundType": 2,
+		"enemies": {
+			"low": 45,
+			"normal": 5,
+			"huge": 5,
+			"boss": 1
+		},
+		"minEnemyOnScreen": 3,
+		"maxEnemyOnScreen": 10,
+		"reward": 10
+	},
+	{
+		"id": 6,
+		"name": "Kyiv",
 		"groundType": 2,
 		"enemies": {
 			"low": 50,
-			"normal": 0,
-			"huge": 0,
-			"boss": 2
+			"normal": 15,
+			"huge": 10,
+			"boss": 5
 		},
 		"minEnemyOnScreen": 3,
 		"maxEnemyOnScreen": 10,
@@ -46,7 +102,7 @@ const enemyTypes = [
 		"damage": 1,
 		"damageInterval": 1000,
 		"velocity": 100,
-		"appearence": resource + "enemy_red.svg",
+		"appearence": resource + "enemy_russia.svg",
 		"size": 20,
 		"reward": 1
 	},
@@ -56,7 +112,7 @@ const enemyTypes = [
 		"damage": 5,
 		"damageInterval": 1000,
 		"velocity": 80,
-		"appearence": resource + "enemy_blue.svg",
+		"appearence": resource + "enemy_russia.svg",
 		"size": 40,
 		"reward": 5
 	},
@@ -66,7 +122,7 @@ const enemyTypes = [
 		"damage": 10,
 		"damageInterval": 1000,
 		"velocity": 60,
-		"appearence": resource + "enemy_yellow.svg",
+		"appearence": resource + "enemy_russia.svg",
 		"size": 80,
 		"reward": 10
 	},
@@ -76,7 +132,7 @@ const enemyTypes = [
 		"damage": 25,
 		"damageInterval": 1000,
 		"velocity": 50,
-		"appearence": resource + "enemy_boss.svg",
+		"appearence": resource + "enemy_russia.svg",
 		"size": 200,
 		"reward": 25
 	}
@@ -171,7 +227,7 @@ const defaultHero = {
 	"name": "Hero",
 	"hp": 100,
 	"velocity": 50,
-	"appearence": resource + "hero.svg",
+	"appearence": resource + "hero_ukraine.svg",
 	"size": 40,
 	"level": 1,
 	"weapon": weapons[weaponsMap.sling],

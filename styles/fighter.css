@@ -21,7 +21,7 @@ canvas {
 
 #mapCanvas {
   background-color: white;
-  opacity: 0.85;
+  opacity: 0.75;
 }
 
 .hudPanel {
@@ -198,6 +198,5 @@ canvas {
   opacity: 0;
   z-index: 2;
   transition: 2s;
-  font-size: 3em;
   text-align: center;
 }

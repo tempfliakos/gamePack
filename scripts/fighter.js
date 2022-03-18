@@ -311,11 +311,12 @@ function updateWeaponAmmo() {
 	document.getElementById('weaponAmmo').innerText = hero.weapon.ammo + '/' + hero.weapon.maxAmmo;
 }
 
-function showInfoLabel(infoText) {
+function showInfoLabel(infoText, fontsize = '3em') {
 	let infoLabel = document.createElement('label');
 	infoLabel.id = 'infoLabel';
 	infoLabel.className = 'infoLabel';
 	infoLabel.innerText = infoText;
+	infoLabel.style.fontSize = fontsize;
 	document.getElementsByTagName('body')[0].appendChild(infoLabel);
 	document.getElementById('infoLabel').style.left = document.documentElement.clientWidth / 2 - document.getElementById('infoLabel').getBoundingClientRect().width / 2 + 'px';
 	document.getElementById('infoLabel').style.top = document.documentElement.clientHeight / 2 - document.getElementById('infoLabel').getBoundingClientRect().height / 2 + 'px';
@@ -523,11 +524,16 @@ function generateEnemies() {
 			}
 		}
 	} else if (enemies.length == 0 && availableEnemiesArray == 0) {
-		actualLevel = levels[actualLevel.id];
-		showInfoLabel(actualLevel.name);
+		if (levels[actualLevel.id] !== undefined) {
+			actualLevel = levels[actualLevel.id];
+			showInfoLabel(actualLevel.name, '10em');
 
-		//hatter valtozas szintlepessel - figyelni kell majd IndexOutOfBounds-ra - kesobb palya levelbe bele lehetn tenni
-		++backgroundIndex;
+			//hatter valtozas szintlepessel - figyelni kell majd IndexOutOfBounds-ra - kesobb palya levelbe bele lehetn tenni
+			backgroundIndex = backgroundIndex + 1 > 6 ? 6 : ++backgroundIndex;
+		} else {
+			stop();
+			showInfoLabel('YOU WIN', '15em');
+		}
 	}
 }
 
