@@ -445,7 +445,10 @@ function drawWeapon() {
 	(async () => {
 		document.getElementById('weaponImg').src = '';
 		document.getElementById('weaponImg').src = hero.weapon.src;
-		document.getElementById('weaponAmmo').innerText = hero.weapon.ammo + '/' + hero.weapon.maxAmmo;
+		document.getElementById('weaponAmmo').innerText =
+			'ammo: ' + hero.weapon.ammo + '/' + hero.weapon.maxAmmo +
+			'\n damage: ' + hero.weapon.damage + 
+			'\n range: ' + hero.weapon.shootRange;
 		await waitForImage(document.getElementById('weaponImg'));
 		document.getElementById('weaponDiv').style.left = document.documentElement.clientWidth - document.getElementById('weaponDiv').getBoundingClientRect().width - 10 + 'px';
 	})();
@@ -559,20 +562,25 @@ function randomEnemy(available) {
 }
 
 
-setInterval(rockets, randomInterval(10000, 30000));
+setInterval(rockets, randomInterval(10 * 1000, 30 * 1000));
 function rockets() {
 	if (!paused || !gameOver) {
+		let rocketDirection = Math.random() < 0.5;
 		let rocket = document.createElement('img');
 		rocket.id = 'rocket' + new Date().getTime();
 		rocket.src = '../resources/missle.svg';
 		rocket.style.position = 'absolute';
-		rocket.style.width = '200px';
+		rocket.style.width = randomInterval(50, 150) + 'px';
+		rocket.style.zIndex = 3;
+		rocket.style.filter = 'drop-shadow(0px ' + randomInterval(50, 300) + 'px 2px black)';
 		rocket.style.transition = randomInterval(1, 4) + 's';
-		rocket.style.left = canvas.getBoundingClientRect().right + 10 + 'px';
+		rocket.style.transform = !rocketDirection ? 'rotate(180deg)' : '';
+		rocket.style.left = rocketDirection ? canvas.getBoundingClientRect().right + 200 + 'px' : canvas.getBoundingClientRect().left - 200 + 'px';
 		rocket.style.top = randomInterval(0, canvas.getBoundingClientRect().height) + 'px';
 		document.getElementsByTagName('body')[0].appendChild(rocket);
 		setTimeout(() => {
 			rocket.style.left = 0 - rocket.getBoundingClientRect().width - 500 + 'px';
+			rocket.style.left = rocketDirection ? canvas.getBoundingClientRect().left - 200 + 'px' : canvas.getBoundingClientRect().right + 200 + 'px';
 		}, 1000);
 		setTimeout(() => { rocket.remove() }, 5000);
 	}
