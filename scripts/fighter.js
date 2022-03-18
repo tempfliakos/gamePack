@@ -71,8 +71,9 @@ addEventListener('keydown', e => {
 	}
 	//teleport
 	if ('KeyT' in keysDown) {
-		hero.positionX = randomInterval(0, document.documentElement.clientWidth);
-		hero.positionY = randomInterval(0, document.documentElement.clientHeight);
+		if (isTeleportSkillEnabled) {
+			teleportSkill();
+		}
 	}
 })
 let interval;
@@ -131,17 +132,22 @@ function optionsPopup(buttonid) {
 			})();
 			break;
 	}
-
-	let close = document.createElement('button');
-	close.id = 'closeBtn';
-	close.innerText = 'Close';
-	close.style.width = 'auto';
-	close.style.margin = 'auto';
-	close.style.marginTop = '10px';
-	close.onclick = () => { document.getElementById('optionsPopup').style.visibility = 'hidden' };
-	document.getElementById('optionsPopup').appendChild(close);
+	closeButton();
 	document.getElementById('optionsPopup').style.left = (document.documentElement.clientWidth / 2) - (document.getElementById('optionsPopup').getBoundingClientRect().width / 2) + 'px';
 	document.getElementById('optionsPopup').style.top = (document.documentElement.clientHeight / 2) - (document.getElementById('optionsPopup').getBoundingClientRect().height / 2) + 'px';
+}
+
+function closeButton() {
+	if ($('#closeBtn').length < 1) {
+		let close = document.createElement('button');
+		close.id = 'closeBtn';
+		close.innerText = 'Close';
+		close.style.width = 'auto';
+		close.style.margin = 'auto';
+		close.style.marginTop = '10px';
+		close.onclick = () => { document.getElementById('optionsPopup').style.visibility = 'hidden' };
+		document.getElementById('optionsPopup').appendChild(close);
+	}
 }
 
 let gameInfo = [
@@ -288,6 +294,7 @@ function upgrade() {
 			document.getElementById('holderDiv').appendChild(parent);
 		}
 	}
+	closeButton();
 }
 
 function waitForImage(imgElem) {
@@ -321,6 +328,15 @@ function showInfoLabel(infoText) {
 	}, 7000);
 }
 
+let teleportUsed;
+function teleportSkill() {
+	hero.positionX = randomInterval(0, document.documentElement.clientWidth);
+	hero.positionY = randomInterval(0, document.documentElement.clientHeight);
+	teleportUsed = new Date();
+	isTeleportSkillEnabled = false;
+	setTimeout(() => { isTeleportSkillEnabled = true; }, teleportSkillTimer * 1000);
+}
+
 function drawExplosion(x, y, width) {
 	let explosionRad = width + 20;
 	let expl = document.createElement('img');
@@ -352,9 +368,8 @@ function drawExplosion(x, y, width) {
 	setTimeout(() => { document.getElementById(expl.id).remove() }, 1000);
 }
 
-let hudElements = [];
 function drawHud() {
-	hudElements = [
+	let hudElements = [
 		{ id: 'hpPercentageText', text: 'HP: ', data: hero.actualHp < 0 ? 0 + '/' + hero.maxHp : hero.actualHp + '/' + hero.maxHp },
 		{ id: 'heroLevelText', text: 'Lvl: ', data: hero.level },
 		{ id: 'heroXp', text: 'XP: ', data: hero.xp },
@@ -362,7 +377,8 @@ function drawHud() {
 		{ id: 'heroWeaponText', text: 'Weapon: ', data: hero.weapon.type },
 		{ id: 'deadEnemiesText', text: 'Kills: ', data: deadEnemies },
 		{ id: 'actualLevel', text: 'Map: ', data: actualLevel.name },
-		{ id: 'attrPoints', text: 'Attribute points: ', data: hero.attributePoints }
+		{ id: 'attrPoints', text: 'Attribute points: ', data: hero.attributePoints },
+		{ id: 'teleportTimer', text: !isTeleportSkillEnabled ? 'Teleport disabled: ' : '', data: !isTeleportSkillEnabled ? Math.round(teleportSkillTimer - (new Date() - teleportUsed) / 1000) + 's' : '' }
 	];
 
 	for (let i = 0; i < hudElements.length; i++) {
@@ -384,8 +400,6 @@ function drawHud() {
 
 let hps = [];
 let healed = false;
-let hpImage = new Image();
-hpImage.src = '../resources/hp.svg';
 function drawHp() {
 	if ((hero.actualHp / hero.maxHp) < 0.3 && hps.length < 1) {
 		hps = []
@@ -582,6 +596,32 @@ function fpsCalc() {
 	document.getElementById('fps').innerText = 'FPS: ' + framesLastSecond;
 }
 
+function countDown() {
+	let counter = document.createElement('label');
+	counter.style.position = 'absolute';
+	counter.style.left = 0;
+	counter.style.top = 0;
+	counter.style.fontSize = '40em';
+	counter.innerText = countDownTimerSec;
+	document.getElementsByTagName('body')[0].appendChild(counter);
+
+	counter.style.left = canvas.getBoundingClientRect().width / 2 - counter.getBoundingClientRect().width / 2 + 'px';
+	counter.style.top = canvas.getBoundingClientRect().height / 2 - counter.getBoundingClientRect().height / 2 + 'px';
+
+	for (let i = 0; i < countDownTimerSec; i++) {
+		setTimeout(() => {
+			counter.innerText = countDownTimerSec - 1;
+			--countDownTimerSec;
+			counter.style.left = canvas.getBoundingClientRect().width / 2 - counter.getBoundingClientRect().width / 2 + 'px';
+			counter.style.top = canvas.getBoundingClientRect().height / 2 - counter.getBoundingClientRect().height / 2 + 'px';
+		}, (i + 1) * 1000);
+	}
+	setTimeout(() => {
+		counter.remove();
+		isGameStarted = true;
+	}, countDownTimerSec * 1000);
+}
+
 function addSeconds(sec, date = new Date()) {
 	date.setSeconds(date.getSeconds() + sec);
 	return date;
@@ -595,8 +635,6 @@ function setBloodDisapear() {
 	bloodDisapear = document.getElementById('bloodChck').checked;
 }
 
-let bloodDisapear = true;
-let shadow = false;
 document.getElementById('bloodChck').checked = bloodDisapear;
 document.getElementById('shadowChck').checked = shadow;
 
@@ -605,6 +643,7 @@ let deadEnemies = 0;
 let gameOver = false;
 let paused = undefined;
 let enemyHits = [];
+let isGameStarted = false;
 const main = function () {
 	try {
 		if (!paused || !gameOver) {
@@ -616,13 +655,13 @@ const main = function () {
 			projectiles = projectiles.filter(p => p.hit !== true && p.positionX > 0 && p.positionX < canvas.width && p.positionY > 0 && p.positionY < canvas.height);
 			enemies = enemies.filter(e => e.hp > 0);
 			generateEnemies();
+			drawObjects(delta);
+			fpsCalc();
 			if (gameOver) {
 				stop();
 			} else {
 				animId = requestAnimationFrame(main);
 			}
-			drawObjects(delta);
-			fpsCalc();
 		}
 	} catch (e) {
 		let hiba = document.createElement('div');
@@ -634,7 +673,7 @@ const main = function () {
 		hiba.style.color = 'white';
 		hiba.style.fontSize = '2em';
 		hiba.innerText = e;
-		hiba.style.zIndex = '3';
+		hiba.style.zIndex = 3;
 		document.getElementsByTagName('body')[0].appendChild(hiba);
 		console.error(e);
 	}
@@ -642,4 +681,5 @@ const main = function () {
 }
 
 drawWeapon();
+countDown();
 main();

@@ -1,5 +1,13 @@
 const resource = "../resources/";
 
+let isTeleportSkillEnabled = true;
+let teleportSkillTimer = 30;
+let countDownTimerSec = 5;
+let hpImage = new Image();
+hpImage.src = '../resources/hp.svg';
+let bloodDisapear = true;
+let shadow = false;
+
 const levels = [
 	{
 		"id": 1,
