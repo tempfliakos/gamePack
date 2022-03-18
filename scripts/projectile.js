@@ -5,6 +5,8 @@ class Projectile {
 		this.destination = destination;
 		this.type = type;
 		this.hit = false;
+		this.startPositionX = positionX;
+		this.startPositionY = positionY;
 	}
 
 	draw() {

@@ -559,6 +559,25 @@ function randomEnemy(available) {
 }
 
 
+setInterval(rockets, randomInterval(10000, 30000));
+function rockets() {
+	if (!paused || !gameOver) {
+		let rocket = document.createElement('img');
+		rocket.id = 'rocket' + new Date().getTime();
+		rocket.src = '../resources/missle.svg';
+		rocket.style.position = 'absolute';
+		rocket.style.width = '200px';
+		rocket.style.transition = randomInterval(1, 4) + 's';
+		rocket.style.left = canvas.getBoundingClientRect().right + 10 + 'px';
+		rocket.style.top = randomInterval(0, canvas.getBoundingClientRect().height) + 'px';
+		document.getElementsByTagName('body')[0].appendChild(rocket);
+		setTimeout(() => {
+			rocket.style.left = 0 - rocket.getBoundingClientRect().width - 500 + 'px';
+		}, 1000);
+		setTimeout(() => { rocket.remove() }, 5000);
+	}
+}
+
 function stop() {
 	cancelAnimationFrame(animId);
 	if (gameOver) {
@@ -658,7 +677,13 @@ const main = function () {
 			const delta = now - then;
 			hero.step(delta / 1000, enemies);
 			then = now;
-			projectiles = projectiles.filter(p => p.hit !== true && p.positionX > 0 && p.positionX < canvas.width && p.positionY > 0 && p.positionY < canvas.height);
+			projectiles = projectiles.filter(p =>
+				p.hit !== true &&
+				p.positionX > 0 &&
+				p.positionX < canvas.width &&
+				p.positionY > 0 &&
+				p.positionY < canvas.height &&
+				Math.sqrt(Math.pow((p.startPositionX - p.positionX), 2) + Math.pow((p.startPositionY - p.positionY), 2)) < hero.weapon.shootRange);
 			enemies = enemies.filter(e => e.hp > 0);
 			generateEnemies();
 			drawObjects(delta);

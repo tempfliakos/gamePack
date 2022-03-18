@@ -161,14 +161,15 @@ const weapons = [
 		"src": "../resources/weapon_sling_shot.svg",
 		"maxAmmo": 10000,
 		"ammo": 10000,
-		"price": 0
+		"price": 0,
+		"shootRange": 100
 	},
 	{
 		"type": "Pistol",
 		"ref": "pistol",
 		"damage": 3,
 		"velocity": 500,
-		"color": "grey",
+		"color": "black",
 		"radius": 2,
 		"upgrades": {
 			"damage": 0,
@@ -178,7 +179,8 @@ const weapons = [
 		"src": "../resources/weapon_pistol.svg",
 		"maxAmmo": 500,
 		"ammo": 500,
-		"price": 1
+		"price": 1,
+		"shootRange": 200
 	},
 	{
 		"type": "Ak",
@@ -195,7 +197,8 @@ const weapons = [
 		"src": "../resources/weapon_ak.svg",
 		"maxAmmo": 500,
 		"ammo": 500,
-		"price": 2
+		"price": 2,
+		"shootRange": 300
 	},
 	{
 		"type": "Rocket launcher",
@@ -212,7 +215,8 @@ const weapons = [
 		"src": "../resources/weapon_rocket_launcher.svg",
 		"maxAmmo": 500,
 		"ammo": 500,
-		"price": 3
+		"price": 3,
+		"shootRange": 400
 	}
 ];
 
