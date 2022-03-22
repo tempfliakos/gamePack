@@ -165,13 +165,16 @@ const weapons = [
 		"upgrades": {
 			"damage": 0,
 			"velocity": 0,
-			"maxAmmo": 0
+			"maxAmmo": 0,
+			"shootRange": 0,
+			"coolDown": 0
 		},
 		"src": resource + "weapon_sling_shot.svg",
 		"maxAmmo": 10000,
 		"ammo": 10000,
 		"price": 0,
 		"shootRange": 100,
+		"coolDown": 0,
 		"sound": resource + "laser_gun.wav"
 	},
 	{
@@ -186,14 +189,17 @@ const weapons = [
 		"upgrades": {
 			"damage": 0,
 			"velocity": 0,
-			"maxAmmo": 0
+			"maxAmmo": 0,
+			"shootRange": 0,
+			"coolDown": 0,
 		},
 		"src": resource + "weapon_pistol.svg",
 		"maxAmmo": 500,
 		"ammo": 500,
 		"price": 1,
 		"shootRange": 200,
-		"sound": resource + "pistol.mp3"
+		"sound": resource + "pistol.mp3",
+		"coolDown": 150,
 	},
 	{
 		"type": "Ak",
@@ -207,13 +213,16 @@ const weapons = [
 		"upgrades": {
 			"damage": 0,
 			"velocity": 0,
-			"maxAmmo": 0
+			"maxAmmo": 0,
+			"shootRange": 0,
+			"coolDown": 0,
 		},
 		"src": resource + "weapon_ak.svg",
 		"maxAmmo": 500,
 		"ammo": 500,
 		"price": 2,
 		"shootRange": 300,
+		"coolDown": 50,
 		"sound": resource + "ak.mp3"
 	},
 	{
@@ -228,13 +237,16 @@ const weapons = [
 		"upgrades": {
 			"damage": 0,
 			"velocity": 0,
-			"maxAmmo": 0
+			"maxAmmo": 0,
+			"shootRange": 0,
+			"coolDown": 0,
 		},
 		"src": resource + "weapon_rocket_launcher.svg",
 		"maxAmmo": 500,
 		"ammo": 500,
 		"price": 3,
-		"shootRange": 400,
+		"shootRange": 4000,
+		"coolDown": 1500,
 		"sound": resource + "rocket_weapon.mp3"
 	}
 ];

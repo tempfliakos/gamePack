@@ -33,8 +33,10 @@ let enemies = [];
 let actualLevel = levels[0];
 
 let shots = 0;
+let lastShootTime = new Date();
 function generateProjectile() {
-	if (hero.weapon.ammo > 0 && !paused) {
+	if (hero.weapon.ammo > 0 && !paused && shootingCooldown(hero.weapon.coolDown)) {
+		lastShootTime = new Date();
 		const angle = Math.atan2(mouse.y - hero.positionY, mouse.x - hero.positionX);
 		const shootDestination = {
 			x: Math.cos(angle),
@@ -47,17 +49,15 @@ function generateProjectile() {
 		shots++;
 		hero.weapon.ammo--;
 		updateWeaponAmmo();
-	} else {
-		shooting = false;
 	}
 }
 
-let shooting = false;
 canvas.onmousedown = function (e) {
 	generateProjectile(e);
-	if (hero.weapon.ammo > 0) {
-		shooting = true;
-	}
+}
+
+function shootingCooldown(weaponCooldown) {
+	return (new Date() - lastShootTime) > weaponCooldown;
 }
 
 addEventListener('keydown', e => {
@@ -92,7 +92,6 @@ canvas.addEventListener("mousedown", e => {
 
 canvas.addEventListener("mouseup", e => {
 	clearInterval(interval);
-	shooting = false;
 });
 
 canvas.addEventListener("mousewheel", e => {
@@ -312,13 +311,6 @@ function waitForImage(imgElem) {
 	});
 }
 
-function updateWeaponAmmo() {
-	document.getElementById('weaponAmmo').innerText =
-		'ammo: ' + hero.weapon.ammo + '/' + hero.weapon.maxAmmo +
-		'\n damage: ' + hero.weapon.damage +
-		'\n range: ' + hero.weapon.shootRange;
-}
-
 function showInfoLabel(infoText, fontsize = '3em') {
 	let infoLabel = document.createElement('label');
 	infoLabel.id = 'infoLabel';
@@ -458,10 +450,19 @@ function drawWeapon() {
 		document.getElementById('weaponAmmo').innerText =
 			'ammo: ' + hero.weapon.ammo + '/' + hero.weapon.maxAmmo +
 			'\n damage: ' + hero.weapon.damage +
-			'\n range: ' + hero.weapon.shootRange;
+			'\n range: ' + hero.weapon.shootRange +
+			'\n coolDown: ' + hero.weapon.coolDown;
 		await waitForImage(document.getElementById('weaponImg'));
 		document.getElementById('weaponDiv').style.left = document.documentElement.clientWidth - document.getElementById('weaponDiv').getBoundingClientRect().width - 10 + 'px';
 	})();
+}
+
+function updateWeaponAmmo() {
+	document.getElementById('weaponAmmo').innerText =
+		'ammo: ' + hero.weapon.ammo + '/' + hero.weapon.maxAmmo +
+		'\n damage: ' + hero.weapon.damage +
+		'\n range: ' + hero.weapon.shootRange +
+		'\n coolDown: ' + hero.weapon.coolDown;
 }
 
 function drawBlood() {
@@ -560,7 +561,7 @@ function generateEnemies() {
 			//hatter valtozas szintlepessel - figyelni kell majd IndexOutOfBounds-ra - kesobb palya levelbe bele lehetn tenni
 			backgroundIndex = backgroundIndex + 1 > 6 ? 6 : ++backgroundIndex;
 		} else {
-			if(!lastWin || (new Date() - lastWin) > 20000) {
+			if (!lastWin || (new Date() - lastWin) > 20000) {
 				playSound(winSound, 20000);
 			}
 			lastWin = new Date();
@@ -594,7 +595,7 @@ function randomEnemy(available) {
 
 setInterval(rockets, randomInterval(10 * 1000, 30 * 1000));
 function rockets() {
-	if (!paused || !gameOver) {
+	if (!paused && !gameOver) {
 		let rocketDirection = Math.random() < 0.5;
 		let rocket = document.createElement('img');
 		rocket.id = 'rocket' + new Date().getTime();

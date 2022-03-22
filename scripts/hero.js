@@ -70,17 +70,6 @@ class Hero {
 		context.stroke();
 		context.lineWidth = 1;
 		context.closePath();
-		if (shooting) {
-			context.beginPath();
-			context.strokeStyle = randomInterval(0, 1) == 0 ? 'red' : randomInterval(0, 1) == 1 ? 'yellow' : '';
-			context.moveTo(this.positionX + this.width + 15, this.positionY + hero.width / 2);
-			context.lineTo(this.positionX + this.width + (15 + randomInterval(3, 8)), this.positionY + hero.width / 2);
-			context.lineWidth = 10;
-			context.stroke();
-			context.lineWidth = 1;
-			context.strokeStyle = 'black';
-			context.closePath();
-		}
 
 		context.beginPath();
 		context.arc(this.positionX + this.width / 2, this.positionY + this.height / 2, this.width / 2, 0, 2 * Math.PI, false);
