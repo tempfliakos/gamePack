@@ -61,6 +61,7 @@ class Enemy {
 			}
 			if (isEnemyHit(this, hero)) {
 				if (!this.lastDamage || (new Date() - this.lastDamage) > this.damageInterval) {
+					playSound(stabSound);
 					hero.actualHp -= this.damage;
 					this.lastDamage = new Date();
 					if (hero.actualHp <= 0) {

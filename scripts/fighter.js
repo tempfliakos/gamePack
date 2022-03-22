@@ -77,6 +77,7 @@ addEventListener('keydown', e => {
 	if ('KeyT' in keysDown) {
 		if (isTeleportSkillEnabled) {
 			teleportSkill();
+			playSound(teleportSound);
 		}
 	}
 })
@@ -527,6 +528,7 @@ function drawObjects(delta) {
 	hero.draw();
 }
 
+let lastWin;
 function generateEnemies() {
 	let availableEnemiesArray = availableEnemies();
 	if (enemies.length <= actualLevel.minEnemyOnScreen && availableEnemiesArray.length > 0) {
@@ -558,6 +560,10 @@ function generateEnemies() {
 			//hatter valtozas szintlepessel - figyelni kell majd IndexOutOfBounds-ra - kesobb palya levelbe bele lehetn tenni
 			backgroundIndex = backgroundIndex + 1 > 6 ? 6 : ++backgroundIndex;
 		} else {
+			if(!lastWin || (new Date() - lastWin) > 20000) {
+				playSound(winSound, 20000);
+			}
+			lastWin = new Date();
 			stop();
 			showInfoLabel('YOU WIN', '15em');
 		}
@@ -607,6 +613,7 @@ function rockets() {
 			rocket.style.left = rocketDirection ? canvas.getBoundingClientRect().left - 200 + 'px' : canvas.getBoundingClientRect().right + 200 + 'px';
 		}, 1000);
 		setTimeout(() => { rocket.remove() }, 5000);
+		playSound(rocketSound, 2000);
 	}
 }
 
@@ -614,6 +621,7 @@ function stop() {
 	cancelAnimationFrame(animId);
 	if (gameOver) {
 		if ($('#youDied').length < 1) {
+			playSound(diedSound, 7000);
 			document.getElementById('options').style.left = '0px';
 			document.getElementById('state').innerText = '';
 			document.getElementById('upgradeBtn').disabled = 'disabled';
@@ -693,7 +701,7 @@ function setBloodDisapear() {
 	bloodDisapear = document.getElementById('bloodChck').checked;
 }
 
-function playSound(src) {
+function playSound(src, length = 1000) {
 	let sound = document.createElement("audio");
 	sound.src = src;
 	sound.setAttribute("preload", "auto");
@@ -701,7 +709,7 @@ function playSound(src) {
 	sound.style.display = "none";
 	document.body.appendChild(sound);
 	sound.play();
-	setTimeout(() => sound.remove(), 1000);
+	setTimeout(() => sound.remove(), length);
 }
 
 document.getElementById('bloodChck').checked = bloodDisapear;
