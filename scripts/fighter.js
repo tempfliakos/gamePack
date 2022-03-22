@@ -39,7 +39,9 @@ function generateProjectile() {
 			x: Math.cos(angle),
 			y: Math.sin(angle)
 		}
-		projectiles.push(new Projectile(hero.positionX + hero.width / 2, hero.positionY + hero.height / 2, shootDestination));
+		let weaponX = (hero.positionX + hero.width/2) + (hero.width / 2 + 15) * Math.cos(rotate);
+		let weaponY = (hero.positionY + hero.height/2) + (hero.width/2 + 15) * Math.sin(rotate);
+		projectiles.push(new Projectile(weaponX, weaponY, shootDestination));
 		shots++;
 		hero.weapon.ammo--;
 		updateWeaponAmmo();
@@ -487,6 +489,20 @@ function drawShadow() {
 	} else {
 		context.shadowColor = "transparent";
 	}
+}
+
+function drawWaponDot_debug(){
+	let xxx = (hero.positionX + hero.width/2) + (hero.width / 2 + 15) * Math.cos(rotate);
+	let yyy = (hero.positionY + hero.height/2) + (hero.width/2 + 15) * Math.sin(rotate);
+	let dot = document.createElement('div');
+	dot.style.backgroundColor = 'red';
+	dot.style.position = 'absolute';
+	dot.style.zIndex = 3;
+	dot.style.height = '4px';
+	dot.style.width = '4px';
+	dot.style.left = xxx - 2 + 'px';
+	dot.style.top = yyy  - 2 + 'px';
+	document.getElementsByTagName('body')[0].appendChild(dot);
 }
 
 function drawObjects(delta) {

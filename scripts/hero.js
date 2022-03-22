@@ -39,19 +39,18 @@ class Hero {
 	}
 
 	draw() {
-		rotate = Math.atan2(mouse.y - this.positionY, mouse.x - this.positionX) + Math.PI / 2;
+		rotate = Math.atan2(mouse.y - this.positionY, mouse.x - this.positionX);
 		let bad = "rgba(168, 55, 55, 1)";
 		let normal = "rgba(211, 224, 46, 1)";
 		let good = "rgba(101, 165, 90, 1)";
 		let hpPercentage = (this.actualHp / this.maxHp) * 100;
 
 		context.save();
-
 		context.translate(this.positionX + this.width / 2, this.positionY + this.height / 2);
 		context.rotate(rotate);
 		context.translate(-this.positionX + -this.width / 2, -this.positionY + -this.height / 2);
 		context.drawImage(this.image, this.positionX, this.positionY, this.width, this.height);
-		
+
 
 		//hpLine
 		context.beginPath();
@@ -65,8 +64,8 @@ class Hero {
 
 		//weapon
 		context.beginPath();
-		context.moveTo(this.positionX + this.width / 2, this.positionY);
-		context.lineTo(this.positionX + this.width / 2, this.positionY - 15);
+		context.moveTo(this.positionX + this.width, this.positionY + hero.width / 2);
+		context.lineTo(this.positionX + this.width + 15, this.positionY + hero.width / 2);
 		context.lineWidth = 10;
 		context.stroke();
 		context.lineWidth = 1;
@@ -74,8 +73,8 @@ class Hero {
 		if (shooting) {
 			context.beginPath();
 			context.strokeStyle = randomInterval(0, 1) == 0 ? 'red' : randomInterval(0, 1) == 1 ? 'yellow' : '';
-			context.moveTo(this.positionX + this.width / 2, this.positionY - 15);
-			context.lineTo(this.positionX + this.width / 2, this.positionY - (15 + randomInterval(3, 8)));
+			context.moveTo(this.positionX + this.width + 15, this.positionY + hero.width / 2);
+			context.lineTo(this.positionX + this.width + (15 + randomInterval(3, 8)), this.positionY + hero.width / 2);
 			context.lineWidth = 10;
 			context.stroke();
 			context.lineWidth = 1;

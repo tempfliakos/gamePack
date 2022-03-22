@@ -19,8 +19,8 @@ const levels = [
 			"huge": 0,
 			"boss": 0
 		},
-		"minEnemyOnScreen": 3,
-		"maxEnemyOnScreen": 5,
+		"minEnemyOnScreen": 0,
+		"maxEnemyOnScreen": 0,
 		"reward": 10
 	},
 	{
