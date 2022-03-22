@@ -13,7 +13,7 @@ const rocketSound = resource + "rocket.mp3";
 const stabSound = resource + "stab.mp3";
 const teleportSound = resource + "teleport.mp3";
 const diedSound = resource + "died.mp3";
-const winSound = resource + "win1.mp3";
+const winSound = resource + "win.mp3";
 
 const baseLevels = [{
 	"id": 1,
