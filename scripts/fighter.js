@@ -425,6 +425,7 @@ function drawHp() {
 			context.fillStyle = 'black';
 			context.fillText(date / 1000, hps[0].x, hps[0].y - 10);
 			context.closePath();
+			context.fillStyle = null;
 
 			let dx = (hps[0].x + 25) - (hero.positionX + hero.width / 2);
 			let dy = (hps[0].y + 25) - (hero.positionY + hero.height / 2);
@@ -482,6 +483,7 @@ function drawBlood() {
 				10);
 			context.fill();
 			context.closePath();
+			context.fillStyle = null;
 		}
 	}
 }

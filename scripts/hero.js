@@ -78,6 +78,7 @@ class Hero {
 		context.closePath();
 
 		context.restore();
+		context.strokeStyle = null;
 	}
 
 	step(modifier, enemies) {

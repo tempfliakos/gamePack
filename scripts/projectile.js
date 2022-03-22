@@ -42,6 +42,8 @@ class Projectile {
 			context.stroke();
 		}
 		context.restore();
+		context.fillStyle = null;
+		context.strokeStyle = null;
 	}
 
 	step(modifier, enemies) {

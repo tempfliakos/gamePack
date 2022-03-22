@@ -50,6 +50,7 @@ class Enemy {
 		context.closePath();
 
 		context.restore();
+		context.strokeStyle = null;
 	}
 
 	step(modifier, hero, enemies) {

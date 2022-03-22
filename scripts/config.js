@@ -198,8 +198,8 @@ const weapons = [
 		"ammo": 500,
 		"price": 1,
 		"shootRange": 200,
-		"sound": resource + "pistol.mp3",
 		"coolDown": 150,
+		"sound": resource + "pistol.mp3"
 	},
 	{
 		"type": "Ak",
