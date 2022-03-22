@@ -41,6 +41,7 @@ function generateProjectile() {
 		let weaponX = (hero.positionX + hero.width / 2) + (hero.width / 2 + 15) * Math.cos(rotate);
 		let weaponY = (hero.positionY + hero.height / 2) + (hero.width / 2 + 15) * Math.sin(rotate);
 		projectiles.push(new Projectile(weaponX, weaponY, shootDestination, hero.weapon, Math.atan2(mouse.y - hero.positionY, mouse.x - hero.positionX)));
+		playSound(hero.weapon.sound);
 		shots++;
 		hero.weapon.ammo--;
 		updateWeaponAmmo();
@@ -684,6 +685,17 @@ function setShadow() {
 
 function setBloodDisapear() {
 	bloodDisapear = document.getElementById('bloodChck').checked;
+}
+
+function playSound(src) {
+	let sound = document.createElement("audio");
+	sound.src = src;
+	sound.setAttribute("preload", "auto");
+	sound.setAttribute("controls", "none");
+	sound.style.display = "none";
+	document.body.appendChild(sound);
+	sound.play();
+	setTimeout(() => sound.remove(), 1000);
 }
 
 document.getElementById('bloodChck').checked = bloodDisapear;

@@ -4,9 +4,11 @@ let isTeleportSkillEnabled = true;
 let teleportSkillTimer = 30;
 let countDownTimerSec = 5;
 let hpImage = new Image();
-hpImage.src = '../resources/hp.svg';
+hpImage.src = resource + 'hp.svg';
 let bloodDisapear = true;
 let shadow = false;
+
+const enemyExplosionSound = resource + "enemy_explosion.mp3";
 
 const levels = [
 	{
@@ -160,11 +162,12 @@ const weapons = [
 			"velocity": 0,
 			"maxAmmo": 0
 		},
-		"src": "../resources/weapon_sling_shot.svg",
+		"src": resource + "weapon_sling_shot.svg",
 		"maxAmmo": 10000,
 		"ammo": 10000,
 		"price": 0,
-		"shootRange": 100
+		"shootRange": 100,
+		"sound": resource + "laser_gun.wav"
 	},
 	{
 		"type": "Pistol",
@@ -180,11 +183,12 @@ const weapons = [
 			"velocity": 0,
 			"maxAmmo": 0
 		},
-		"src": "../resources/weapon_pistol.svg",
+		"src": resource + "weapon_pistol.svg",
 		"maxAmmo": 500,
 		"ammo": 500,
 		"price": 1,
-		"shootRange": 200
+		"shootRange": 200,
+		"sound": resource + "laser_gun.wav"
 	},
 	{
 		"type": "Ak",
@@ -200,11 +204,12 @@ const weapons = [
 			"velocity": 0,
 			"maxAmmo": 0
 		},
-		"src": "../resources/weapon_ak.svg",
+		"src": resource + "weapon_ak.svg",
 		"maxAmmo": 500,
 		"ammo": 500,
 		"price": 2,
-		"shootRange": 300
+		"shootRange": 300,
+		"sound": resource + "laser_gun.wav"
 	},
 	{
 		"type": "Rocket launcher",
@@ -220,11 +225,12 @@ const weapons = [
 			"velocity": 0,
 			"maxAmmo": 0
 		},
-		"src": "../resources/weapon_rocket_launcher.svg",
+		"src": resource + "weapon_rocket_launcher.svg",
 		"maxAmmo": 500,
 		"ammo": 500,
 		"price": 3,
-		"shootRange": 400
+		"shootRange": 400,
+		"sound": resource + "laser_gun.wav"
 	}
 ];
 
