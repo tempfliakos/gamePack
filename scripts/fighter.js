@@ -5,8 +5,10 @@ const context = canvas.getContext('2d');
 
 const Mcanvas = document.getElementById('mapCanvas');
 const Mcontext = Mcanvas.getContext('2d');
+let deviceType = undefined;
 
 function initCanvasSize() {
+	deviceType = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
 	canvas.width = document.documentElement.clientWidth;
 	canvas.height = document.documentElement.clientHeight;
 	Mcanvas.width = document.documentElement.clientWidth;
