@@ -119,7 +119,6 @@ canvas {
   left: 10px;
   top: 10px;
   font-size: 1em;
-  z-index: 2;
 }
 
 #state {
@@ -152,7 +151,6 @@ canvas {
   position: absolute;
   top: 10px;
   left: 1000px;
-  z-index: 2;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -196,7 +194,6 @@ canvas {
 .infoLabel {
   position: absolute;
   opacity: 0;
-  z-index: 2;
   transition: 2s;
   text-align: center;
 }

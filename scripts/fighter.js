@@ -38,9 +38,9 @@ function generateProjectile() {
 			x: Math.cos(angle),
 			y: Math.sin(angle)
 		}
-		let weaponX = (hero.positionX + hero.width/2) + (hero.width / 2 + 15) * Math.cos(rotate);
-		let weaponY = (hero.positionY + hero.height/2) + (hero.width/2 + 15) * Math.sin(rotate);
-		projectiles.push(new Projectile(weaponX, weaponY, shootDestination, hero.weapon,  Math.atan2(mouse.y - hero.positionY, mouse.x - hero.positionX)));
+		let weaponX = (hero.positionX + hero.width / 2) + (hero.width / 2 + 15) * Math.cos(rotate);
+		let weaponY = (hero.positionY + hero.height / 2) + (hero.width / 2 + 15) * Math.sin(rotate);
+		projectiles.push(new Projectile(weaponX, weaponY, shootDestination, hero.weapon, Math.atan2(mouse.y - hero.positionY, mouse.x - hero.positionX)));
 		shots++;
 		hero.weapon.ammo--;
 		updateWeaponAmmo();
@@ -309,7 +309,10 @@ function waitForImage(imgElem) {
 }
 
 function updateWeaponAmmo() {
-	document.getElementById('weaponAmmo').innerText = hero.weapon.ammo + '/' + hero.weapon.maxAmmo;
+	document.getElementById('weaponAmmo').innerText =
+		'ammo: ' + hero.weapon.ammo + '/' + hero.weapon.maxAmmo +
+		'\n damage: ' + hero.weapon.damage +
+		'\n range: ' + hero.weapon.shootRange;
 }
 
 function showInfoLabel(infoText, fontsize = '3em') {
@@ -448,7 +451,7 @@ function drawWeapon() {
 		document.getElementById('weaponImg').src = hero.weapon.src;
 		document.getElementById('weaponAmmo').innerText =
 			'ammo: ' + hero.weapon.ammo + '/' + hero.weapon.maxAmmo +
-			'\n damage: ' + hero.weapon.damage + 
+			'\n damage: ' + hero.weapon.damage +
 			'\n range: ' + hero.weapon.shootRange;
 		await waitForImage(document.getElementById('weaponImg'));
 		document.getElementById('weaponDiv').style.left = document.documentElement.clientWidth - document.getElementById('weaponDiv').getBoundingClientRect().width - 10 + 'px';
@@ -490,9 +493,9 @@ function drawShadow() {
 	}
 }
 
-function drawWaponDot_debug(){
-	let xxx = (hero.positionX + hero.width/2) + (hero.width / 2 + 15) * Math.cos(rotate);
-	let yyy = (hero.positionY + hero.height/2) + (hero.width/2 + 15) * Math.sin(rotate);
+function drawWaponDot_debug() {
+	let xxx = (hero.positionX + hero.width / 2) + (hero.width / 2 + 15) * Math.cos(rotate);
+	let yyy = (hero.positionY + hero.height / 2) + (hero.width / 2 + 15) * Math.sin(rotate);
 	let dot = document.createElement('div');
 	dot.style.backgroundColor = 'red';
 	dot.style.position = 'absolute';
@@ -500,7 +503,7 @@ function drawWaponDot_debug(){
 	dot.style.height = '4px';
 	dot.style.width = '4px';
 	dot.style.left = xxx - 2 + 'px';
-	dot.style.top = yyy  - 2 + 'px';
+	dot.style.top = yyy - 2 + 'px';
 	document.getElementsByTagName('body')[0].appendChild(dot);
 }
 
