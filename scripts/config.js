@@ -248,6 +248,30 @@ const weapons = [
 		"shootRange": 4000,
 		"coolDown": 1500,
 		"sound": resource + "rocket_weapon.mp3"
+	},
+	{
+		"type": "Sniper",
+		"ref": "sniper",
+		"damage": 20,
+		"velocity": 2000,
+		"color": "black",
+		"radius": 8,
+		"width": 12,
+		"height": 5,
+		"upgrades": {
+			"damage": 0,
+			"velocity": 0,
+			"maxAmmo": 0,
+			"shootRange": 0,
+			"coolDown": 0,
+		},
+		"src": resource + "weapon_sniper.svg",
+		"maxAmmo": 50,
+		"ammo": 50,
+		"price": 4,
+		"shootRange": 4000,
+		"coolDown": 2000,
+		"sound": resource + "rocket_weapon.mp3"
 	}
 ];
 
@@ -255,7 +279,8 @@ const weaponsMap = {
 	"sling": 0,
 	"pistol": 1,
 	"ak": 2,
-	"rocket": 3
+	"rocket": 3,
+	"sniper": 4
 };
 
 const defaultHero = {

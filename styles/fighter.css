@@ -13,7 +13,7 @@ body {
   user-select: none;
 }
 canvas {
-  cursor: url("../resources/crosshair.cur") 1 1, default;
+  cursor: url("../resources/crosshair.cur") 10 10, default;
   position: absolute;
   top: 0;
   left: 0;
@@ -155,6 +155,10 @@ canvas {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  border: 1px solid black;
+  padding: 10px;
+  text-align: center;
+  background-color: #00800059;
 }
 
 #weaponDiv img {
@@ -163,23 +167,23 @@ canvas {
   height: 50px;
 }
 
-.weaponStoreImg{
-	height: 50px;
-	margin: 0.5em;
-    padding: 0.5em;
+.weaponStoreImg {
+  height: 50px;
+  margin: 0.5em;
+  padding: 0.5em;
 }
 
-.buyableWeapon{
-	background-color: #efefef;
-	border: 1px solid black;
-	cursor: pointer;
+.buyableWeapon {
+  background-color: #efefef;
+  border: 1px solid black;
+  cursor: pointer;
 }
 
-.lockedWeapon{
-	border: 1px solid black;
-	background-color: transparent;
-    filter: grayscale(1);
-	cursor: not-allowed;
+.lockedWeapon {
+  border: 1px solid black;
+  background-color: transparent;
+  filter: grayscale(1);
+  cursor: not-allowed;
 }
 
 #todo {
