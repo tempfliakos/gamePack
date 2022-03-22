@@ -673,7 +673,7 @@ function countDown() {
 
 	counter.style.left = canvas.getBoundingClientRect().width / 2 - counter.getBoundingClientRect().width / 2 + 'px';
 	counter.style.top = canvas.getBoundingClientRect().height / 2 - counter.getBoundingClientRect().height / 2 + 'px';
-
+	
 	for (let i = 0; i < countDownTimerSec; i++) {
 		setTimeout(() => {
 			counter.innerText = countDownTimerSec - 1;

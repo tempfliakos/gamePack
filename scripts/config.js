@@ -193,7 +193,7 @@ const weapons = [
 		"ammo": 500,
 		"price": 1,
 		"shootRange": 200,
-		"sound": resource + "laser_gun.wav"
+		"sound": resource + "pistol.mp3"
 	},
 	{
 		"type": "Ak",
@@ -214,7 +214,7 @@ const weapons = [
 		"ammo": 500,
 		"price": 2,
 		"shootRange": 300,
-		"sound": resource + "laser_gun.wav"
+		"sound": resource + "ak.mp3"
 	},
 	{
 		"type": "Rocket launcher",
@@ -235,7 +235,7 @@ const weapons = [
 		"ammo": 500,
 		"price": 3,
 		"shootRange": 400,
-		"sound": resource + "laser_gun.wav"
+		"sound": resource + "rocket_weapon.mp3"
 	}
 ];
 
