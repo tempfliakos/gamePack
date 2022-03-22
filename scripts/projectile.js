@@ -8,13 +8,13 @@ class Projectile {
 		this.startPositionX = positionX;
 		this.startPositionY = positionY;
 		this.direction = projDirection;
+		this.shootTime = new Date();
 	}
 
 	draw() {
 		context.beginPath();
 		context.save();
 		context.translate(this.positionX, this.positionY);
-		console.log(this.direction);
 		context.rotate(this.direction);
 		context.translate(-this.positionX, -this.positionY);
 		if (hero.weapon.width > 0) {
@@ -66,7 +66,8 @@ class Projectile {
 				});
 			}
 		}
-		const velocity = this.type.velocity * modifier;
+		let velocityMultiple = this.type.velocity * ((new Date() - this.shootTime) / 100);
+		const velocity = this.type.ref == 'rocket' ? Math.pow(velocityMultiple, 1.75) * modifier : this.type.velocity * modifier;
 		this.positionX += this.destination.x * velocity;
 		this.positionY += this.destination.y * velocity;
 		this.draw();

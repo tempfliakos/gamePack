@@ -210,7 +210,7 @@ const weapons = [
 		"type": "Rocket launcher",
 		"ref": "rocket",
 		"damage": 10,
-		"velocity": 50,
+		"velocity": 5,
 		"color": "green",
 		"radius": 8,
 		"width" : 20,
