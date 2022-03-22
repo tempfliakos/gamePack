@@ -51,6 +51,7 @@ class Projectile {
 				enemy.hp -= this.type.damage + hero.damage;
 				if (enemy.hp <= 0) {
 					deadEnemies++;
+					--aliveEnemies;
 					hero.gainExp(enemy.reward);
 					playSound(enemyExplosionSound);
 					drawExplosion(enemy.positionX, enemy.positionY, enemy.width);

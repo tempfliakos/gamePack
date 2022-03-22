@@ -10,92 +10,92 @@ let shadow = false;
 
 const enemyExplosionSound = resource + "enemy_explosion.mp3";
 
-const levels = [
-	{
-		"id": 1,
-		"name": "Luhansk",
-		"groundType": 1,
-		"enemies": {
-			"low": 25,
-			"normal": 0,
-			"huge": 0,
-			"boss": 0
-		},
-		"minEnemyOnScreen": 10,
-		"maxEnemyOnScreen": 20,
-		"reward": 10
+const baseLevels = [{
+	"id": 1,
+	"name": "Luhansk",
+	"groundType": 1,
+	"enemies": {
+		"low": 25,
+		"normal": 0,
+		"huge": 0,
+		"boss": 0
 	},
-	{
-		"id": 2,
-		"name": "Kharkiv",
-		"groundType": 2,
-		"enemies": {
-			"low": 30,
-			"normal": 1,
-			"huge": 0,
-			"boss": 0
-		},
-		"minEnemyOnScreen": 3,
-		"maxEnemyOnScreen": 10,
-		"reward": 10
+	"minEnemyOnScreen": 10,
+	"maxEnemyOnScreen": 20,
+	"reward": 10
+},
+{
+	"id": 2,
+	"name": "Kharkiv",
+	"groundType": 2,
+	"enemies": {
+		"low": 30,
+		"normal": 1,
+		"huge": 0,
+		"boss": 0
 	},
-	{
-		"id": 3,
-		"name": "Mariupol",
-		"groundType": 2,
-		"enemies": {
-			"low": 35,
-			"normal": 2,
-			"huge": 1,
-			"boss": 0
-		},
-		"minEnemyOnScreen": 3,
-		"maxEnemyOnScreen": 10,
-		"reward": 10
+	"minEnemyOnScreen": 3,
+	"maxEnemyOnScreen": 10,
+	"reward": 10
+},
+{
+	"id": 3,
+	"name": "Mariupol",
+	"groundType": 2,
+	"enemies": {
+		"low": 35,
+		"normal": 2,
+		"huge": 1,
+		"boss": 0
 	},
-	{
-		"id": 4,
-		"name": "Donetsk",
-		"groundType": 2,
-		"enemies": {
-			"low": 40,
-			"normal": 3,
-			"huge": 3,
-			"boss": 0
-		},
-		"minEnemyOnScreen": 3,
-		"maxEnemyOnScreen": 10,
-		"reward": 10
+	"minEnemyOnScreen": 3,
+	"maxEnemyOnScreen": 10,
+	"reward": 10
+},
+{
+	"id": 4,
+	"name": "Donetsk",
+	"groundType": 2,
+	"enemies": {
+		"low": 40,
+		"normal": 3,
+		"huge": 3,
+		"boss": 0
 	},
-	{
-		"id": 5,
-		"name": "Crimea",
-		"groundType": 2,
-		"enemies": {
-			"low": 45,
-			"normal": 5,
-			"huge": 5,
-			"boss": 1
-		},
-		"minEnemyOnScreen": 3,
-		"maxEnemyOnScreen": 10,
-		"reward": 10
+	"minEnemyOnScreen": 3,
+	"maxEnemyOnScreen": 10,
+	"reward": 10
+},
+{
+	"id": 5,
+	"name": "Crimea",
+	"groundType": 2,
+	"enemies": {
+		"low": 45,
+		"normal": 5,
+		"huge": 5,
+		"boss": 1
 	},
-	{
-		"id": 6,
-		"name": "Kyiv",
-		"groundType": 2,
-		"enemies": {
-			"low": 50,
-			"normal": 15,
-			"huge": 10,
-			"boss": 5
-		},
-		"minEnemyOnScreen": 3,
-		"maxEnemyOnScreen": 10,
-		"reward": 10
-	}
-];
+	"minEnemyOnScreen": 3,
+	"maxEnemyOnScreen": 10,
+	"reward": 10
+},
+{
+	"id": 6,
+	"name": "Kyiv",
+	"groundType": 2,
+	"enemies": {
+		"low": 50,
+		"normal": 15,
+		"huge": 10,
+		"boss": 5
+	},
+	"minEnemyOnScreen": 3,
+	"maxEnemyOnScreen": 10,
+	"reward": 10
+}];
+
+const levels = JSON.parse(JSON.stringify(baseLevels));
 
 const enemyTypes = [
 	{
@@ -155,7 +155,7 @@ const weapons = [
 		"velocity": 150,
 		"color": "#442d0e",
 		"radius": 4,
-		"width" : 0,
+		"width": 0,
 		"height": 0,
 		"upgrades": {
 			"damage": 0,
@@ -176,7 +176,7 @@ const weapons = [
 		"velocity": 500,
 		"color": "black",
 		"radius": 2,
-		"width" : 5,
+		"width": 5,
 		"height": 2,
 		"upgrades": {
 			"damage": 0,
@@ -197,7 +197,7 @@ const weapons = [
 		"velocity": 600,
 		"color": "black",
 		"radius": 3,
-		"width" : 10,
+		"width": 10,
 		"height": 4,
 		"upgrades": {
 			"damage": 0,
@@ -218,7 +218,7 @@ const weapons = [
 		"velocity": 5,
 		"color": "green",
 		"radius": 8,
-		"width" : 20,
+		"width": 20,
 		"height": 10,
 		"upgrades": {
 			"damage": 0,

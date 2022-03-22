@@ -376,6 +376,7 @@ function drawExplosion(x, y, width) {
 	setTimeout(() => { document.getElementById(expl.id).remove() }, 1000);
 }
 
+let aliveEnemies = Object.values(baseLevels[actualLevel.id - 1].enemies).reduce((a, b) => a + b);
 function drawHud() {
 	let hudElements = [
 		{ id: 'hpPercentageText', text: 'HP: ', data: hero.actualHp < 0 ? 0 + '/' + hero.maxHp : hero.actualHp + '/' + hero.maxHp },
@@ -386,6 +387,7 @@ function drawHud() {
 		{ id: 'deadEnemiesText', text: 'Kills: ', data: deadEnemies },
 		{ id: 'actualLevel', text: 'Map: ', data: actualLevel.name },
 		{ id: 'attrPoints', text: 'Attribute points: ', data: hero.attributePoints },
+		{ id: 'aliveEnemies', text: 'Level enemies: ', data: aliveEnemies },
 		{ id: 'teleportTimer', text: !isTeleportSkillEnabled ? 'Teleport disabled: ' : '', data: !isTeleportSkillEnabled ? Math.round(teleportSkillTimer - (new Date() - teleportUsed) / 1000) + 's' : '' }
 	];
 
@@ -550,6 +552,7 @@ function generateEnemies() {
 	} else if (enemies.length == 0 && availableEnemiesArray == 0) {
 		if (levels[actualLevel.id] !== undefined) {
 			actualLevel = levels[actualLevel.id];
+			aliveEnemies = Object.values(baseLevels[actualLevel.id - 1].enemies).reduce((a, b) => a + b);
 			showInfoLabel(actualLevel.name, '10em');
 
 			//hatter valtozas szintlepessel - figyelni kell majd IndexOutOfBounds-ra - kesobb palya levelbe bele lehetn tenni
@@ -656,6 +659,7 @@ function countDown() {
 	counter.style.left = 0;
 	counter.style.top = 0;
 	counter.style.fontSize = '40em';
+	counter.style.opacity = 0.2;
 	counter.innerText = countDownTimerSec;
 	document.getElementsByTagName('body')[0].appendChild(counter);
 
