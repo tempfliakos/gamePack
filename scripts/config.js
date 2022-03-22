@@ -19,8 +19,8 @@ const levels = [
 			"huge": 0,
 			"boss": 0
 		},
-		"minEnemyOnScreen": 0,
-		"maxEnemyOnScreen": 0,
+		"minEnemyOnScreen": 10,
+		"maxEnemyOnScreen": 20,
 		"reward": 10
 	},
 	{
@@ -153,6 +153,8 @@ const weapons = [
 		"velocity": 150,
 		"color": "#442d0e",
 		"radius": 4,
+		"width" : 0,
+		"height": 0,
 		"upgrades": {
 			"damage": 0,
 			"velocity": 0,
@@ -171,6 +173,8 @@ const weapons = [
 		"velocity": 500,
 		"color": "black",
 		"radius": 2,
+		"width" : 5,
+		"height": 2,
 		"upgrades": {
 			"damage": 0,
 			"velocity": 0,
@@ -189,6 +193,8 @@ const weapons = [
 		"velocity": 600,
 		"color": "black",
 		"radius": 3,
+		"width" : 10,
+		"height": 4,
 		"upgrades": {
 			"damage": 0,
 			"velocity": 0,
@@ -207,6 +213,8 @@ const weapons = [
 		"velocity": 50,
 		"color": "green",
 		"radius": 8,
+		"width" : 20,
+		"height": 10,
 		"upgrades": {
 			"damage": 0,
 			"velocity": 0,

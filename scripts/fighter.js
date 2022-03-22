@@ -26,7 +26,6 @@ initCanvasSize();
 let hero = new Hero((canvas.width / 2) - 20, (canvas.height / 2) - 20);
 let then = Date.now();
 let rotate;
-
 let projectiles = [];
 let enemies = [];
 let actualLevel = levels[0];
@@ -41,7 +40,7 @@ function generateProjectile() {
 		}
 		let weaponX = (hero.positionX + hero.width/2) + (hero.width / 2 + 15) * Math.cos(rotate);
 		let weaponY = (hero.positionY + hero.height/2) + (hero.width/2 + 15) * Math.sin(rotate);
-		projectiles.push(new Projectile(weaponX, weaponY, shootDestination));
+		projectiles.push(new Projectile(weaponX, weaponY, shootDestination, hero.weapon,  Math.atan2(mouse.y - hero.positionY, mouse.x - hero.positionX)));
 		shots++;
 		hero.weapon.ammo--;
 		updateWeaponAmmo();

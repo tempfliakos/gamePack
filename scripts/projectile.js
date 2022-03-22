@@ -1,5 +1,5 @@
 class Projectile {
-	constructor(positionX, positionY, destination, type = hero.weapon) {
+	constructor(positionX, positionY, destination, type = hero.weapon, projDirection) {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.destination = destination;
@@ -7,16 +7,41 @@ class Projectile {
 		this.hit = false;
 		this.startPositionX = positionX;
 		this.startPositionY = positionY;
+		this.direction = projDirection;
 	}
 
 	draw() {
 		context.beginPath();
-		context.arc(this.positionX, this.positionY, this.type.radius, 0, 2 * Math.PI, false);
-		context.fillStyle = this.type.color;
-		context.fill();
-		context.lineWidth = 0;
-		context.strokeStyle = this.type.color;
-		context.stroke();
+		context.save();
+		context.translate(this.positionX, this.positionY);
+		console.log(this.direction);
+		context.rotate(this.direction);
+		context.translate(-this.positionX, -this.positionY);
+		if (hero.weapon.width > 0) {
+
+			// the triangle
+			context.moveTo(this.positionX, this.positionY - this.type.height / 2);
+			context.lineTo(this.positionX, this.positionY - this.type.height / 2 + this.type.height);
+			context.lineTo(this.positionX + this.type.width, this.positionY);
+			context.closePath();
+
+			// the outline
+			context.lineWidth = 1;
+			context.strokeStyle = 'black';
+			context.stroke();
+
+			// the fill color
+			context.fillStyle = this.type.color;
+			context.fill();
+		} else {
+			context.arc(this.positionX, this.positionY, this.type.radius, 0, 2 * Math.PI, false);
+			context.fillStyle = this.type.color;
+			context.fill();
+			context.lineWidth = 0;
+			context.strokeStyle = this.type.color;
+			context.stroke();
+		}
+		context.restore();
 	}
 
 	step(modifier, enemies) {
