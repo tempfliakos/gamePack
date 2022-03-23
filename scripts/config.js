@@ -21,9 +21,9 @@ const baseLevels = [{
 	"groundType": 1,
 	"enemies": {
 		"low": 25,
-		"normal": 0,
-		"huge": 0,
-		"boss": 0
+		"normal": 3,
+		"huge": 1,
+		"boss": 1
 	},
 	"minEnemyOnScreen": 10,
 	"maxEnemyOnScreen": 20,
@@ -247,25 +247,14 @@ const enemyWeapons = [
 		"type": "Sling-shot",
 		"ref": "sling",
 		"damage": 1,
-		"velocity": 150,
+		"velocity": 500,
 		"color": "#442d0e",
-		"radius": 4,
+		"radius": 5,
 		"width": 0,
 		"height": 0,
-		"upgrades": {
-			"damage": 0,
-			"velocity": 0,
-			"maxAmmo": 0,
-			"shootRange": 0,
-			"coolDown": 0
-		},		
-		"src": resource + "weapon_sling_shot.svg",
-		"maxAmmo": 10000,
-		"ammo": 10000,
 		"ammoType": 'round',
-		"price": 0,
-		"shootRange": 500,
-		"coolDown": 2000,
+		"shootRange": 5000,
+		"coolDown": 100,
 		"sound": resource + "laser_gun.wav"
 	}
 ];
@@ -280,7 +269,7 @@ const enemyTypes = [
 		"appearence": resource + "enemy_russia.svg",
 		"size": 20,
 		"reward": 1,
-		"weapon": enemyWeapons[enemyWeaponsMap.sling]
+		"weapon": undefined
 	},
 	{
 		"type": "normal",
@@ -291,7 +280,7 @@ const enemyTypes = [
 		"appearence": resource + "enemy_russia.svg",
 		"size": 40,
 		"reward": 5,
-		"weapon": enemyWeapons[enemyWeaponsMap.sling]
+		"weapon": undefined
 	},
 	{
 		"type": "huge",
@@ -302,7 +291,7 @@ const enemyTypes = [
 		"appearence": resource + "enemy_russia.svg",
 		"size": 80,
 		"reward": 10,
-		"weapon": enemyWeapons[enemyWeaponsMap.sling]
+		"weapon": undefined
 	},
 	{
 		"type": "boss",
