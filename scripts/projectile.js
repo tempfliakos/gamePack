@@ -18,7 +18,7 @@ class Projectile {
 		context.translate(this.positionX, this.positionY);
 		context.rotate(this.direction);
 		context.translate(-this.positionX, -this.positionY);
-		if (hero.weapon.width > 0) {
+		if (this.type.ammoType == 'triangle') {
 
 			// the triangle
 			context.moveTo(this.positionX, this.positionY - this.type.height / 2);
@@ -34,7 +34,7 @@ class Projectile {
 			// the fill color
 			context.fillStyle = this.type.color;
 			context.fill();
-		} else {
+		} else if (this.type.ammoType == 'round') {
 			context.arc(this.positionX, this.positionY, this.type.radius, 0, 2 * Math.PI, false);
 			context.fillStyle = this.type.color;
 			context.fill();
