@@ -102,56 +102,6 @@ const baseLevels = [{
 
 const levels = JSON.parse(JSON.stringify(baseLevels));
 
-const enemyTypes = [
-	{
-		"type": "low",
-		"hp": 15,
-		"damage": 1,
-		"damageInterval": 1000,
-		"velocity": 100,
-		"appearence": resource + "enemy_russia.svg",
-		"size": 20,
-		"reward": 1
-	},
-	{
-		"type": "normal",
-		"hp": 30,
-		"damage": 5,
-		"damageInterval": 1000,
-		"velocity": 80,
-		"appearence": resource + "enemy_russia.svg",
-		"size": 40,
-		"reward": 5
-	},
-	{
-		"type": "huge",
-		"hp": 60,
-		"damage": 10,
-		"damageInterval": 1000,
-		"velocity": 60,
-		"appearence": resource + "enemy_russia.svg",
-		"size": 80,
-		"reward": 10
-	},
-	{
-		"type": "boss",
-		"hp": 200,
-		"damage": 25,
-		"damageInterval": 1000,
-		"velocity": 50,
-		"appearence": resource + "enemy_russia.svg",
-		"size": 200,
-		"reward": 25
-	}
-];
-
-const enemyTypesMap = {
-	"low": 0,
-	"normal": 1,
-	"huge": 2,
-	"boss": 3
-}
-
 const weapons = [
 	{
 		"type": "Sling-shot",
@@ -282,6 +232,91 @@ const weaponsMap = {
 	"rocket": 3,
 	"sniper": 4
 };
+
+const enemyWeaponsMap = {
+	"sling": 0,
+};
+
+const enemyWeapons = [
+	{
+		"type": "Sling-shot",
+		"ref": "sling",
+		"damage": 1,
+		"velocity": 150,
+		"color": "#442d0e",
+		"radius": 4,
+		"width": 0,
+		"height": 0,
+		"upgrades": {
+			"damage": 0,
+			"velocity": 0,
+			"maxAmmo": 0,
+			"shootRange": 0,
+			"coolDown": 0
+		},		
+		"src": resource + "weapon_sling_shot.svg",
+		"maxAmmo": 10000,
+		"ammo": 10000,
+		"price": 0,
+		"shootRange": 500,
+		"coolDown": 2000,
+		"sound": resource + "laser_gun.wav"
+	}
+];
+
+const enemyTypes = [
+	{
+		"type": "low",
+		"hp": 15,
+		"damage": 1,
+		"damageInterval": 1000,
+		"velocity": 100,
+		"appearence": resource + "enemy_russia.svg",
+		"size": 20,
+		"reward": 1,
+		"weapon": enemyWeapons[enemyWeaponsMap.sling]
+	},
+	{
+		"type": "normal",
+		"hp": 30,
+		"damage": 5,
+		"damageInterval": 1000,
+		"velocity": 80,
+		"appearence": resource + "enemy_russia.svg",
+		"size": 40,
+		"reward": 5,
+		"weapon": enemyWeapons[enemyWeaponsMap.sling]
+	},
+	{
+		"type": "huge",
+		"hp": 60,
+		"damage": 10,
+		"damageInterval": 1000,
+		"velocity": 60,
+		"appearence": resource + "enemy_russia.svg",
+		"size": 80,
+		"reward": 10,
+		"weapon": enemyWeapons[enemyWeaponsMap.sling]
+	},
+	{
+		"type": "boss",
+		"hp": 200,
+		"damage": 25,
+		"damageInterval": 1000,
+		"velocity": 50,
+		"appearence": resource + "enemy_russia.svg",
+		"size": 200,
+		"reward": 25,
+		"weapon": enemyWeapons[enemyWeaponsMap.sling]
+	}
+];
+
+const enemyTypesMap = {
+	"low": 0,
+	"normal": 1,
+	"huge": 2,
+	"boss": 3
+}
 
 const defaultHero = {
 	"name": "Hero",

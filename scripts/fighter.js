@@ -375,12 +375,11 @@ function drawHud() {
 		{ id: 'hpPercentageText', text: 'HP: ', data: hero.actualHp < 0 ? 0 + '/' + hero.maxHp : hero.actualHp + '/' + hero.maxHp },
 		{ id: 'heroLevelText', text: 'Lvl: ', data: hero.level },
 		{ id: 'heroXp', text: 'XP: ', data: hero.xp },
-		{ id: 'shotsText', text: 'Shots: ', data: shots },
-		{ id: 'heroWeaponText', text: 'Weapon: ', data: hero.weapon.type },
-		{ id: 'deadEnemiesText', text: 'Kills: ', data: deadEnemies },
-		{ id: 'actualLevel', text: 'Map: ', data: actualLevel.name },
 		{ id: 'attrPoints', text: 'Attribute points: ', data: hero.attributePoints },
+		{ id: 'shotsText', text: 'Shots: ', data: shots },
+		{ id: 'deadEnemiesText', text: 'Kills: ', data: deadEnemies },
 		{ id: 'aliveEnemies', text: 'Level enemies: ', data: aliveEnemies },
+		{ id: 'actualLevel', text: 'Map: ', data: actualLevel.name },
 		{ id: 'teleportTimer', text: !isTeleportSkillEnabled ? 'Teleport disabled: ' : '', data: !isTeleportSkillEnabled ? Math.round(teleportSkillTimer - (new Date() - teleportUsed) / 1000) + 's' : '' }
 	];
 
@@ -503,8 +502,8 @@ function drawShadow() {
 }
 
 function drawObjects(delta) {
-	if(hero.weapon.ref == 'sniper'){
-		context.moveTo(hero.positionX + hero.width/2, hero.positionY + hero.height/2);
+	if (hero.weapon.ref == 'sniper') {
+		context.moveTo(hero.positionX + hero.width / 2, hero.positionY + hero.height / 2);
 		context.lineTo(mouse.x, mouse.y);
 		context.strokeStyle = 'red';
 		context.stroke();
@@ -669,7 +668,7 @@ function countDown() {
 
 	counter.style.left = canvas.getBoundingClientRect().width / 2 - counter.getBoundingClientRect().width / 2 + 'px';
 	counter.style.top = canvas.getBoundingClientRect().height / 2 - counter.getBoundingClientRect().height / 2 + 'px';
-	
+
 	for (let i = 0; i < countDownTimerSec; i++) {
 		setTimeout(() => {
 			counter.innerText = countDownTimerSec - 1;
@@ -731,7 +730,7 @@ const main = function () {
 				p.positionX < canvas.width &&
 				p.positionY > 0 &&
 				p.positionY < canvas.height &&
-				Math.sqrt(Math.pow((p.startPositionX - p.positionX), 2) + Math.pow((p.startPositionY - p.positionY), 2)) < hero.weapon.shootRange);
+				Math.sqrt(Math.pow((p.startPositionX - p.positionX), 2) + Math.pow((p.startPositionY - p.positionY), 2)) < p.type.shootRange);
 			enemies = enemies.filter(e => e.hp > 0);
 			generateEnemies();
 			drawObjects(delta);

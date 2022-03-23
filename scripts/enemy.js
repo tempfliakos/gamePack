@@ -15,8 +15,10 @@ class Enemy {
 		this.height = enemyType.size;
 		this.reward = enemyType.reward;
 		this.damageInterval = enemyType.damageInterval;
+		this.weapon = enemyType.weapon;
 
 		this.lastDamage = undefined;
+		this.lastShootTime = new Date();
 	}
 
 	draw() {
@@ -98,6 +100,23 @@ class Enemy {
 				}
 			}
 			this.draw();
+			this.shoot();
+		}
+	}
+
+	shoot() {
+		let distance = Math.sqrt(Math.pow(hero.positionX - this.positionX, 2) + Math.pow(hero.positionY - this.positionY, 2));
+		if (this.weapon.shootRange > distance) {
+			const enAngle = Math.atan2(hero.positionY - this.positionY, hero.positionX - this.positionX);
+			const enShootDestination = {
+				x: Math.cos(enAngle),
+				y: Math.sin(enAngle)
+			}
+			if (this.weapon.coolDown < (new Date() - this.lastShootTime)) {
+				projectiles.push(new Projectile(this.positionX + this.width / 2, this.positionY + this.height / 2, enShootDestination, this.weapon, Math.atan2(mouse.y - this.positionY, mouse.x - this.positionX), 'hero'));
+				playSound(this.weapon.sound);
+				this.lastShootTime = new Date();
+			}
 		}
 	}
 }

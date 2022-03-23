@@ -1,5 +1,5 @@
 class Projectile {
-	constructor(positionX, positionY, destination, type = hero.weapon, projDirection) {
+	constructor(positionX, positionY, destination, type = hero.weapon, projDirection, target = 'enemy') {
 		this.positionX = positionX;
 		this.positionY = positionY;
 		this.destination = destination;
@@ -9,6 +9,7 @@ class Projectile {
 		this.startPositionY = positionY;
 		this.direction = projDirection;
 		this.shootTime = new Date();
+		this.target = target;
 	}
 
 	draw() {
@@ -48,7 +49,7 @@ class Projectile {
 
 	step(modifier, enemies) {
 		for (let enemy of enemies) {
-			if (isProjectileHit(this, enemy)) {
+			if (isProjectileHit(this, enemy) && this.target == 'enemy') {
 				this.hit = true;
 				enemy.hp -= this.type.damage + hero.damage;
 				if (enemy.hp <= 0) {
