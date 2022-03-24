@@ -64,7 +64,6 @@ class Enemy {
 			context.fillStyle = this.weapon.weaponColor;
 			context.fill();
 			context.closePath();
-
 		}
 
 		context.beginPath();

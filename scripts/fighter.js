@@ -52,10 +52,6 @@ function generateProjectile() {
 	}
 }
 
-canvas.onmousedown = function (e) {
-	generateProjectile(e);
-}
-
 function shootingCooldown(weaponCooldown) {
 	return (new Date() - lastShootTime) > weaponCooldown;
 }
@@ -81,8 +77,14 @@ addEventListener('keydown', e => {
 		}
 	}
 })
-let interval;
 
+//folyamatos loves, jobb klikk lenyomva
+canvas.onmousedown = function (e) {
+	generateProjectile(e);
+}
+
+//egyesevel loves, klikk
+let interval;
 canvas.addEventListener("mousedown", e => {
 	if (interval) {
 		clearInterval(interval);
@@ -347,7 +349,6 @@ function drawExplosion(x, y, width) {
 	expl.style.height = 0;
 	expl.style.left = x + (explosionRad / 2) + 'px';
 	expl.style.top = y + (explosionRad / 2) + 'px';
-	expl.style.zIndex = '3';
 	expl.style.transition = '0.3s';
 	expl.style.opacity = 0;
 	expl.id = 'expl' + new Date().getTime();
@@ -487,6 +488,30 @@ function drawBlood() {
 	}
 }
 
+let barriers = [];
+function generateBarriers(num) {
+	for (let i = 0; i < num; i++) {
+		let size =  randomInterval(50, 150);
+		let barrier = {
+			x: randomInterval(0, canvas.width),
+			y: randomInterval(0, canvas.height),
+			width: size,
+			height: size,
+		}
+		barriers.push(barrier);
+	}
+}
+
+let barrierImage = new Image();
+barrierImage.src = '../resources/barrier.png';
+function drawBarrier() {
+	barriers.forEach((b) => {
+		context.beginPath();
+		context.drawImage(barrierImage, b.x, b.y, b.width, b.height);
+		context.closePath();
+	})
+}
+
 function drawShadow() {
 	if (shadow) {
 		context.beginPath();
@@ -514,6 +539,7 @@ function drawObjects(delta) {
 	drawBlood();
 	drawHud();
 	drawHp();
+	drawBarrier();
 	for (let projectile of projectiles) {
 		projectile.step(delta / 1000, enemies);
 	}
@@ -533,15 +559,7 @@ function generateEnemies() {
 				let enemy;
 				let enemyType = randomEnemy(availableEnemiesArray);
 				actualLevel.enemies[enemyType] -= 1;
-				if (sideRandom > 0 && sideRandom <= 0.25) {
-					enemy = new Enemy(randomInterval(0, canvas.width), 0, enemyTypesMap[enemyType]);
-				} else if (sideRandom > 0.25 && sideRandom <= 0.5) {
-					enemy = new Enemy(canvas.width, randomInterval(0, canvas.height), enemyTypesMap[enemyType]);
-				} else if (sideRandom > 0.5 && sideRandom <= 0.75) {
-					enemy = new Enemy(randomInterval(0, canvas.width), canvas.height, enemyTypesMap[enemyType]);
-				} else if (sideRandom > 0.75 && sideRandom <= 1) {
-					enemy = new Enemy(0, randomInterval(0, canvas.height), enemyTypesMap[enemyType]);
-				}
+				enemy = new Enemy(canvas.width, randomInterval(0, canvas.height), enemyTypesMap[enemyType]);
 				enemies.push(enemy);
 				availableEnemiesArray = availableEnemies();
 			}
@@ -736,6 +754,8 @@ const main = function () {
 			drawObjects(delta);
 			fpsCalc();
 			if (gameOver) {
+				keysDown = {};
+				clearInterval(interval);
 				stop();
 			} else {
 				animId = requestAnimationFrame(main);
@@ -758,6 +778,7 @@ const main = function () {
 
 }
 
+generateBarriers(5);
 drawWeapon();
 countDown();
 main();
