@@ -166,6 +166,27 @@ class Hero {
 		this.velocity = defaultHero.velocity + this.upgrades.velocity * defaultHero.steps.velocity;
 		this.damage = this.upgrades.damage * defaultHero.steps.damage;
 	}
+
+	upgradeWeapon(type) {
+		hero.attributePoints--;
+		switch (type) {
+			case 'damage':
+				this.weapon.upgrades.damage = Math.round((this.weapon.upgrades.damage * 1.1) * 100) / 100;
+				break;
+			case 'velocity':
+				this.weapon.upgrades.velocity *= 1.1;
+				break;
+			case 'maxAmmo':
+				this.weapon.upgrades.maxAmmo *= 1.1;
+				break;
+			case 'shootRange':
+				this.weapon.upgrades.shootRange *= 1.1;
+				break;
+			case 'coolDown':
+				this.weapon.upgrades.coolDown *= 0.9;
+				break;
+		}
+	}
 }
 
 function isEnemyHit(enemy, hero) {

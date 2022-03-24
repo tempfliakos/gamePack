@@ -106,7 +106,7 @@ class Enemy {
 				const velocity = this.velocity * modifier;
 				if (!enemyPosition) {
 					let distance = Math.sqrt(Math.pow(hero.positionX - this.positionX, 2) + Math.pow(hero.positionY - this.positionY, 2));
-					if (!this.weapon || distance >= this.weapon.shootRange) {
+					if (!this.weapon || distance >= this.weapon.upgrades.shootRange) {
 						this.positionX -= heroPosition.x * velocity;
 						this.positionY -= heroPosition.y * velocity;
 					}
@@ -134,7 +134,7 @@ class Enemy {
 			let weaponX = (this.positionX + this.width / 2) + (this.width / 2 + this.weapon.weaponSize) * Math.cos(rotate);
 			let weaponY = (this.positionY + this.height / 2) + (this.height / 2 + this.weapon.weaponSize) * Math.sin(rotate);
 			let distance = Math.sqrt(Math.pow(hero.positionX - this.positionX, 2) + Math.pow(hero.positionY - this.positionY, 2));
-			if (this.weapon.shootRange > distance) {
+			if (this.weapon.upgrades.shootRange > distance) {
 				const enAngle = Math.atan2(hero.positionY - this.positionY, hero.positionX - this.positionX);
 				const enShootDestination = {
 					x: Math.cos(enAngle),

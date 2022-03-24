@@ -35,7 +35,7 @@ let actualLevel = levels[0];
 let shots = 0;
 let lastShootTime = new Date();
 function generateProjectile() {
-	if (hero.weapon.ammo > 0 && !paused && shootingCooldown(hero.weapon.coolDown)) {
+	if (hero.weapon.ammo > 0 && !paused && shootingCooldown(hero.weapon.upgrades.coolDown)) {
 		lastShootTime = new Date();
 		const angle = Math.atan2(mouse.y - hero.positionY, mouse.x - hero.positionX);
 		const shootDestination = {
@@ -274,7 +274,7 @@ function upgrade() {
 		for (const [key, value] of Object.entries(upgradesList[i])) {
 			let parent = document.createElement('div');
 			let name = document.createElement('label');
-			name.innerText = i == 0 ? `Hero ${key}: ` : `Weapon ${key}: `;
+			name.innerText = i == 0 ? `Hero ${key}: ` : `Actual weapon ${key}: `;
 			let number = document.createElement('label');
 			number.innerText = `${value}`;
 			let buttonParent = document.createElement('div');
@@ -282,11 +282,7 @@ function upgrade() {
 			let plus = document.createElement('button');
 			plus.innerText = '+';
 			plus.onclick = () => {
-				if (i == 0) {
-					hero.upgrade(key);
-				} else if (i == 1) {
-
-				}
+				i == 0 ? hero.upgrade(key) : hero.upgradeWeapon(key);
 				upgrade();
 			};
 			if (hero.attributePoints < 1) {
@@ -449,10 +445,10 @@ function drawWeapon() {
 		document.getElementById('weaponImg').src = '';
 		document.getElementById('weaponImg').src = hero.weapon.src;
 		document.getElementById('weaponAmmo').innerText =
-			'ammo: ' + hero.weapon.ammo + '/' + hero.weapon.maxAmmo +
-			'\n damage: ' + hero.weapon.damage +
-			'\n range: ' + hero.weapon.shootRange +
-			'\n coolDown: ' + hero.weapon.coolDown;
+			'ammo: ' + hero.weapon.ammo + '/' + hero.weapon.upgrades.maxAmmo +
+			'\n damage: ' + hero.weapon.upgrades.damage +
+			'\n range: ' + hero.weapon.upgrades.shootRange +
+			'\n coolDown: ' + hero.weapon.upgrades.coolDown;
 		await waitForImage(document.getElementById('weaponImg'));
 		document.getElementById('weaponDiv').style.left = document.documentElement.clientWidth - document.getElementById('weaponDiv').getBoundingClientRect().width - 10 + 'px';
 	})();
@@ -460,10 +456,10 @@ function drawWeapon() {
 
 function updateWeaponAmmo() {
 	document.getElementById('weaponAmmo').innerText =
-		'ammo: ' + hero.weapon.ammo + '/' + hero.weapon.maxAmmo +
-		'\n damage: ' + hero.weapon.damage +
-		'\n range: ' + hero.weapon.shootRange +
-		'\n coolDown: ' + hero.weapon.coolDown;
+		'ammo: ' + hero.weapon.ammo + '/' + hero.weapon.upgrades.maxAmmo +
+		'\n damage: ' + hero.weapon.upgrades.damage +
+		'\n range: ' + hero.weapon.upgrades.shootRange +
+		'\n coolDown: ' + hero.weapon.upgrades.coolDown;
 }
 
 function drawBlood() {
@@ -748,7 +744,7 @@ const main = function () {
 				p.positionX < canvas.width &&
 				p.positionY > 0 &&
 				p.positionY < canvas.height &&
-				Math.sqrt(Math.pow((p.startPositionX - p.positionX), 2) + Math.pow((p.startPositionY - p.positionY), 2)) < p.type.shootRange);
+				Math.sqrt(Math.pow((p.startPositionX - p.positionX), 2) + Math.pow((p.startPositionY - p.positionY), 2)) < p.type.upgrades.shootRange);
 			enemies = enemies.filter(e => e.hp > 0);
 			generateEnemies();
 			drawObjects(delta);

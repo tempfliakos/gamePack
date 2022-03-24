@@ -52,7 +52,7 @@ class Projectile {
 			if (isProjectileHit(this, enemy) && this.target == 'enemy') {
 				enemy.hitFilter = true;
 				this.hit = true;
-				enemy.hp -= this.type.damage + hero.damage;
+				enemy.hp -= this.type.upgrades.damage + hero.damage;
 				if (enemy.hp <= 0) {
 					deadEnemies++;
 					--aliveEnemies;
@@ -62,7 +62,7 @@ class Projectile {
 				}
 				//blood
 				enemyHits.push({
-					damage: this.type.damage,
+					damage: this.type.upgrades.damage,
 					enemyProt: enemy,
 					x: randomInterval(enemy.positionX - 5, enemy.positionX + 5),
 					y: randomInterval(enemy.positionY - 5, enemy.positionY + 5),
@@ -76,13 +76,13 @@ class Projectile {
 		if (isProjectileHit(this, hero) && this.target == 'hero') {
 			this.hit = true;
 			hero.hitFilter = true;
-			hero.actualHp -= this.type.damage;
+			hero.actualHp -= this.type.upgrades.damage;
 			if (hero.actualHp <= 0) {
 				gameOver = true;
 			}
 		}
-		let velocityMultiple = this.type.velocity * ((new Date() - this.shootTime) / 100);
-		const velocity = this.type.ref == 'rocket' ? Math.pow(velocityMultiple, 1.75) * modifier : this.type.velocity * modifier;
+		let velocityMultiple = this.type.upgrades.velocity * ((new Date() - this.shootTime) / 100);
+		const velocity = this.type.ref == 'rocket' ? Math.pow(velocityMultiple, 1.75) * modifier : this.type.upgrades.velocity * modifier;
 		this.positionX += this.destination.x * velocity;
 		this.positionY += this.destination.y * velocity;
 		this.draw();
