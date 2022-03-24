@@ -42,8 +42,8 @@ function generateProjectile() {
 			x: Math.cos(angle),
 			y: Math.sin(angle)
 		}
-		let weaponX = (hero.positionX + hero.width / 2) + (hero.width / 2 + 15) * Math.cos(rotate);
-		let weaponY = (hero.positionY + hero.height / 2) + (hero.width / 2 + 15) * Math.sin(rotate);
+		let weaponX = (hero.positionX + hero.width / 2) + (hero.width / 2 + hero.weapon.weaponSize) * Math.cos(rotate);
+		let weaponY = (hero.positionY + hero.height / 2) + (hero.height / 2 + hero.weapon.weaponSize) * Math.sin(rotate);
 		projectiles.push(new Projectile(weaponX, weaponY, shootDestination, hero.weapon, Math.atan2(mouse.y - hero.positionY, mouse.x - hero.positionX)));
 		playSound(hero.weapon.sound);
 		shots++;

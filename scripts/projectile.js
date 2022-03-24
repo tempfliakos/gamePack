@@ -50,6 +50,7 @@ class Projectile {
 	step(modifier, enemies) {
 		for (let enemy of enemies) {
 			if (isProjectileHit(this, enemy) && this.target == 'enemy') {
+				enemy.hitFilter = true;
 				this.hit = true;
 				enemy.hp -= this.type.damage + hero.damage;
 				if (enemy.hp <= 0) {
@@ -69,6 +70,15 @@ class Projectile {
 					bloodColor: '#ff0000' + Math.round((1 - (enemy.hp / enemy.maxHp)) * 9) + Math.round((1 - (enemy.hp / enemy.maxHp)) * 9),
 					timeout: addSeconds(5)
 				});
+			}
+		}
+
+		if (isProjectileHit(this, hero) && this.target == 'hero') {
+			this.hit = true;
+			hero.hitFilter = true;
+			hero.actualHp -= this.type.damage;
+			if (hero.actualHp <= 0) {
+				gameOver = true;
 			}
 		}
 		let velocityMultiple = this.type.velocity * ((new Date() - this.shootTime) / 100);

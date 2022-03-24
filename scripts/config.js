@@ -23,7 +23,7 @@ const baseLevels = [{
 		"low": 25,
 		"normal": 3,
 		"huge": 1,
-		"boss": 1
+		"boss": 0
 	},
 	"minEnemyOnScreen": 10,
 	"maxEnemyOnScreen": 20,
@@ -112,6 +112,8 @@ const weapons = [
 		"radius": 4,
 		"width": 0,
 		"height": 0,
+		"weaponSize": 10,
+		"weaponColor": '#8B4513',
 		"upgrades": {
 			"damage": 0,
 			"velocity": 0,
@@ -137,6 +139,8 @@ const weapons = [
 		"radius": 2,
 		"width": 5,
 		"height": 2,
+		"weaponSize": 10,
+		"weaponColor": 'black',
 		"upgrades": {
 			"damage": 0,
 			"velocity": 0,
@@ -162,6 +166,8 @@ const weapons = [
 		"radius": 3,
 		"width": 10,
 		"height": 4,
+		"weaponSize": 20,
+		"weaponColor": 'brown',
 		"upgrades": {
 			"damage": 0,
 			"velocity": 0,
@@ -187,6 +193,8 @@ const weapons = [
 		"radius": 8,
 		"width": 20,
 		"height": 10,
+		"weaponSize": 25,
+		"weaponColor": 'green',
 		"upgrades": {
 			"damage": 0,
 			"velocity": 0,
@@ -212,6 +220,8 @@ const weapons = [
 		"radius": 8,
 		"width": 12,
 		"height": 5,
+		"weaponSize": 20,
+		"weaponColor": 'black',
 		"upgrades": {
 			"damage": 0,
 			"velocity": 0,
@@ -246,15 +256,17 @@ const enemyWeapons = [
 	{
 		"type": "Sling-shot",
 		"ref": "sling",
-		"damage": 1,
+		"damage": 10,
 		"velocity": 500,
 		"color": "#442d0e",
 		"radius": 5,
 		"width": 0,
 		"height": 0,
+		"weaponSize": 10,
+		"weaponColor": 'brown',
 		"ammoType": 'round',
-		"shootRange": 5000,
-		"coolDown": 100,
+		"shootRange": 300,
+		"coolDown": 1000,
 		"sound": resource + "laser_gun.wav"
 	}
 ];
@@ -280,7 +292,7 @@ const enemyTypes = [
 		"appearence": resource + "enemy_russia.svg",
 		"size": 40,
 		"reward": 5,
-		"weapon": undefined
+		"weapon": enemyWeapons[enemyWeaponsMap.sling]
 	},
 	{
 		"type": "huge",
@@ -291,7 +303,7 @@ const enemyTypes = [
 		"appearence": resource + "enemy_russia.svg",
 		"size": 80,
 		"reward": 10,
-		"weapon": undefined
+		"weapon": enemyWeapons[enemyWeaponsMap.sling]
 	},
 	{
 		"type": "boss",
@@ -300,7 +312,7 @@ const enemyTypes = [
 		"damageInterval": 1000,
 		"velocity": 50,
 		"appearence": resource + "enemy_russia.svg",
-		"size": 200,
+		"size": 300,
 		"reward": 25,
 		"weapon": enemyWeapons[enemyWeaponsMap.sling]
 	}

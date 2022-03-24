@@ -36,6 +36,7 @@ class Hero {
 		this.attributePoints = attributePoints;
 		this.damage = this.upgrades.damage;
 		this.ownedWeapons = ownedWeapons;
+		this.hitFilter = false;
 	}
 
 	draw() {
@@ -49,7 +50,14 @@ class Hero {
 		context.translate(this.positionX + this.width / 2, this.positionY + this.height / 2);
 		context.rotate(rotate);
 		context.translate(-this.positionX + -this.width / 2, -this.positionY + -this.height / 2);
-		context.drawImage(this.image, this.positionX, this.positionY, this.width, this.height);
+		if (this.hitFilter) {
+			context.filter = 'opacity(0)';
+			context.drawImage(this.image, this.positionX, this.positionY, this.width, this.height);
+			context.filter = 'opacity(1)';
+			this.hitFilter = false;
+		} else {
+			context.drawImage(this.image, this.positionX, this.positionY, this.width, this.height);
+		}
 
 
 		//hpLine
@@ -64,11 +72,12 @@ class Hero {
 
 		//weapon
 		context.beginPath();
-		context.moveTo(this.positionX + this.width, this.positionY + hero.width / 2);
-		context.lineTo(this.positionX + this.width + 15, this.positionY + hero.width / 2);
-		context.lineWidth = 10;
-		context.stroke();
-		context.lineWidth = 1;
+		context.moveTo(this.positionX + this.width, this.positionY + this.width / 2 - 5);
+		context.lineTo(this.positionX + this.width, this.positionY + this.width / 2 + 5);
+		context.lineTo(this.positionX + this.width + this.weapon.weaponSize, this.positionY + this.width / 2 + 2);
+		context.lineTo(this.positionX + this.width + this.weapon.weaponSize, this.positionY + this.width / 2 - 2);
+		context.fillStyle = this.weapon.weaponColor;
+		context.fill();
 		context.closePath();
 
 		context.beginPath();
@@ -79,6 +88,7 @@ class Hero {
 
 		context.restore();
 		context.strokeStyle = null;
+		this.hitFilter = false;
 	}
 
 	step(modifier, enemies) {
