@@ -73,6 +73,12 @@ class Projectile {
 			}
 		}
 
+		for (let barrier of barriers) {
+			if (this !== barrier && isBarrierHit(barrier, this)) {
+				this.hit = true;
+			}
+		}
+
 		if (isProjectileHit(this, hero) && this.target == 'hero') {
 			this.hit = true;
 			hero.hitFilter = true;
@@ -94,4 +100,24 @@ function isProjectileHit(projectile, enemy) {
 	let dy = (enemy.positionY + enemy.height / 2) - projectile.positionY;
 	let rSum = projectile.type.radius + enemy.width / 2;
 	return (dx * dx + dy * dy <= rSum * rSum);
+}
+
+function isBarrierHit(barrier, projectile) {
+	if (projectile.type) {
+		let distX = Math.abs(projectile.positionX - (barrier.positionX + barrier.width / 2));
+		let distY = Math.abs(projectile.positionY - (barrier.positionY + barrier.height / 2));
+
+		if ((distX > projectile.type.radius + barrier.width / 2) || (distY > projectile.type.radius + barrier.height / 2)) {
+			return false;
+		}
+
+		if ((distX <= barrier.width / 2 + projectile.type.radius) && (distY <= barrier.height / 2 + projectile.type.radius)) {
+			return true;
+		}
+
+		distX -= barrier.width;
+		distY -= barrier.height;
+		return Math.pow(distX, 2) + Math.pow(distY, 2) <= Math.pow(projectile.type.radius, 2);
+	}
+	return false;
 }

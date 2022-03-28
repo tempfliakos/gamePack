@@ -20,6 +20,7 @@ class Enemy {
 
 		this.lastDamage = undefined;
 		this.lastShootTime = new Date();
+		this.barrier = undefined;
 	}
 
 	draw() {
@@ -95,8 +96,18 @@ class Enemy {
 				}
 			} else {
 				let enemyPosition;
+				this.barrier = undefined;
+				let noStep = false;
 				for (let enemy of enemies) {
-					if (this !== enemy && isEnemyHit(this, enemy)) {
+					for (let barrier of barriers) {
+						if (isBarrierHitByEnemy(barrier, enemy)) {
+							this.barrier = barrier;
+							noStep = true;
+						}
+					}
+
+					if ((this !== enemy && isEnemyHit(this, enemy))) {
+						noStep = true;
 						enemyPosition = {
 							positionX: enemy.positionX,
 							positionY: enemy.positionY,
@@ -104,23 +115,37 @@ class Enemy {
 					}
 				}
 				const velocity = this.velocity * modifier;
-				if (!enemyPosition) {
+				if (!noStep) {
 					let distance = Math.sqrt(Math.pow(hero.positionX - this.positionX, 2) + Math.pow(hero.positionY - this.positionY, 2));
 					if (!this.weapon || distance >= this.weapon.upgrades.shootRange) {
 						this.positionX -= heroPosition.x * velocity;
 						this.positionY -= heroPosition.y * velocity;
 					}
 				} else {
-					if (this.positionX > enemyPosition.positionX) {
-						this.positionX += 1 * velocity;
-					} else if (this.positionX < enemyPosition.positionX) {
-						this.positionX -= 1 * velocity;
-					}
+					if (this.barrier) {
+						if(this.barrier.positionY / 2 > this.positionY) {
+							this.positionY += 1 * velocity;
+						} else if(this.barrier.positionY / 2 <= this.positionY) {
+							this.positionY -= 1 * velocity;
+						}
 
-					if (this.positionY > enemyPosition.positionY) {
-						this.positionY += 1 * velocity;
-					} else if (this.positionY < enemyPosition.positionY) {
-						this.positionY -= 1 * velocity;
+						if(this.barrier.positionX / 2 > this.positionX) {
+							this.positionX += 1 * velocity;
+						} else if(this.barrier.positionX / 2 <= this.positionX) {
+							this.positionX -= 1 * velocity;
+						}
+					} else {
+						if (this.positionX > enemyPosition.positionX) {
+							this.positionX += 1 * velocity;
+						} else if (this.positionX < enemyPosition.positionX) {
+							this.positionX -= 1 * velocity;
+						}
+
+						if (this.positionY > enemyPosition.positionY) {
+							this.positionY += 1 * velocity;
+						} else if (this.positionY < enemyPosition.positionY) {
+							this.positionY -= 1 * velocity;
+						}
 					}
 				}
 			}
@@ -155,4 +180,11 @@ function isEnemyHit(enemy, hero) {
 	let dy = (enemy.positionY + enemy.height / 2) - (hero.positionY + hero.height / 2);
 	let rSum = enemy.width / 2 + hero.width / 2;
 	return (dx * dx + dy * dy <= rSum * rSum);
+}
+
+function isBarrierHitByEnemy(barrier, enemy) {
+	return barrier.positionX < enemy.positionX + enemy.width &&
+		barrier.positionX + barrier.width > enemy.positionX &&
+		barrier.positionY < enemy.positionY + hero.height &&
+		barrier.height + barrier.positionY > enemy.positionY
 }

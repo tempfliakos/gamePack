@@ -494,26 +494,11 @@ function drawBlood() {
 let barriers = [];
 function generateBarriers(num) {
 	for (let i = 0; i < num; i++) {
-		let size = randomInterval(50, 150);
-		let barrier = {
-			x: randomInterval(0, canvas.width),
-			y: randomInterval(0, canvas.height),
-			width: size,
-			height: size,
-		}
-		barriers.push(barrier);
+		let size =  randomInterval(50, 150);
+		barriers.push(new Barrier(randomInterval(0, canvas.width),randomInterval(0, canvas.height), size, size));
 	}
 }
 
-let barrierImage = new Image();
-barrierImage.src = '../resources/barrier.png';
-function drawBarrier() {
-	barriers.forEach((b) => {
-		context.beginPath();
-		context.drawImage(barrierImage, b.x, b.y, b.width, b.height);
-		context.closePath();
-	})
-}
 
 function debug_drawDot(dotx, doty, dotsize) {
 	let dot = document.createElement('div');
@@ -592,7 +577,9 @@ function drawObjects(delta) {
 	drawBlood();
 	drawHud();
 	drawHp();
-	drawBarrier();
+	for(let barrier of barriers) {
+		barrier.draw();
+	}
 	for (let projectile of projectiles) {
 		projectile.step(delta / 1000, enemies);
 	}
@@ -793,7 +780,7 @@ const main = function () {
 			context.clearRect(0, 0, innerWidth, innerHeight);
 			const now = Date.now();
 			const delta = now - then;
-			hero.step(delta / 1000, enemies);
+			hero.step(delta / 1000);
 			then = now;
 			projectiles = projectiles.filter(p =>
 				p.hit !== true &&

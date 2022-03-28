@@ -15,6 +15,8 @@ const teleportSound = resource + "teleport.mp3";
 const diedSound = resource + "died.mp3";
 const winSound = resource + "win.mp3";
 
+const barrierImage = resource + 'barrier.png';
+
 const baseLevels = [{
 	"id": 1,
 	"name": "Luhansk",

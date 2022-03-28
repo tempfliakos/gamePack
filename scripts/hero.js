@@ -81,7 +81,7 @@ class Hero {
 		context.closePath();
 
 		context.beginPath();
-		context.arc(this.positionX + this.width / 2, this.positionY + this.height / 2, this.width / 2, 0, 2 * Math.PI, false);
+		context.arc(this.positionX + this.width / 2, this.positionY + this.height / 2, this.width / 2, 0, 2 * Math.PI);
 		context.stroke();
 		context.clip();
 		context.closePath();
@@ -91,7 +91,7 @@ class Hero {
 		this.hitFilter = false;
 	}
 
-	step(modifier, enemies) {
+	step(modifier) {
 		const velocity = this.velocity * modifier;
 		let x = this.positionX;
 		let y = this.positionY;
@@ -125,21 +125,14 @@ class Hero {
 			x = canvas.width - this.width;
 		}
 
-		let enemyMet = false;
 		let heroTemp = {
 			positionX: x,
 			positionY: y,
 			width: this.width,
 			height: this.height
 		}
-		if (!notarget) {
-			for (let enemy of enemies) {
-				if (this !== enemy && isEnemyHit(enemy, heroTemp)) {
-					enemyMet = true;
-				}
-			}
-		}
-		if (!enemyMet) {
+
+		if (testStep(notarget, heroTemp)) {
 			this.positionX = x;
 			this.positionY = y;
 		}
@@ -189,9 +182,32 @@ class Hero {
 	}
 }
 
+function testStep(notarget, heroTemp) {
+	if (!notarget) {
+		for (let enemy of enemies) {
+			if (this !== enemy && isEnemyHit(enemy, heroTemp)) {
+				return false;
+			}
+		}
+		for (let barrier of barriers) {
+			if (isBarrierHitByHero(barrier, heroTemp)) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
 function isEnemyHit(enemy, hero) {
 	let dx = (enemy.positionX + enemy.width / 2) - (hero.positionX + hero.width / 2);
 	let dy = (enemy.positionY + enemy.height / 2) - (hero.positionY + hero.height / 2);
 	let rSum = enemy.width / 2 + hero.width / 4;
 	return (dx * dx + dy * dy <= rSum * rSum);
+}
+
+function isBarrierHitByHero(barrier, hero) {
+	return barrier.positionX < hero.positionX + hero.width &&
+	barrier.positionX + barrier.width > hero.positionX &&
+	barrier.positionY < hero.positionY + hero.height &&
+	barrier.height + barrier.positionY > hero.positionY
 }
