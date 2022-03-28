@@ -90,6 +90,9 @@ canvas.onmousedown = function (e) {
 //egyesevel loves, klikk
 let interval;
 canvas.addEventListener("mousedown", e => {
+	if (clickDebug) {
+		console.log('mouseX: ' + mouse.x + ' mouseY: ' + mouse.y);
+	}
 	if (interval) {
 		clearInterval(interval);
 	}
@@ -557,18 +560,9 @@ function debug_drawRuler_xy(dotx, doty) {
 	return;
 }
 
-let debug_mousePointerLogId;
-function debug_mousePointerLog() {
-	if (!debug_mousePointerLogId) {
-		debug_mousePointerLogId = setInterval(() => console.log('mouseX: ' + mouse.x + ' mouseY: ' + mouse.y), 1000);
-	} else{
-		clearInterval(debug_mousePointerLogId);
-		debug_mousePointerLogId = undefined;
-	}
-}
-
-function debug_getMouseCoord(){
-	return 'mouseX: ' + mouse.x + ' mouseY: ' + mouse.y;
+let clickDebug = false;
+function debug_getMouseCoordByClick() {
+	clickDebug = !clickDebug;
 }
 
 function drawShadow() {
