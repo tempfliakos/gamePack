@@ -567,6 +567,10 @@ function debug_mousePointerLog() {
 	}
 }
 
+function debug_getMouseCoord(){
+	return 'mouseX: ' + mouse.x + ' mouseY: ' + mouse.y;
+}
+
 function drawShadow() {
 	if (shadow) {
 		context.beginPath();
