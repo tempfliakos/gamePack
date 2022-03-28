@@ -56,18 +56,22 @@ function shootingCooldown(weaponCooldown) {
 	return (new Date() - lastShootTime) > weaponCooldown;
 }
 
+function resume() {
+	paused = !paused;
+	if (paused) {
+		stop();
+	} else {
+		start();
+		document.getElementById('options').style.left = '-310px';
+		if (document.getElementById('optionsPopup').style.visibility = 'visible') {
+			document.getElementById('optionsPopup').style.visibility = 'hidden';
+		}
+	};
+}
+
 addEventListener('keydown', e => {
 	if (e.code == 'Escape') {
-		paused = !paused;
-		if (paused) {
-			stop();
-		} else {
-			start();
-			document.getElementById('options').style.left = '-310px';
-			if (document.getElementById('optionsPopup').style.visibility = 'visible') {
-				document.getElementById('optionsPopup').style.visibility = 'hidden';
-			}
-		};
+		resume();
 	}
 	//teleport
 	if ('KeyT' in keysDown) {
@@ -487,7 +491,7 @@ function drawBlood() {
 let barriers = [];
 function generateBarriers(num) {
 	for (let i = 0; i < num; i++) {
-		let size =  randomInterval(50, 150);
+		let size = randomInterval(50, 150);
 		let barrier = {
 			x: randomInterval(0, canvas.width),
 			y: randomInterval(0, canvas.height),
@@ -506,6 +510,61 @@ function drawBarrier() {
 		context.drawImage(barrierImage, b.x, b.y, b.width, b.height);
 		context.closePath();
 	})
+}
+
+function debug_drawDot(dotx, doty, dotsize) {
+	let dot = document.createElement('div');
+	dot.id = 'dot' + new Date().getTime();
+	dot.style.position = 'absolute';
+	dot.style.backgroundColor = 'red';
+	dot.style.width = dotsize + 'px';
+	dot.style.height = dotsize + 'px';
+	dot.style.borderRadius = dotsize + 'px';
+	dot.style.left = dotx + 'px';
+	dot.style.top = doty + 'px';
+	document.getElementsByTagName('body')[0].appendChild(dot);
+}
+
+function debug_drawRuler_y(doty) {
+	context.beginPath();
+	context.moveTo(0, doty);
+	context.lineTo(canvas.width, doty);
+	context.lineWidth = 1;
+	context.strokeStyle = 'red';
+	context.stroke();
+	context.closePath();
+	context.strokeStyle = 'black';
+	context.font = "20px Arial";
+	context.fillText(' y: ' + doty, 20, doty);
+}
+
+function debug_drawRuler_x(dotx) {
+	context.beginPath();
+	context.moveTo(dotx, 0);
+	context.lineTo(dotx, canvas.height);
+	context.lineWidth = 1;
+	context.strokeStyle = 'red';
+	context.stroke();
+	context.closePath();
+	context.strokeStyle = 'black';
+	context.font = "20px Arial";
+	context.fillText('x: ' + dotx, dotx, 20);
+}
+
+function debug_drawRuler_xy(dotx, doty) {
+	debug_drawRuler_x(dotx);
+	debug_drawRuler_y(doty);
+	return;
+}
+
+let debug_mousePointerLogId;
+function debug_mousePointerLog() {
+	if (!debug_mousePointerLogId) {
+		debug_mousePointerLogId = setInterval(() => console.log('mouseX: ' + mouse.x + ' mouseY: ' + mouse.y), 1000);
+	} else{
+		clearInterval(debug_mousePointerLogId);
+		debug_mousePointerLogId = undefined;
+	}
 }
 
 function drawShadow() {
