@@ -99,19 +99,18 @@ class Enemy {
 				this.barrier = undefined;
 				let noStep = false;
 				for (let enemy of enemies) {
-					for (let barrier of barriers) {
-						if (isBarrierHitByEnemy(barrier, enemy)) {
-							this.barrier = barrier;
-							noStep = true;
-						}
-					}
-
 					if ((this !== enemy && isEnemyHit(this, enemy))) {
 						noStep = true;
 						enemyPosition = {
 							positionX: enemy.positionX,
 							positionY: enemy.positionY,
 						}
+					}
+				}
+				for (let barrier of barriers) {
+					if (isBarrierHitByEnemy(barrier, this)) {
+						this.barrier = barrier;
+						noStep = true;
 					}
 				}
 				const velocity = this.velocity * modifier;
@@ -123,17 +122,43 @@ class Enemy {
 					}
 				} else {
 					if (this.barrier) {
-						if(this.barrier.positionY / 2 > this.positionY) {
-							this.positionY += 1 * velocity;
-						} else if(this.barrier.positionY / 2 <= this.positionY) {
-							this.positionY -= 1 * velocity;
-						}
+						let x = this.positionX;
+						let y = this.positionY;
+						let tempEnemy;
 
 						if(this.barrier.positionX / 2 > this.positionX) {
-							this.positionX += 1 * velocity;
+							x += velocity;
 						} else if(this.barrier.positionX / 2 <= this.positionX) {
-							this.positionX -= 1 * velocity;
+							x -= velocity;
 						}
+
+						tempEnemy = {
+							positionX: x,
+							positionY: y,
+							width: this.width
+						}
+
+						if(!isBarrierHitByEnemy(this.barrier, tempEnemy)) {
+							this.positionX = x;
+						}
+
+
+						if(this.barrier.positionY / 2 > this.positionY) {
+							y += velocity;
+						} else if(this.barrier.positionY / 2 <= this.positionY) {
+							y -= velocity;
+						}
+
+						tempEnemy = {
+							positionX: x,
+							positionY: y,
+							width: this.width
+						}
+
+						if(!isBarrierHitByEnemy(this.barrier, tempEnemy)) {
+							this.positionY = y;
+						}
+
 					} else {
 						if (this.positionX > enemyPosition.positionX) {
 							this.positionX += 1 * velocity;
