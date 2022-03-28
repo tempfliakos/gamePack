@@ -577,7 +577,7 @@ function drawObjects(delta) {
 	drawBlood();
 	drawHud();
 	drawHp();
-	for(let barrier of barriers) {
+	for (let barrier of barriers) {
 		barrier.draw();
 	}
 	for (let projectile of projectiles) {
@@ -599,7 +599,15 @@ function generateEnemies() {
 				let enemy;
 				let enemyType = randomEnemy(availableEnemiesArray);
 				actualLevel.enemies[enemyType] -= 1;
-				enemy = new Enemy(canvas.width, randomInterval(0, canvas.height), enemyTypesMap[enemyType]);
+				if (sideRandom > 0 && sideRandom <= 0.25) {
+					enemy = new Enemy(randomInterval(0, canvas.width), 0, enemyTypesMap[enemyType]);
+				} else if (sideRandom > 0.25 && sideRandom <= 0.5) {
+					enemy = new Enemy(canvas.width, randomInterval(0, canvas.height), enemyTypesMap[enemyType]);
+				} else if (sideRandom > 0.5 && sideRandom <= 0.75) {
+					enemy = new Enemy(randomInterval(0, canvas.width), canvas.height, enemyTypesMap[enemyType]);
+				} else if (sideRandom > 0.75 && sideRandom <= 1) {
+					enemy = new Enemy(0, randomInterval(0, canvas.height), enemyTypesMap[enemyType]);
+				}
 				enemies.push(enemy);
 				availableEnemiesArray = availableEnemies();
 			}
