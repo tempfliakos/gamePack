@@ -8,16 +8,17 @@ body {
 
 .nav {
     height: 100vh;
-    width: 33%;
-    background-size: contain;
+    width: 33.3%;
+    background-size: cover;
     background-repeat: no-repeat;
+    cursor: pointer;
+    transition: 1s;
     background-position: center;
+	border: 1px solid black;
 }
 
 .nav:hover {
-    width: 66%;
-    cursor: pointer;
-    transition: 1s;
+    width: 90%;
 }
 
 .nav.tictactoe {
@@ -33,7 +34,7 @@ body {
 }
 
 .nav.emberke:hover {
-    background-image: url('../resources/images/index/emberke_background.png');
+    background-image: url('../resources/images/index/emberke_background.gif');
 }
 
 .nav.fighter {
@@ -41,5 +42,5 @@ body {
 }
 
 .nav.fighter:hover {
-    background-image: url('../resources/images/index/fighter_background.png');
+    background-image: url('../resources/images/index/fighter_background.gif');
 }
