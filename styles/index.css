@@ -18,7 +18,8 @@ body {
 }
 
 .nav:hover {
-    width: 90%;
+    width: 200%;
+	filter:none;
 }
 
 .nav.tictactoe {
